@@ -86,7 +86,8 @@
 		var/mob/living/silicon/ai/AI = usr
 		if(AI.eyeobj && AI.client.eye == AI.eyeobj)
 			AI.cameraFollow = null
-			AI.eyeobj.setLoc(src)
+			if (isturf(src.loc) || isturf(src))
+				AI.eyeobj.setLoc(src)
 
 // This will move the AIEye. It will also cause lights near the eye to light up, if toggled.
 // This is handled in the proc below this one.
@@ -117,14 +118,6 @@
 
 
 // Return to the Core.
-
-/mob/living/silicon/ai/verb/core()
-	set category = "AI Commands"
-	set name = "AI Core"
-
-	view_core()
-
-
 /mob/living/silicon/ai/proc/view_core()
 
 	current = null
