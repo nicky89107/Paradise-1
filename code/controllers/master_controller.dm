@@ -33,7 +33,9 @@ datum/controller/game_controller
 
 	var/last_thing_processed
 
-	var/list/shuttle_list	//for debugging and VV
+	var/list/shuttle_list	                    // For debugging and VV
+	var/datum/ore_distribution/asteroid_ore_map // For debugging and VV.
+
 
 datum/controller/game_controller/New()
 	//There can be only one master_controller. Out with the old and in with the new.
@@ -57,12 +59,13 @@ datum/controller/game_controller/New()
 datum/controller/game_controller/proc/setup()
 	world.tick_lag = config.Ticklag
 
+/* //Do we even need this if we only have a single away mission loaded? Don't think so!
 	spawn(20)
 		createRandomZlevel()
+*/
 
 	if(!air_master)
 		air_master = new /datum/controller/air_system()
-//		air_master.setup()
 		air_master.Setup()
 
 	if(!ticker)
@@ -83,8 +86,8 @@ datum/controller/game_controller/proc/setup()
 	color_windows_init()
 
 	//Create the mining ore distribution map.
-	var/datum/ore_distribution/O = new()
-	O.populate_distribution_map()
+	asteroid_ore_map = new /datum/ore_distribution()
+	asteroid_ore_map.populate_distribution_map()
 
 	spawn(0)
 		if(ticker)
