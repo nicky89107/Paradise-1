@@ -1411,6 +1411,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		client.screen.Remove(global_hud.blurry, global_hud.druggy, global_hud.vimpaired, global_hud.darkMask/*, global_hud.nvg*/)
 
 		update_action_buttons()
+		update_power_buttons()
 
 		if(damageoverlay.overlays)
 			damageoverlay.overlays = list()
@@ -1750,8 +1751,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	proc/handle_virus_updates()
 		if(status_flags & GODMODE)	return 0	//godmode
 		if(bodytemperature > 406)
-			for(var/datum/disease/D in viruses)
-				D.cure()
 			for (var/ID in virus2)
 				var/datum/disease2/disease/V = virus2[ID]
 				V.cure(src)
@@ -1945,9 +1944,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	if(hud_updateflag & 1 << STATUS_HUD)
 		var/foundVirus = 0
-		for(var/datum/disease/D in viruses)
-			if(!D.hidden[SCANNER])
-				foundVirus++
 		for (var/ID in virus2)
 			if (ID in virusDB)
 				foundVirus = 1
