@@ -312,10 +312,10 @@
 	clothes_req = 0
 	stat_allowed = 0
 	invocation_type = "none"
-	range = -1
+	range = 7
 	selection_type = "range"
 	var/list/compatible_mobs = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
-	include_user = 1
+	include_user = 0
 
 	icon_power_button = "genetic_incendiary"
 
@@ -329,6 +329,8 @@
 	playsound(L.loc, 'sound/effects/bamf.ogg', 50, 0)
 
 ////////////////////////////////////////////////////////////////////////
+
+/* WTF THIS IS THE DUMBEST SHIT
 
 // WAS: /datum/bioEffect/melt
 /datum/dna/gene/basic/grant_verb/melt
@@ -370,3 +372,6 @@
 		usr.gib(1)
 
 	return
+
+
+*/
