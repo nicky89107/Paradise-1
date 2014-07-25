@@ -845,6 +845,7 @@ var/list/all_supply_groups = list("Operations","Security","Hospitality","Enginee
 	containername = "Arts and Crafts crate"
 	group = "Operations"
 
+
 /datum/supply_packs/randomised/contraband
 	num_contained = 6
 	contains = list(/obj/item/weapon/storage/pill_bottle/zoom,
@@ -940,7 +941,7 @@ var/list/all_supply_groups = list("Operations","Security","Hospitality","Enginee
 	containertype = /obj/structure/closet
 	containername = "Formalwear for the best occasions."
 	group = "Operations"
-
+/*
 /datum/supply_packs/rust_injector
 	contains = list(/obj/machinery/power/rust_fuel_injector)
 	name = "RUST fuel injector"
@@ -976,7 +977,7 @@ var/list/all_supply_groups = list("Operations","Security","Hospitality","Enginee
 	containername = "RUST tokamak crate"
 	group = "Engineering"
 	access = access_engine
-
+*/
 /datum/supply_packs/shield_gen
 	contains = list(/obj/item/weapon/circuitboard/shield_gen)
 	name = "Experimental shield generator circuitry"
