@@ -21,14 +21,14 @@ var/list/mechtoys = list(
 )
 
 /area/supply/station //DO NOT TURN THE lighting_use_dynamic STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
-	name = "supply shuttle"
+	name = "Supply Shuttle"
 	icon_state = "shuttle3"
 	luminosity = 1
 	lighting_use_dynamic = 0
 	requires_power = 0
 
 /area/supply/dock //DO NOT TURN THE lighting_use_dynamic STUFF ON FOR SHUTTLES. IT BREAKS THINGS.
-	name = "supply shuttle"
+	name = "Supply Shuttle"
 	icon_state = "shuttle3"
 	luminosity = 1
 	lighting_use_dynamic = 0
@@ -54,7 +54,10 @@ var/list/mechtoys = list(
 	if (istype(A, /obj/structure/stool/bed) && B.buckled_mob)//if it's a bed/chair and someone is buckled, it will not pass
 		return 0
 
-	else if(istype(A, /mob/living)) // You Shall Not Pass!
+	if(istype(A, /obj/vehicle))	//no vehicles
+		return 0
+
+	if(istype(A, /mob/living)) // You Shall Not Pass!
 		var/mob/living/M = A
 		if(!M.lying && !istype(M, /mob/living/carbon/monkey) && !istype(M, /mob/living/carbon/slime) && !istype(M, /mob/living/simple_animal/mouse) && !istype(M, /mob/living/silicon/robot/drone))  //If your not laying down, or a small creature, no pass.
 			return 0
