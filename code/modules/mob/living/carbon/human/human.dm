@@ -1090,7 +1090,8 @@
 					H.brainmob.mind.transfer_to(src)
 					del(H)
 
-	for(var/datum/organ/internal/I in internal_organs)
+	for(var/name in internal_organs_by_name)
+		var/datum/organ/internal/I = internal_organs_by_name[name]
 		I.damage = 0
 
 	for (var/ID in virus2)
@@ -1110,6 +1111,26 @@
 		src.custom_pain("You feel a stabbing pain in your chest!", 1)
 		L.damage = L.min_bruised_damage
 
+//Gave the rupture_lung() call it's own proc to have much more control over it.
+/mob/living/carbon/human/proc/try_lung_rupture(argBreath)
+	var/datum/gas_mixture/environment = loc.return_air()
+	var/datum/gas_mixture/breath = argBreath	
+	var/pressure = environment.return_pressure()
+	var/adjusted_pressure = calculate_affecting_pressure(pressure)
+	
+	//High kPa
+	if(!is_lung_ruptured() && breath.total_moles > BREATH_MOLES * 5)
+		if(prob(5))
+			rupture_lung()
+		return
+	//Low kPa
+	else if(!is_lung_ruptured() && internal && adjusted_pressure <= species.hazard_low_pressure)
+		if(internal.distribute_pressure >= species.warning_low_pressure)
+			if(prob(33))
+				rupture_lung()
+			return
+	else
+		return
 /*
 /mob/living/carbon/human/verb/simulate()
 	set name = "sim"
