@@ -14,7 +14,7 @@
 	sleep(2)
 	new /obj/item/clothing/under/syndicate(src)
 	new /obj/item/clothing/suit/armor/vest(src)
-	new /obj/item/clothing/head/helmet/swat(src)
+	new /obj/item/clothing/head/helmet/swat/syndicate(src)
 	new /obj/item/ammo_box/magazine/m10mm(src)
 	new /obj/item/weapon/storage/belt/military(src)
 	new /obj/item/weapon/crowbar/red(src)
@@ -26,7 +26,7 @@
 /obj/structure/closet/syndicate/suits/New()
 	..()
 	sleep(2)
-	new /obj/item/weapon/tank/jetpack/oxygen(src)
+	new /obj/item/weapon/tank/jetpack/oxygen/harness(src)
 	new /obj/item/clothing/mask/gas/syndicate(src)
 	new /obj/item/clothing/shoes/magboots(src)
 
