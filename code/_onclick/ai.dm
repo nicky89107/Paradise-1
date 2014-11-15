@@ -31,12 +31,8 @@
 	if(client.buildmode) // comes after object.Click to allow buildmode gui objects to be clicked
 		build_click(src, client.buildmode, params, A)
 		return
-	
-	if(control_disabled || stat)
-		return
 
-	if(alienAI) 
-		return
+	if(alienAI) return
 
 	var/list/modifiers = params2list(params)
 	if(modifiers["middle"])
@@ -52,8 +48,7 @@
 		CtrlClickOn(A)
 		return
 
-	if(world.time <= next_move) 
-		return
+	if(control_disabled || stat || world.time <= next_move) return
 	next_move = world.time + 9
 
 	if(aiCamera.in_camera_mode)

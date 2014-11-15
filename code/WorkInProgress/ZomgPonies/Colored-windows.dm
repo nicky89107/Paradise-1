@@ -29,16 +29,9 @@ var/global/wcCommon
 		/area/security/range,
 		/area/prison/cell_block/A,
 		/area/prison/cell_block/B,
-		/area/prison/cell_block/C,
-		/area/security/prison/cell_block/A,
-		/area/security/prison/cell_block/B,
-		/area/security/prison/cell_block/C,
 		/area/security/processing,
-		/area/security/armoury,
-		/area/security/securearmoury,
-		/area/security/podbay,
-		/area/security/securehallway,
-		/area/security/medbay
+		/area/security/armoury
+
 		)
 
 	for(var/A in wsBrigList)
