@@ -92,6 +92,24 @@ var/list/ghostteleportlocs = list()
 
 /*-----------------------------------------------------------------------------*/
 
+/*Larkens-Hideout Area's.*/
+/area/larkens
+	name = "\improper Larkens Base Area"
+	icon_state = "larkens"
+
+/area/larkens/glassways
+	name = "\improper Glass Walkways"
+	icon_state = "larkens-gwalk"
+
+/area/larkens/arrivals
+	name = "\improper Larkens Arrivals"
+	icon_state = "larkens-arrv"
+
+/area/larkens/placeholder
+	name = "\improper Placeholder for testing."
+	icon_state = "larkens"
+
+/*Legacy Area's for compatibility and Cyberiad.dmm loading*/
 /area/engine/
 
 /area/turret_protected/
@@ -731,8 +749,8 @@ var/list/ghostteleportlocs = list()
 
 /area/prison/cell_block
 	name = "\improper Prison Cell Block"
-	icon_state = "brig"	
-	
+	icon_state = "brig"
+
 /area/prison/cell_block/A
 	name = "\improper Prison Cell Block A"
 	icon_state = "brig"
@@ -750,11 +768,11 @@ var/list/ghostteleportlocs = list()
 /area/atmos
  	name = "Atmospherics"
  	icon_state = "atmos"
-	
+
 /area/atmos/control
  	name = "Atmospherics Control Room"
  	icon_state = "atmos"
-	
+
 /area/atmos/distribution
  	name = "Atmospherics Distribution Loop"
  	icon_state = "atmos"
@@ -904,8 +922,8 @@ var/list/ghostteleportlocs = list()
 
 /area/crew_quarters/captain/bedroom
 	name = "\improper Captain's Bedroom"
-	icon_state = "captain"	
-	
+	icon_state = "captain"
+
 /area/crew_quarters/recruit
 	name = "\improper Recruitment Office"
 	icon_state = "head_quarters"
@@ -1039,7 +1057,7 @@ var/list/ghostteleportlocs = list()
 /area/chapel/office
 	name = "\improper Chapel Office"
 	icon_state = "chapeloffice"
-	
+
 /area/escapepodbay
 	name = "\improper Escape Shuttle Hallway Podbay"
 	icon_state = "escape"
@@ -1047,19 +1065,19 @@ var/list/ghostteleportlocs = list()
 /area/lawoffice
 	name = "\improper Law Office"
 	icon_state = "law"
-	
+
 /area/magistrateoffice
 	name = "\improper Magistrate's Office"
 	icon_state = "law"
-	
+
 /area/clownoffice
 	name = "\improper Clown's Office"
 	icon_state = "dk_yellow"
-	
-/area/mimeoffice	
+
+/area/mimeoffice
 	name = "\improper Mime's Office"
 	icon_state = "dk_yellow"
-	
+
 /area/civilian/barber
 	name = "\improper Barber Shop"
 	icon_state = "barber"
@@ -1178,23 +1196,23 @@ var/list/ghostteleportlocs = list()
 /area/engine/break_room
 	name = "\improper Engineering Foyer"
 	icon_state = "engine"
-	
+
 /area/engine/equipmentstorage
 	name = "\improper Engineering Equipment Storage"
 	icon_state = "storage"
-		
+
 /area/engine/hardsuitstorage
 	name = "\improper Engineering Hardsuit Storage"
 	icon_state = "storage"
-	
+
 /area/engine/controlroom
 	name = "\improper Engineering Control Room"
 	icon_state = "engine_control"
 
 /area/engine/gravitygenerator
 	name = "\improper Gravity Generator"
-	icon_state = "engine"	
-	
+	icon_state = "engine"
+
 /area/engine/chiefs_office
 	name = "\improper Chief Engineer's office"
 	icon_state = "engine_control"
@@ -1381,7 +1399,7 @@ var/list/ghostteleportlocs = list()
 /area/medical/virology
 	name = "\improper Virology"
 	icon_state = "virology"
-	
+
 /area/medical/virology/lab
 	name = "\improper Virology Laboratory"
 	icon_state = "virology"
@@ -1421,7 +1439,7 @@ var/list/ghostteleportlocs = list()
 /area/medical/sleeper
 	name = "\improper Medical Treatment Center"
 	icon_state = "exam_room"
-	
+
 /area/medical/paramedic
 	name = "\improper Paramedic"
 	icon_state = "medbay"
@@ -1439,19 +1457,19 @@ var/list/ghostteleportlocs = list()
 /area/security/brig
 	name = "\improper Brig"
 	icon_state = "brig"
-	
+
 /area/security/permabrig
 	name = "\improper Prison Wing"
-	icon_state = "sec_prison"	
-	
+	icon_state = "sec_prison"
+
 /area/security/prison
 	name = "\improper Prison Wing"
-	icon_state = "sec_prison"	
-	
+	icon_state = "sec_prison"
+
 /area/security/prison/cell_block
 	name = "\improper Prison Cell Block"
-	icon_state = "brig"	
-	
+	icon_state = "brig"
+
 /area/security/prison/cell_block/A
 	name = "\improper Prison Cell Block A"
 	icon_state = "brig"
@@ -1463,38 +1481,38 @@ var/list/ghostteleportlocs = list()
 /area/security/prison/cell_block/C
 	name = "\improper Prison Cell Block C"
 	icon_state = "brig"
-	
+
 /area/security/execution
 	name = "\improper Execution"
-	icon_state = "security"	
-	
+	icon_state = "security"
+
 /area/security/processing
 	name = "\improper Prisoner Processing"
-	icon_state = "security"	
-	
+	icon_state = "security"
+
 /area/security/interrogation
 	name = "\improper Interrogation"
-	icon_state = "security"	
+	icon_state = "security"
 
 /area/security/interrogationobs
 	name = "\improper Interrogation Observation"
-	icon_state = "security"	
+	icon_state = "security"
 
 /area/security/evidence
 	name = "\improper Evidence Room"
-	icon_state = "security"		
-	
+	icon_state = "security"
+
 /area/security/prisonlockers
 	name = "\improper Prisoner Lockers"
-	icon_state = "sec_prison"	
+	icon_state = "sec_prison"
 
 /area/security/medbay
 	name = "\improper Security Medbay"
-	icon_state = "brig"	
-	
+	icon_state = "brig"
+
 /area/security/prisonershuttle
 	name = "\improper Security Prisoner Shuttle"
-	icon_state = "security"	
+	icon_state = "security"
 
 /area/security/warden
 	name = "\improper Warden"
@@ -1503,24 +1521,24 @@ var/list/ghostteleportlocs = list()
 /area/security/armoury
 	name = "\improper Armory"
 	icon_state = "Warden"
-	
+
 /area/security/securearmoury
 	name = "\improper Secure Armory"
-	icon_state = "Warden"	
-	
+	icon_state = "Warden"
+
 /area/security/armoury/gamma
 	name = "\improper Gamma Armory"
 	icon_state = "Warden"
 	requires_power = 0
-	
-/area/security/securehallway 
+
+/area/security/securehallway
 	name = "\improper Security Secure Hallway"
 	icon_state = "security"
-	
+
 /area/security/hos
 	name = "\improper Head of Security's Office"
 	icon_state = "sec_hos"
-	
+
 area/security/podbay
 	name = "\improper Security Podbay"
 	icon_state = "security"
@@ -1651,7 +1669,7 @@ area/security/podbay
 /area/toxins/xenobiology
 	name = "\improper Xenobiology Lab"
 	icon_state = "toxlab"
-	
+
 /area/toxins/xenobiology/flora
 	name = "\improper Xenobiology Flora Lab"
 	icon_state = "toxlab"
