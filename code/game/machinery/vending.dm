@@ -951,6 +951,13 @@
 	products = list(/obj/item/weapon/tray = 8,/obj/item/weapon/kitchen/utensil/fork = 6,/obj/item/weapon/kitchenknife = 3,/obj/item/weapon/reagent_containers/food/drinks/drinkingglass = 8,/obj/item/clothing/suit/chef/classic = 2,/obj/item/weapon/reagent_containers/food/condiment/pack/ketchup = 5,/obj/item/weapon/reagent_containers/food/condiment/pack/hotsauce = 5)
 	contraband = list(/obj/item/weapon/kitchen/utensil/spoon = 2,/obj/item/weapon/kitchen/utensil/knife = 2,/obj/item/weapon/kitchen/rollingpin = 2, /obj/item/weapon/butch = 2)
 
+/obj/machinery/vending/muzzles
+	name = "Muzzles"
+	desc = "A vending machine for muzzles!"
+	product_ads = "Mhmmhmmmmhm!"
+	products = list(/obj/item/clothing/mask/muzzle = 100)
+	contraband = list(/obj/item/clothing/mask/muzzle/gag = 100)
+
 /obj/machinery/vending/sovietsoda
 	name = "BODA"
 	desc = "Old sweet water vending machine"
