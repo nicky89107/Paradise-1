@@ -8,9 +8,18 @@
 	density = 1
 	var/safety_mode = 0 // Temporality stops the machine if it detects a mob
 	var/eatmob = 1 //Basically an admin emag var
-	var/grinding = 0
-	var/mob/living/occupant
-	var/eat_dir = WEST
+	var/grinding = 0 //Is it currently busy?
+	var/mob/living/occupant //Person inside.
+	var/eat_dir = WEST //Which direction will we accept from?
+
+/obj/machinery/compresser/meatcube //eewww.
+	name = "Meatcube"
+	desc = "Poor fucker."
+	icon = 'icons/obj/meatcube.dmi'
+	icon_state = "meatcube"
+	anchored = 0
+	layer = MOB_LAYER
+	density = 1
 
 /obj/machinery/compresser/New()
 	..()
@@ -20,12 +29,12 @@
 	..()
 	update_icon()
 
-/obj/machinery/compresser/Bump(var/atom/movable/AM)
+/obj/machinery/compresser/Bump(var/atom/movable/AM) //Bump detectection.
 	..()
 	if(AM)
 		Bumped(AM)
 
-/obj/machinery/compresser/Bumped(var/atom/movable/AM)
+/obj/machinery/compresser/Bumped(var/atom/movable/AM) //Bump action.
 	if(safety_mode)
 		return
 	// If we're not already grinding something.
@@ -39,11 +48,11 @@
 	var/move_dir = get_dir(loc, AM.loc)
 	if(move_dir == eat_dir)
 		if(isliving(AM))
-			if(eatmob)
-				eat(AM)
+			if(eatmob) //Should we eat them?
+				eat(AM) //Let's eat them.
 			else
-				stop(AM)
-		else // Can't recycle
+				stop(AM) //Let's stop them.
+		else // Can't recycle anything other than humans, too lazy to code.
 			playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
 			AM.loc = src.loc
 
@@ -70,7 +79,7 @@
 	sleep(20)
 	src.occupant.visible_message("\red The walls start closing in on you!")
 	sleep(20)
-	src.occupant.visible_message("\red You put you hands up to stop the walls, but only succed in getting your hands pushed by the walls.")
+	src.occupant.visible_message("\red You put you hands up to stop the walls, but only succeed in getting your hands pushed by the walls.")
 	sleep(30)
 	src.occupant.visible_message("\red The walls are touching your shoulders!")
 	sleep(20)
@@ -91,5 +100,4 @@
 	src.occupant.ghostize()
 	del(src.occupant)
 	visible_message("\red <b> The Compressor </b> states, 'No usable material harvested. Disposing of unusable material.'")
-	new /obj/effect/decal/cleanable/blood/gibs(loc)
-	new /obj/effect/decal/cleanable/blood/gibs(loc)
+	new /obj/machinery/compresser/meatcube(loc)

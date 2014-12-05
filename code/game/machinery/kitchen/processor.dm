@@ -84,22 +84,6 @@
 			input = /mob/living/carbon/monkey
 			output = null
 
-		human
-			process(loc, what)
-				var/mob/living/carbon/human/H = what
-				var/obj/item/weapon/reagent_containers/glass/bucket/bucket_of_blood = new(loc)
-				var/datum/reagent/blood/B = new()
-				B.holder = bucket_of_blood
-				B.volume = 1000
-				B.data["donor"] = H
-				B.data["blood_DNA"] = copytext(H.dna.unique_enzymes,1,0)
-				bucket_of_blood.reagents.reagent_list += B
-				bucket_of_blood.reagents.update_total()
-				bucket_of_blood.on_reagent_change()
-
-			input = /mob/living/carbon/human
-			output = null
-
 /obj/machinery/processor/proc/select_recipe(var/X)
 	for (var/Type in typesof(/datum/food_processor_process) - /datum/food_processor_process - /datum/food_processor_process/mob)
 		var/datum/food_processor_process/P = new Type()

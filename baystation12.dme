@@ -517,6 +517,7 @@
 #include "code\game\machinery\kitchen\monkeyrecycler.dm"
 #include "code\game\machinery\kitchen\processor.dm"
 #include "code\game\machinery\kitchen\smartfridge.dm"
+#include "code\game\machinery\larkens\larkensoven.dm"
 #include "code\game\machinery\pipe\construction.dm"
 #include "code\game\machinery\pipe\pipe_dispenser.dm"
 #include "code\game\machinery\telecomms\broadcaster.dm"
@@ -1636,6 +1637,6 @@
 #include "code\ZAS\Zone.dm"
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
-#include "maps\TestingArea.dmm"
+#include "maps\LarkensMeteorHideout.dmm"
 #include "maps\RandomZLevels\clown3.dmm"
 // END_INCLUDE

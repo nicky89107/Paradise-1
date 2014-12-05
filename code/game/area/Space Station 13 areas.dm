@@ -102,7 +102,7 @@ var/list/ghostteleportlocs = list()
 	icon_state = "larkens-gwalk"
 
 /area/larkens/arrivals
-	name = "\improper Larkens Arrivals"
+	name = "\improper Larkens Dorms"
 	icon_state = "larkens-arrv"
 
 /area/larkens/placeholder

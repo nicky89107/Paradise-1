@@ -162,6 +162,20 @@
 		src.occupant.visible_message ("\blue You hear a beep, and then a hum as the gibber springs to life. This can't be good.")
 		src.startgibbingFull(user)
 
+/obj/machinery/gibber/tenderizer/attack_hand(mob/user as mob)
+	if(stat & (NOPOWER|BROKEN))
+		return
+	if(operating)
+		user << "\red It's locked and running."
+		return
+	if(src.occupant.ckey == user.ckey)
+		src.occupant.visible_message ("\red You hit the internal start button.")
+		src.starttenderizing(user)
+	else
+		visible_message("\red You hit the big red flashing 'Start Tenderization' button.")
+		src.occupant.visible_message ("\blue You hear a beep, and then a hum as the tenderizer springs to life. This can't be good.")
+		src.starttenderizing(user)
+
 /obj/machinery/gibber/attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
 	if(src.occupant)
 		user << "\red The gibber is full, empty it first!"
@@ -185,6 +199,7 @@
 		src.occupant = M
 		del(G)
 		update_icon()
+
 
 /obj/machinery/gibber/MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
 	if(O.loc == user) //no you can't pull things out of your ass
@@ -250,7 +265,10 @@
 			locked = 0
 			usr.visible_message("\red You unlock the gibber hatch and open it.")
 	else
-		usr.visible_message("You can't close and lock the hatch from inside!")
+		if (!locked)
+			usr.visible_message("You can't lock the hatch from inside!")
+		else
+			usr.visible_message("You can't unlock the hatch from inside!")
 		return
 
 /obj/machinery/gibber/proc/go_out()
@@ -268,6 +286,7 @@
 	src.occupant = null
 	update_icon()
 	return
+
 /obj/machinery/gibber/proc/starttenderizing(mob/user as mob)
 	if(src.operating)
 		return
@@ -295,11 +314,10 @@
 	src.occupant.visible_message("\red A number of blows strike against your chest, arms, and legs.")
 	src.occupant.visible_message("\red <b>You feel your bones being smashed with every blow.</b>")
 	src.occupant.apply_effect(30, AGONY, 0)
-	src.occupant.apply_damage(30, BRUTE, "l_leg", 0)
-	src.occupant.apply_damage(20, BRUTE, "r_leg", 0)
+	src.occupant.apply_damage(40, BRUTE, "l_leg", 0)
+	src.occupant.apply_damage(10, BRUTE, "r_leg", 0)
 	src.occupant.apply_damage(10, BRUTE, "l_arm", 0)
 	src.occupant.apply_damage(10, BRUTE, "r_arm", 0)
-	src.occupant.apply_damage(10, BRUTE, "head", 0)
 	src.occupant.canmove = 0
 	src.occupant.can_stand = 0
 	src.occupant.has_limbs = 0
@@ -396,12 +414,13 @@
 		visible_message("\red You hear a loud squelchy grinding sound.")
 		sleep(20)
 		src.occupant.visible_message("\red <b>You make a loud groan as your knees and elbows are seperated. </b>")
-		visible_message("[src.occupant] groans loudly.")
+		visible_message("<b>[src.occupant]</b> groans loudly.")
 		sleep(40)
 		src.occupant.visible_message("\red <b> As a blade saws your remaining limbs off, you attempt to scream out, but only make a little whimper. </b>")
-		visible_message("[src.occupant] lightly whimpers.")
+		visible_message("<b>[src.occupant]</b> lightly whimpers.")
 		sleep(40)
 		src.occupant.visible_message("\red <b> A saw slowly descends towards your neck.</b> </br> \blue Your last thoughts are 'Finally, the pain will be over'")
+		visible_message("\red <b> The Gibber </b> states, 'Gibbing Complete!'")
 		sleep(20)
 		playsound(src.loc, 'sound/effects/gib.ogg', 50, 1)
 		src.occupant.death(1)
