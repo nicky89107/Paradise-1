@@ -173,7 +173,7 @@ var/list/uplink_items = list()
 	desc = "A pair of sleek gloves to aid in pickpocketing, while wearing these you can see inside the pockets of any unsuspecting mark, loot the ID or pockets without them knowing, and pickpocketing puts the item directly into your hand."
 	item = /obj/item/clothing/gloves/black/thief
 	cost = 6
-	job = list("Civilian")
+	job = list("Larkens")
 
 /*
 /datum/uplink_item/jobspecific/greytide
@@ -181,7 +181,7 @@ var/list/uplink_items = list()
 	desc = "A box containing an implanter filled with a greytide implant when injected into another person makes them loyal to the greytide and your cause, unless of course they're already implanted by someone else. Loyalty ends if the implant is no longer in their system."
 	item = /obj/item/weapon/storage/box/syndie_kit/greytide
 	cost = 7
-	job = list("Civilian") */
+	job = list("Larkens") */
 //Bartender
 
 /datum/uplink_item/jobspecific/drunkbullets

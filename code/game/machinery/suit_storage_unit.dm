@@ -27,6 +27,28 @@
 	var/safetieson = 1
 	var/cycletime_left = 0
 
+/obj/machinery/suit_storage_unit/bumpdecon
+	name = "Decontaiminator Unit"
+	desc = "An automatic decontaimination unit."
+	icon = 'icons/obj/suitstorage.dmi'
+	icon_state = "suitstorage000000100"
+	anchored = 1
+	density = 1
+	safetieson = 0
+
+/obj/machinery/suit_storage_unit/bumpdecon
+	Bumped(var/atom/A)
+		if(ismob(A))
+			var/mob/M = A
+			M.stop_pulling()
+			M.client.perspective = EYE_PERSPECTIVE
+			M.client.eye = src
+			M.loc = src
+			src.OCCUPANT = M
+			src.isopen = 0 //Close the thing after the guy gets inside
+			src.update_icon()
+			sleep(20)
+			src.start_UV()
 
 //The units themselves/////////////////
 
@@ -335,9 +357,9 @@
 				OCCUPANT.take_organ_damage(0,burndamage)
 				OCCUPANT.emote("scream")
 			else
-				var/burndamage = rand(10,15)
+				var/burndamage = rand(3,7)
 				OCCUPANT.take_organ_damage(0,burndamage)
-				OCCUPANT.emote("scream")
+				OCCUPANT.visible_message("\red You feel a burning on your skin from the cauterization rays.")
 		if(i==3) //End of the cycle
 			if(!src.issuperUV)
 				if(src.HELMET)
@@ -346,6 +368,11 @@
 					SUIT.clean_blood()
 				if(src.MASK)
 					MASK.clean_blood()
+				if(src.OCCUPANT)
+					wash(OCCUPANT)
+					OCCUPANT.clean_blood()
+					src.islocked = 0
+					src.eject_occupant(OCCUPANT)
 			else //It was supercycling, destroy everything
 				if(src.HELMET)
 					src.HELMET = null
@@ -362,6 +389,78 @@
 	src.update_icon()
 	src.updateUsrDialog()
 	return
+
+/obj/machinery/suit_storage_unit/proc/wash(atom/movable/O as obj|mob)
+	if(isliving(O))
+		if(iscarbon(O))
+			var/mob/living/carbon/M = O
+			if(M.r_hand)
+				M.r_hand.clean_blood()
+			if(M.l_hand)
+				M.l_hand.clean_blood()
+			if(M.back)
+				if(M.back.clean_blood())
+					M.update_inv_back(0)
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
+				var/washgloves = 1
+				var/washshoes = 1
+				var/washmask = 1
+				var/washears = 1
+				var/washglasses = 1
+
+				if(H.wear_suit)
+					washgloves = !(H.wear_suit.flags_inv & HIDEGLOVES)
+					washshoes = !(H.wear_suit.flags_inv & HIDESHOES)
+
+				if(H.head)
+					washmask = !(H.head.flags_inv & HIDEMASK)
+					washglasses = !(H.head.flags_inv & HIDEEYES)
+					washears = !(H.head.flags_inv & HIDEEARS)
+
+				if(H.wear_mask)
+					if (washears)
+						washears = !(H.wear_mask.flags_inv & HIDEEARS)
+					if (washglasses)
+						washglasses = !(H.wear_mask.flags_inv & HIDEEYES)
+
+				if(H.head)
+					if(H.head.clean_blood())
+						H.update_inv_head(0,0)
+				if(H.wear_suit)
+					if(H.wear_suit.clean_blood())
+						H.update_inv_wear_suit(0,0)
+				else if(H.w_uniform)
+					if(H.w_uniform.clean_blood())
+						H.update_inv_w_uniform(0,0)
+				if(H.gloves && washgloves)
+					if(H.gloves.clean_blood())
+						H.update_inv_gloves(0,0)
+				if(H.shoes && washshoes)
+					if(H.shoes.clean_blood())
+						H.update_inv_shoes(0,0)
+				if(H.wear_mask && washmask)
+					if(H.wear_mask.clean_blood())
+						H.update_inv_wear_mask(0)
+				if(H.glasses && washglasses)
+					if(H.glasses.clean_blood())
+						H.update_inv_glasses(0)
+				if(H.l_ear && washears)
+					if(H.l_ear.clean_blood())
+						H.update_inv_ears(0)
+				if(H.r_ear && washears)
+					if(H.r_ear.clean_blood())
+						H.update_inv_ears(0)
+				if(H.belt)
+					if(H.belt.clean_blood())
+						H.update_inv_belt(0)
+			else
+				if(M.wear_mask)            //if the mob is not human, it cleans the mask without asking for bitflags
+					if(M.wear_mask.clean_blood())
+						M.update_inv_wear_mask(0)
+
+		else
+			O.clean_blood()
 
 /*	spawn(200) //Let's clean dat shit after 20 secs  //Eh, this doesn't work
 		if(src.HELMET)

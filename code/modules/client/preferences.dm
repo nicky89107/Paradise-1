@@ -400,7 +400,7 @@ datum/preferences
 				var/available_in_days = job.available_in_days(user.client)
 				HTML += "<del>[rank]</del></td><td> \[IN [(available_in_days)] DAYS]</td></tr>"
 				continue
-			if((job_support_low & CIVILIAN) && (rank != "Civilian"))
+			if((job_support_low & CIVILIAN) && (rank != "Larkens"))
 				HTML += "<font color=orange>[rank]</font></td><td></td></tr>"
 				continue
 			if((rank in command_positions) || (rank == "AI"))//Bold head jobs
@@ -441,7 +441,7 @@ datum/preferences
 
 //			HTML += "<a href='?_src_=prefs;preference=job;task=input;text=[rank]'>"
 
-			if(rank == "Civilian")//Civilian is special
+			if(rank == "Larkens")//Civilian is special
 				if(job_support_low & CIVILIAN)
 					HTML += " <font color=green>\[Yes]</font>"
 				else
@@ -579,7 +579,7 @@ datum/preferences
 			ShowChoices(user)
 			return
 
-		if(role == "Civilian")
+		if(role == "Larkens")
 			if(job_support_low & job.flag)
 				job_support_low &= ~job.flag
 			else
@@ -676,7 +676,7 @@ datum/preferences
 			ShowChoices(user)
 			return
 
-		if(role == "Civilian")
+		if(role == "Larkens")
 			if(job_support_low & job.flag)
 				job_support_low &= ~job.flag
 			else
