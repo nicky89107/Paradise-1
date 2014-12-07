@@ -68,10 +68,27 @@
 		safety_mode = 0
 		update_icon()
 
-/obj/machinery/compresser/proc/eat(var/mob/living/L)
-	L.loc = src
-	src.occupant = L
-	update_icon()
+/obj/machinery/compresser/proc/eat(var/mob/living/carbon/human/H)
+	if(H.abiotic(1))
+		H.visible_message("The Compressor grabs ahold of your legs and arms.")
+		sleep(10)
+		H.visible_message("The Compressor starts taking off all your clothes.")
+		for(var/obj/item/W in H)
+			H.drop_from_inventory(W)
+		sleep(20)
+		H.visible_message("\blue <b>The Compressor</b> takes off your clothes.")
+		H.underwear = 7
+		H.undershirt = 5
+		H.update_body(1)
+		sleep(10)
+		H.visible_message("\blue <b>The Compressor</b> let's go off your arms and legs.")
+		H.loc = src
+		src.occupant = H
+		update_icon()
+	else
+		H.loc = src
+		src.occupant = H
+		update_icon()
 	src.occupant.visible_message("The Compressor takes you in, and closes behind you.")
 	sleep(10)
 	visible_message("\red <B> The Compressor </b> states, 'Engaging compression.'")
@@ -79,7 +96,7 @@
 	sleep(20)
 	src.occupant.visible_message("\red The walls start closing in on you!")
 	sleep(20)
-	src.occupant.visible_message("\red You put you hands up to stop the walls, but only succeed in getting your hands pushed by the walls.")
+	src.occupant.visible_message("\red You put your hands up to stop the walls, but only succeed in getting your hands pushed by the walls.")
 	sleep(30)
 	src.occupant.visible_message("\red The walls are touching your shoulders!")
 	sleep(20)

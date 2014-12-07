@@ -19,7 +19,37 @@
 	dir = EAST
 	var/obj/structure/m_tray/connected = null
 	anchored = 1.0
+	var/timed = 0 //used for timed shut
 
+/obj/structure/morgue/verb/timedshut(mob/user as mob)
+	set category = "Object"
+	set name = "Morgue Timed-Shut"
+	set src in oview(1)
+
+	if(!timed)
+		timed = 1
+		user.visible_message("You set the morgue to shut after 10 seconds.")
+		sleep(100)
+		src.attack_hand(user)
+		timed = 0
+	else
+		return
+
+/obj/structure/morgue/verb/nap(mob/user as mob)
+	set category = "Object"
+	set name = "Morgue Nap"
+	set src in oview(1)
+
+	if(!timed)
+		timed = 1
+		user.visible_message("You set the morgue to shut after 10 seconds, and open in 10 minutes.")
+		sleep(100)
+		src.attack_hand(user)
+		timed = 0
+		sleep(6000)
+		src.attack_hand(user)
+	else
+		return
 /obj/structure/morgue/proc/update()
 	if(src.connected)
 		src.icon_state = "morgue0"
