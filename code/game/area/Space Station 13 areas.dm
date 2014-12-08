@@ -109,6 +109,10 @@ var/list/ghostteleportlocs = list()
 	name = "\improper Placeholder for testing."
 	icon_state = "larkens"
 
+/area/larkens/kitchen
+	name = "\improper Kitchen"
+	icon_state = "larkens-kitch"
+
 /*Legacy Area's for compatibility and Cyberiad.dmm loading*/
 /area/engine/
 
