@@ -252,7 +252,7 @@
 	if (usr.stat != 0)
 		return
 	if(operating||locked)
-		usr.visible_message("\red The Gibber is locked.")
+		usr.visible_message("\red The hatch is locked.")
 		return
 	else
 		src.go_out()
@@ -268,10 +268,10 @@
 	if (usr.ckey != src.occupant.ckey)
 		if (!locked)
 			locked = 1
-			usr.visible_message("\red You close the gibber hatch and lock it.")
+			usr.visible_message("\red You close the hatch and lock it.")
 		else
 			locked = 0
-			usr.visible_message("\red You unlock the gibber hatch and open it.")
+			usr.visible_message("\red You unlock the hatch and open it.")
 	else
 		if (!locked)
 			usr.visible_message("You can't lock the hatch from inside!")
@@ -283,7 +283,7 @@
 	if (!src.occupant)
 		return
 	if(locked||operating)
-		src.occupant.visible_message("\red The gibber is locked!")
+		src.occupant.visible_message("\red The hatch is locked!")
 		return
 	for(var/obj/O in src)
 		O.loc = src.loc

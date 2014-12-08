@@ -364,7 +364,27 @@
 
 		for(var/mob/living/M in contents)
 			if (M.stat!=2)
+				M.visible_message("\red The cremator door locks into place!")
+				sleep(20)
+				M.visible_message("\red There is a hum as the cremator activates. Fuck.")
+				sleep(10)
+				M.visible_message("\red Flames shoot out of the sides of the creamator!")
+				sleep(20)
+				M.visible_message("\red The flames start burning your skin!")
+				M.apply_effect(20, AGONY, 0)
 				M.emote("scream")
+				sleep(20)
+				M.visible_message("\red Your skin is melting!")
+				M.apply_effect(30, AGONY, 0)
+				M.emote("scream")
+				sleep(20)
+				M.visible_message("\red You are in extreme pain!")
+				M.apply_effect(30, AGONY, 0)
+				M.emote("scream")
+				sleep(10)
+				M.visible_message("\red You pass out from the pain!")
+				M.apply_effect(100, AGONY, 0)
+				sleep(30)
 			//Logging for this causes runtimes resulting in the cremator locking up. Commenting it out until that's figured out.
 			//M.attack_log += "\[[time_stamp()]\] Has been cremated by <b>[user]/[user.ckey]</b>" //No point in this when the mob's about to be deleted
 			//user.attack_log +="\[[time_stamp()]\] Cremated <b>[M]/[M.ckey]</b>"
@@ -382,6 +402,9 @@
 		locked = 0
 		update()
 		playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
+		sleep(20)
+		visible_message("The cremator tray slides out.")
+		src.attack_hand(src)
 	return
 
 
@@ -432,12 +455,19 @@
 	return
 
 /obj/machinery/crema_switch/attack_hand(mob/user as mob)
-	if(src.allowed(usr))
-		for (var/obj/structure/crematorium/C in world)
-			if (C.id == id)
-				if (!C.cremating)
-					C.cremate(user)
-	else
-		usr << "\red Access denied."
-	return
+	for (var/obj/structure/crematorium/C in world)
+		if (C.id == id)
+			if (!C.cremating)
+				visible_message("You hit the creamtor switch, it starts counting down.")
+				sleep(10)
+				visible_message("\red Three!")
+				sleep(10)
+				visible_message("\red Two!")
+				sleep(10)
+				visible_message("\red One!")
+				sleep(10)
+				C.cremate(user)
+			else
+				visible_message("The cremator is already on!")
+				return
 

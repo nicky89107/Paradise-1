@@ -35,6 +35,7 @@
 	use_power = 1
 	idle_power_usage = 20
 	active_power_usage = 250
+	var/movedir = "north"
 
 /obj/machinery/larkens/disposaltran/Crossed(AM as mob|obj)
 	if (istype(AM, /mob/living/carbon/human))
@@ -42,22 +43,56 @@
 		if(H.abiotic(1))
 			H.apply_effect(40, STUN, 0)
 			H.anchored = 1
+			sleep(10)
 			H.visible_message("The machine grabs you.")
 			for(var/obj/item/W in H)
 				H.drop_from_inventory(W)
 			sleep(20)
 			H.visible_message("The stripping machine removes your clothing and moves you to another conveyer.")
 			H.SetStunned(0)
-			H.x = src.x
-			H.y = src.y + 1
-			H.z = src.z
+			if(src.movedir == "north")
+				H.x = src.x
+				H.y = src.y + 1
+				H.z = src.z
+			else if(src.movedir == "south")
+				H.x = src.x
+				H.y = src.y - 1
+				H.z = src.z
+			else if(src.movedir == "east")
+				H.x = src.x + 1
+				H.y = src.y
+				H.z = src.z
+			else if(src.movedir == "west")
+				H.x = src.x - 1
+				H.y = src.y
+				H.z = src.z
+			else
+				return
+			H.anchored = 0
 			flick("metaldetector1",src)
 		else
+			sleep(5)
 			flick("metaldetector1",src)
 			H.visible_message("The machine moves you to another conveyer")
-			H.x = src.x
-			H.y = src.y + 1
-			H.z = src.z
+			visible_message("The machine moves [H.name] to another conveyer.")
+			if(src.movedir == "north")
+				H.x = src.x
+				H.y = src.y + 1
+				H.z = src.z
+			else if(src.movedir == "south")
+				H.x = src.x
+				H.y = src.y - 1
+				H.z = src.z
+			else if(src.movedir == "east")
+				H.x = src.x + 1
+				H.y = src.y
+				H.z = src.z
+			else if(src.movedir == "west")
+				H.x = src.x - 1
+				H.y = src.y
+				H.z = src.z
+			else
+				return
 
 /obj/machinery/larkens/revdisposaltran
 	name = "Reversed Disposal Transferal System"
@@ -69,13 +104,29 @@
 	use_power = 1
 	idle_power_usage = 20
 	active_power_usage = 250
+	var/movedir = "north"
 
 /obj/machinery/larkens/revdisposaltran/Crossed(AM as mob|obj)
 	if (istype(AM, /obj/item))
 		var/obj/item/I = AM
-		I.x = src.x
-		I.y = src.y + 1
-		I.z = src.z
+		if(src.movedir == "north")
+			I.x = src.x
+			I.y = src.y + 1
+			I.z = src.z
+		else if(src.movedir == "south")
+			I.x = src.x
+			I.y = src.y - 1
+			I.z = src.z
+		else if(src.movedir == "east")
+			I.x = src.x + 1
+			I.y = src.y
+			I.z = src.z
+		else if(src.movedir == "west")
+			I.x = src.x - 1
+			I.y = src.y
+			I.z = src.z
+		else
+			return
 		visible_message("The disposal transferal system moves [I.name] to another conveyer!")
 	else
 		return

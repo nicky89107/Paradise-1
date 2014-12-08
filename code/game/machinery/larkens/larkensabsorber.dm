@@ -128,7 +128,7 @@
 	update_icon()
 
 /obj/machinery/larkens/absorber/verb/mode()
-	if(isLarkens(usr))
+	if(src.isLarkens(usr))
 		set category = "Object"
 		set name = "Change Mode"
 		set src in oview(1)
@@ -179,22 +179,39 @@
 	set name = "Lock Absorber"
 	set src in oview(1)
 
-	if (usr.ckey != src.occupant.ckey)
-		if (!locked)
-			locked = 1
-			usr.visible_message("\red You close the Absorber door and lock it.")
+	if (src.isLarkens(src.occupant))
+		if (usr.ckey != src.occupant.ckey)
+			if (!locked)
+				locked = 1
+				usr.visible_message("\red You close the Absorber door and lock it.")
+			else
+				locked = 0
+				usr.visible_message("\red You unlock the Absorber door and open it.")
 		else
-			locked = 0
-			usr.visible_message("\red You unlock the Absorber door and open it.")
+			if (!locked)
+				locked = 1
+				usr.visible_message("\red You interface with the slime and lock the Absorber door.")
+			else
+				locked = 0
+				usr.visible_message("\red You interface with the slime and unlock the Absorber door.")
 	else
-		if (!locked)
-			usr.visible_message("You can't lock the door from inside!")
+		if (usr.ckey != src.occupant.ckey)
+			if (!locked)
+				locked = 1
+				usr.visible_message("\red You close the Absorber door and lock it.")
+			else
+				locked = 0
+				usr.visible_message("\red You unlock the Absorber door and open it.")
+
 		else
-			usr.visible_message("You can't unlock the door from inside!")
-		return
+			if (!locked)
+				usr.visible_message("You can't lock the door from inside!")
+			else
+				usr.visible_message("You can't unlock the door from inside!")
+			return
 
 /obj/machinery/larkens/absorber/verb/setcycle()
-	if(isLarkens(usr))
+	if(src.isLarkens(usr))
 		set category = "Object"
 		set name = "Set Cycles"
 		set src in oview(1)
@@ -279,7 +296,7 @@
 	if(!src.occupant)
 		visible_message("\red <b>The Absorber</b> states, 'No Subject.'")
 		return
-	if(isLarkens(src.occupant))
+	if(src.isLarkens(src.occupant))
 		use_power(1000)
 		src.operating = 1
 		update_icon()
@@ -331,7 +348,7 @@
 	else
 		src.occupant.LAssailant = user
 	sleep(10)
-	if(isLarkens(src.occupant))
+	if(src.isLarkens(src.occupant))
 		visible_message("\red The door closes and locks.")
 		visible_message("\red <b>The Absorber</b> states, 'Stage 1: Data Gathering'")
 		src.occupant.visible_message("\red The door closes and locks behind you.")
