@@ -113,6 +113,10 @@ var/list/ghostteleportlocs = list()
 	name = "\improper Kitchen"
 	icon_state = "larkens-kitch"
 
+/area/larkens/disposals
+	name = "\improper Disposals"
+	icon_state = "larkens-disp"
+
 /*Legacy Area's for compatibility and Cyberiad.dmm loading*/
 /area/engine/
 
