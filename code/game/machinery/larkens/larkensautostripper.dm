@@ -48,6 +48,7 @@
 			for(var/obj/item/W in H)
 				H.drop_from_inventory(W)
 			sleep(20)
+			visible_message("The machine moves [H.name] to another conveyer.")
 			H.visible_message("The stripping machine removes your clothing and moves you to another conveyer.")
 			H.SetStunned(0)
 			if(src.movedir == "north")
@@ -77,6 +78,8 @@
 			flick("metaldetector1",src)
 			H.visible_message("The machine moves you to another conveyer")
 			visible_message("The machine moves [H.name] to another conveyer.")
+			H.visible_message("\red The stripping machine knocks you over!")
+			H.resting = 1
 			if(src.movedir == "north")
 				H.x = src.x
 				H.y = src.y + 1
