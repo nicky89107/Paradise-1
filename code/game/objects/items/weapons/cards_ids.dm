@@ -247,6 +247,12 @@
 	icon_state = "gold"
 	item_state = "gold_id"
 
+/obj/item/weapon/card/id/larkens
+	name = "Larkens ID card"
+	desc = "A bright cyan card which looks slightly modified."
+	icon_state = "larkens"
+	item_state = "gold_id"
+
 /obj/item/weapon/card/id/syndicate
 	name = "agent card"
 	access = list(access_maint_tunnels, access_syndicate)
