@@ -472,7 +472,7 @@
 		visible_message("\red <b>The Absorber</b> states, 'Engaging molecular-debonders.'")
 		src.occupant.visible_message("\red The goo is growing slightly unpleasent, and is quite warm.")
 		sleep(20)
-		src.occupant.visible_message("\red You attempt to speak, but cannot, due to the goo lining your esphogus.")
+		src.occupant.visible_message("\red You attempt to speak, but cannot, due to the goo lining your esophagus.")
 		sleep(10)
 		src.occupant.visible_message("\red The goo is getting very warm.")
 		sleep(10)
