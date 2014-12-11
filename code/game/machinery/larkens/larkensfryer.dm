@@ -10,7 +10,7 @@
 	idle_power_usage = 2
 	active_power_usage = 500
 	var/operating = 0 //Is it on?
-	var/mob/living/occupant // Mob who has been put inside
+	var/mob/living/carbon/human/occupant // Mob who has been put inside
 	var/timer = 0
 	var/grabbed = 0 //Used for dialog changes.
 
@@ -67,6 +67,8 @@
 		user << "The Fryer is full! You can't fit in there!"
 		visible_message ("\blue The Fryer rejects [user.name].")
 	var/mob/living/carbon/human/H = O
+	if(H.ckey != user.ckey)
+		return
 	if(!istype(H) || H.buckled)
 		return
 	if(H.abiotic(1))
@@ -197,6 +199,7 @@
 		icon_state = "human_fryer_off"
 		update_icon()
 		playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+		src.occupant.ChangeToHusk()
 		src.go_out()
 	else
 		src.occupant.visible_message("\red <b> Make the pain stop! </b>")
@@ -209,5 +212,6 @@
 		icon_state = "human_fryer_off"
 		update_icon()
 		playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+		src.occupant.ChangeToHusk()
 		src.go_out()
 

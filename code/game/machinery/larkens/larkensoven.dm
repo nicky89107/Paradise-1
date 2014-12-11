@@ -10,7 +10,7 @@
 	idle_power_usage = 2
 	active_power_usage = 500
 	var/operating = 0 //Is it on?
-	var/mob/living/occupant // Mob who has been put inside
+	var/mob/living/carbon/human/occupant // Mob who has been put inside
 	var/locked = 0 // Is the gibber locked shut?
 	var/timer = 0
 	var/stage = 0
@@ -120,6 +120,8 @@
 		user << "The Oven is full! You can't fit in there!"
 		visible_message ("\blue The Oven rejects [user.name].")
 	var/mob/living/L = O
+	if(L.ckey != user.ckey)
+		return
 	if(!istype(L) || L.buckled)
 		return
 	if(L.abiotic(1, 1))
@@ -406,6 +408,7 @@
 									icon_state = "oven_off"
 									update_icon()
 									playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+									src.occupant.ChangeToHusk()
 									src.go_out()
 								else
 									visible_message("\red <b>The Oven</b> states, 'Engaging heating grille.' </br> <b>The Oven</b> states, 'Current temperature is: 130C'")
@@ -424,6 +427,7 @@
 										update_icon()
 										visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
 										playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+										src.occupant.ChangeToHusk()
 										src.go_out()
 									else
 										visible_message("\red <b>The Oven</b> states, 'Current temperature is: 150C'")
@@ -439,4 +443,5 @@
 										update_icon()
 										playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
 										visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
+										src.occupant.ChangeToHusk()
 										src.go_out()

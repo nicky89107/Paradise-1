@@ -228,6 +228,8 @@
 		user << "The gibber is full! You can't fit in there!"
 		visible_message ("\blue The Gibber rejects [user.name].")
 	var/mob/living/L = O
+	if(L.ckey != user.ckey)
+		return
 	if(!istype(L) || L.buckled)
 		return
 	if(L.abiotic(1))
