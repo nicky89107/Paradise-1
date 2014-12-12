@@ -14,7 +14,7 @@
 	slideshow()
 
 /obj/machinery/lobbyimage/proc/slideshow()
-	sleep(1200)
+	sleep(150)
 	icon_state = pick("rawrcat","poorcat","mazika","jenny","shadow","squishy")
 
 /obj/machinery/lobbyimage/proc/forcenext() //mostly for debugging
