@@ -10,10 +10,10 @@
 	icon_state = "fakewindows"
 	opacity = 0
 
-turf/unsimulated/wall/splashscreen
+/turf/unsimulated/wall/splashscreen
 	name = "Space Station 13"
-	icon = 'icons/misc/fullscreen_poorcat.dmi'
-	icon_state = "title"
+	icon = 'icons/misc/fullscreen.dmi'
+	icon_state = ""
 	layer = FLY_LAYER
 
 /turf/unsimulated/wall/other
