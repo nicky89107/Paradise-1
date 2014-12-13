@@ -116,9 +116,6 @@
 		return
 	if(!istype(user.loc, /turf) || !istype(O.loc, /turf)) // are you in a container/closet/pod/etc?
 		return
-	if(src.occupant)
-		user << "The Oven is full! You can't fit in there!"
-		visible_message ("\blue The Oven rejects [user.name].")
 	var/mob/living/L = O
 	if(L.ckey != user.ckey)
 		return
@@ -300,6 +297,7 @@
 	if(!src.operating)
 		icon_state = "oven_off"
 		update_icon()
+		sleep(5)
 		return
 	else
 		sleep(70)
@@ -310,6 +308,7 @@
 		if(!src.operating)
 			src.icon_state = "oven_off"
 			src.update_icon()
+			sleep(5)
 			return
 		else
 			sleep(60)
@@ -321,6 +320,7 @@
 			if(!src.operating)
 				src.icon_state = "oven_off"
 				src.update_icon()
+				sleep(5)
 				return
 			else
 				sleep(50)
@@ -333,6 +333,7 @@
 				if(!src.operating)
 					src.icon_state = "oven_off"
 					src.update_icon()
+					sleep(5)
 					return
 				else
 					sleep(50)
@@ -345,6 +346,7 @@
 					if(!src.operating)
 						src.icon_state = "oven_off"
 						src.update_icon()
+						sleep(5)
 						return
 					else
 						sleep(50)
@@ -359,6 +361,7 @@
 						if(!src.operating)
 							src.icon_state = "oven_off"
 							src.update_icon()
+							sleep(5)
 							return
 						else
 							sleep(50)
@@ -374,6 +377,7 @@
 							if(!src.operating)
 								src.icon_state = "oven_off"
 								src.update_icon()
+								sleep(5)
 								return
 							else
 								sleep(50)

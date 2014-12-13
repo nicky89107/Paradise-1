@@ -150,7 +150,7 @@
 	var/movedir = "north"
 
 /obj/machinery/larkens/disposaltranslime/Crossed(AM as mob|obj)
-	if (istype(AM, /mob/living/carbon/human))
+	if (istype(AM, /mob/living/carbon/human/slime))
 		var/mob/living/carbon/human/slime/H = AM
 		if(H.abiotic(1))
 			H.apply_effect(40, STUN, 0)
