@@ -11,6 +11,7 @@
 	active_power_usage = 500
 	var/operating = 0 //Is it on?
 	var/mob/living/carbon/human/occupant // Mob who has been put inside
+	var/mob/living/carbon/human/occupant2 // Second mob, for twice the fun
 	var/locked = 0 // Is the gibber locked shut?
 	var/timer = 0
 	var/stage = 0
@@ -67,11 +68,15 @@
 						src.operating = 0
 						src.locked = 0
 						src.eject()
+						src.icon_state = "oven_off"
+						src.update_icon()
 					else
 						sleep(10)
 						src.operating = 0
 						src.locked = 0
 						src.eject()
+						src.icon_state = "oven_off"
+						src.update_icon()
 		else
 			user.visible_message("\red What exactly are you going to do with a crowbar and an oven?")
 			return
@@ -116,6 +121,28 @@
 		return
 	if(!istype(user.loc, /turf) || !istype(O.loc, /turf)) // are you in a container/closet/pod/etc?
 		return
+	if(src.occupant)
+		var/mob/living/L = O
+		if(L.ckey != user.ckey)
+			return
+		if(!istype(L) || L.buckled)
+			return
+		if(L.abiotic(1, 1))
+			visible_message ("\blue <B>The Oven states, 'Clothes ruin a good meal!'</B>")
+			return
+		if(!L)
+			return
+		if(L.client)
+			L.client.perspective = EYE_PERSPECTIVE
+			L.client.eye = src
+		L.loc = src
+		src.occupant2 = L
+		src.add_fingerprint(user)
+		visible_message("\red [src.occupant2.name] crawls into the oven.")
+		src.occupant2.visible_message("\red You crawl into the oven!")
+		update_icon()
+		return
+
 	var/mob/living/L = O
 	if(L.ckey != user.ckey)
 		return
@@ -223,8 +250,14 @@
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.loc = src.loc
 	src.occupant = null
-	update_icon()
-	return
+	if(src.occupant2)
+		if (src.occupant2.client)
+			src.occupant2.client.eye = src.occupant2.client.mob
+			src.occupant2.client.perspective = MOB_PERSPECTIVE
+		src.occupant2.loc = src.loc
+		src.occupant2 = null
+		update_icon()
+		return
 
 /obj/machinery/larkens/oven/verb/lock()
 	set category = "Object"
@@ -258,7 +291,7 @@
 
 /obj/machinery/larkens/oven/verb/timer()
 	set category = "Object"
-	set name = "Turn on Oven (Timed)"
+	set name = "Turn on Oven Timer"
 	set src in oview(1)
 
 	if(!timer)
@@ -275,177 +308,409 @@
 	if(!src.occupant)
 		visible_message("\red <b>The Oven</b>states, 'That would be a waste of energy, deary!'")
 		return
-	use_power(1000)
-	src.operating = 1
-	src.locked = 1
-	update_icon()
-	src.occupant.attack_log += "\[[time_stamp()]\] Was cooked by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
-	user.attack_log += "\[[time_stamp()]\] cooked <b>[src.occupant]/[src.occupant.ckey]</b>"
-	if(src.occupant.ckey)
-		msg_admin_attack("[user.name] ([user.ckey]) cooked [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-	if(!iscarbon(user))
-		src.occupant.LAssailant = null
-	else
-		src.occupant.LAssailant = user
-	icon_state = "oven_on"
-
-	sleep(20)
-	visible_message("\red <b>The Oven</b> states, 'Stage 1.' <br> <b>The Oven</b> states, 'Current temperature is: 37C'")
-	stage = 1
-	src.occupant.visible_message("\blue Is it getting warm in here...?")
-	src.occupant.visible_message("\red The internal thermometer shows 37C.")
-	if(!src.operating)
-		icon_state = "oven_off"
+	if(src.occupant2)
+		use_power(1000)
+		src.operating = 1
+		src.locked = 1
 		update_icon()
-		sleep(5)
-		return
-	else
-		sleep(70)
-		visible_message("\red <b>The Oven</b> states, 'Stage 1 heating.'")
-		stage = 1.5
-		visible_message("\blue The Oven is giving off a nice warmth.")
-		src.occupant.visible_message("\red You start sweating.")
+		src.occupant.attack_log += "\[[time_stamp()]\] Was cooked by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
+		src.occupant2.attack_log += "\[[time_stamp()]\] Was cooked by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
+		user.attack_log += "\[[time_stamp()]\] cooked <b>[src.occupant]/[src.occupant.ckey]</b>"
+		if(src.occupant.ckey)
+			msg_admin_attack("[user.name] ([user.ckey]) cooked [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+			msg_admin_attack("[user.name] ([user.ckey]) cooked [src.occupant2] ([src.occupant2.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+		if(!iscarbon(user))
+			src.occupant.LAssailant = null
+			src.occupant2.LAssailant = null
+		else
+			src.occupant.LAssailant = user
+			src.occupant2.LAssailant = user
+		icon_state = "oven_on"
+
+		log_debug("Oven: Doing 2user for [src.occupant.ckey] and [src.occupant2.ckey]")
+		sleep(20)
+		visible_message("\red <b>The Oven</b> states, 'Stage 1.' <br> <b>The Oven</b> states, 'Current temperature is: 37C'")
+		stage = 1
+		src.occupant.visible_message("\blue Is it getting warm in here...?")
+		src.occupant.visible_message("\red The internal thermometer shows 37C.")
+		src.occupant2.visible_message("\blue Is it getting warm in here...?")
+		src.occupant2.visible_message("\red The internal thermometer shows 37C.")
 		if(!src.operating)
-			src.icon_state = "oven_off"
-			src.update_icon()
-			sleep(5)
+			icon_state = "oven_off"
+			update_icon()
 			return
 		else
-			sleep(60)
-			visible_message("\red <b>The Oven</b> states, 'Stage 2.' </br> <b>The Oven</b> states, 'Current temperature is: 45C'")
-			stage = 2
-			visible_message("\blue The Oven is a bit too hot to touch.")
-			src.occupant.visible_message("\red Your skin starts burning.")
-			src.occupant.visible_message("\red The internal thermometer shows 45C.")
+			sleep(70)
+			visible_message("\red <b>The Oven</b> states, 'Stage 1 heating.'")
+			stage = 1.5
+			visible_message("\blue The Oven is giving off a nice warmth.")
+			src.occupant.visible_message("\red You start sweating.")
+			src.occupant2.visible_message("\red You start sweating.")
 			if(!src.operating)
 				src.icon_state = "oven_off"
 				src.update_icon()
-				sleep(5)
 				return
 			else
-				sleep(50)
-				visible_message("\red <b>The Oven</b> states, 'Stage 2 heating.'</br> <b>The Oven</b> states, 'Current temperature is: 49C'")
-				stage = 2.5
-				visible_message("\blue The air around the oven is getting unpleasently hot.")
-				src.occupant.visible_message("\red It's getting really fucking hot in here.")
-				src.occupant.visible_message("\red The internal thermometer shows 49C.")
-				src.occupant.apply_damage(5, BURN, "Chest", 0)
+				sleep(60)
+				visible_message("\red <b>The Oven</b> states, 'Stage 2.' </br> <b>The Oven</b> states, 'Current temperature is: 45C'")
+				stage = 2
+				visible_message("\blue The Oven is a bit too hot to touch.")
+				src.occupant.visible_message("\red Your skin starts burning.")
+				src.occupant.visible_message("\red The internal thermometer shows 45C.")
+				src.occupant2.visible_message("\red Your skin starts burning.")
+				src.occupant2.visible_message("\red The internal thermometer shows 45C.")
 				if(!src.operating)
 					src.icon_state = "oven_off"
 					src.update_icon()
-					sleep(5)
 					return
 				else
 					sleep(50)
-					visible_message("\red <b>The Oven</b> states, 'Stage 3.' </br> <b>The Oven</b> states, 'Current temperature is: 64C'")
-					stage = 3
-					src.occupant.emote("scream")
-					src.occupant.visible_message("\red Your skin is starting to burn badly!")
-					src.occupant.visible_message("\red The internal thermometer shows 64C.")
-					src.occupant.apply_damage(10, BURN, "Chest", 0)
+					visible_message("\red <b>The Oven</b> states, 'Stage 2 heating.'</br> <b>The Oven</b> states, 'Current temperature is: 49C'")
+					stage = 2.5
+					visible_message("\blue The air around the oven is getting unpleasently hot.")
+					src.occupant.visible_message("\red It's getting really fucking hot in here.")
+					src.occupant.visible_message("\red The internal thermometer shows 49C.")
+					src.occupant.apply_damage(5, BURN, "Chest", 0)
+					src.occupant2.visible_message("\red It's getting really fucking hot in here.")
+					src.occupant2.visible_message("\red The internal thermometer shows 49C.")
+					src.occupant2.apply_damage(5, BURN, "Chest", 0)
 					if(!src.operating)
 						src.icon_state = "oven_off"
 						src.update_icon()
-						sleep(5)
 						return
 					else
 						sleep(50)
-						visible_message("\red <b>The Oven</b> states, 'Stage 3 heating.'")
-						stage = 3.5
+						visible_message("\red <b>The Oven</b> states, 'Stage 3.' </br> <b>The Oven</b> states, 'Current temperature is: 64C'")
+						stage = 3
 						src.occupant.emote("scream")
-						src.occupant.visible_message("\red <b> It burns so badly! </b>")
-						src.occupant.visible_message("\red The internal thermometer shows 75C.")
-						src.occupant.apply_damage(10, BURN, "l_leg", 0)
+						src.occupant.visible_message("\red Your skin is starting to burn badly!")
+						src.occupant.visible_message("\red The internal thermometer shows 64C.")
 						src.occupant.apply_damage(10, BURN, "Chest", 0)
-						src.occupant.apply_damage(10, BURN, "r_leg", 0)
+						src.occupant2.emote("scream")
+						src.occupant2.visible_message("\red Your skin is starting to burn badly!")
+						src.occupant2.visible_message("\red The internal thermometer shows 64C.")
+						src.occupant2.apply_damage(10, BURN, "Chest", 0)
 						if(!src.operating)
 							src.icon_state = "oven_off"
 							src.update_icon()
-							sleep(5)
 							return
 						else
 							sleep(50)
-							visible_message("\red <b>The Oven</b> states, 'Stage 4.' </br> <b>The Oven</b> states, 'Current temperature is: 82C'")
-							stage = 4
-							src.occupant.apply_effect(20, AGONY, 0)
+							visible_message("\red <b>The Oven</b> states, 'Stage 3 heating.'")
+							stage = 3.5
 							src.occupant.emote("scream")
-							src.occupant.visible_message("\red <b> Your skin feels like it is searing off. </b>")
-							src.occupant.visible_message("\red The internal thermometer shows 82C.")
-							src.occupant.apply_damage(10, BURN, "l_arm", 0)
+							src.occupant.visible_message("\red <b> It burns so badly! </b>")
+							src.occupant.visible_message("\red The internal thermometer shows 75C.")
 							src.occupant.apply_damage(10, BURN, "l_leg", 0)
-							src.occupant.apply_damage(10, BURN, "head", 0)
+							src.occupant.apply_damage(10, BURN, "Chest", 0)
+							src.occupant.apply_damage(10, BURN, "r_leg", 0)
+							src.occupant2.emote("scream")
+							src.occupant2.visible_message("\red <b> It burns so badly! </b>")
+							src.occupant2.visible_message("\red The internal thermometer shows 75C.")
+							src.occupant2.apply_damage(10, BURN, "l_leg", 0)
+							src.occupant2.apply_damage(10, BURN, "Chest", 0)
+							src.occupant2.apply_damage(10, BURN, "r_leg", 0)
 							if(!src.operating)
 								src.icon_state = "oven_off"
 								src.update_icon()
-								sleep(5)
 								return
 							else
 								sleep(50)
-								visible_message("\red <b>The Oven</b> states, 'Stage 4 heating.'")
-								stage = 4.5
+								visible_message("\red <b>The Oven</b> states, 'Stage 4.' </br> <b>The Oven</b> states, 'Current temperature is: 82C'")
+								stage = 4
+								src.occupant.apply_effect(20, AGONY, 0)
 								src.occupant.emote("scream")
-								src.occupant.apply_effect(40, AGONY, 0)
-								src.occupant.visible_message("\red <b> Your skin is burning like hell! </b>")
-								src.occupant.visible_message("\red The internal thermometer shows 86C, and is climbing rapidly..")
-								sleep(50)
-								visible_message("\red <b>The Oven</b> states, 'Stage 5.' </br> <b>The Oven</b> states, 'Current temperature is: 103C'")
-								stage = 5
-								src.occupant.visible_message("\red <b> Your entire body feels like it is melting! </b>")
-								src.occupant.visible_message("\red The internal thermometer shows 103C.")
-								src.occupant.emote("scream")
-								src.occupant.apply_effect(40, AGONY, 0)
-								src.occupant.apply_damage(20, BURN, "chest", 0)
+								src.occupant.visible_message("\red <b> Your skin feels like it is searing off. </b>")
+								src.occupant.visible_message("\red The internal thermometer shows 82C.")
 								src.occupant.apply_damage(10, BURN, "l_arm", 0)
 								src.occupant.apply_damage(10, BURN, "l_leg", 0)
 								src.occupant.apply_damage(10, BURN, "head", 0)
-								sleep(20)
-								src.occupant.visible_message("\red You smell a sweet aroma... and realize it is your own cooking flesh!")
-								sleep(30)
-								visible_message("\red <b>The Oven</b> states, 'Finalizing cook.'")
-								src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Oven</b> states, 'Finalizing cook.'")
-								src.occupant.apply_damage(50, BURN, "chest", 0)
-								if(src.occupant.stat == 2)
-									visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
-									stage = 0
-									src.operating = 0
-									src.locked = 0
-									icon_state = "oven_off"
-									update_icon()
-									playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
-									src.occupant.ChangeToHusk()
-									src.go_out()
+								src.occupant2.apply_effect(20, AGONY, 0)
+								src.occupant2.emote("scream")
+								src.occupant2.visible_message("\red <b> Your skin feels like it is searing off. </b>")
+								src.occupant2.visible_message("\red The internal thermometer shows 82C.")
+								src.occupant2.apply_damage(10, BURN, "l_arm", 0)
+								src.occupant2.apply_damage(10, BURN, "l_leg", 0)
+								src.occupant2.apply_damage(10, BURN, "head", 0)
+								if(!src.operating)
+									src.icon_state = "oven_off"
+									src.update_icon()
+									return
 								else
-									visible_message("\red <b>The Oven</b> states, 'Engaging heating grille.' </br> <b>The Oven</b> states, 'Current temperature is: 130C'")
-									src.occupant.apply_damage(10, BURN, "chest", 0)
-									src.occupant.visible_message("\red <b> You hear a faint buzzing noise, and the grille under you starts searing through your flesh.</b>")
-									src.occupant.visible_message("\red The internal thermometer shows 130C.")
-									sleep(30)
+									sleep(50)
+									visible_message("\red <b>The Oven</b> states, 'Stage 4 heating.'")
+									stage = 4.5
+									src.occupant.emote("scream")
+									src.occupant.apply_effect(40, AGONY, 0)
+									src.occupant.visible_message("\red <b> Your skin is burning like hell! </b>")
+									src.occupant.visible_message("\red The internal thermometer shows 86C, and is climbing rapidly..")
+									src.occupant2.emote("scream")
+									src.occupant2.apply_effect(40, AGONY, 0)
+									src.occupant2.visible_message("\red <b> Your skin is burning like hell! </b>")
+									src.occupant2.visible_message("\red The internal thermometer shows 86C, and is climbing rapidly..")
+									sleep(50)
+									visible_message("\red <b>The Oven</b> states, 'Stage 5.' </br> <b>The Oven</b> states, 'Current temperature is: 103C'")
+									stage = 5
+									src.occupant.visible_message("\red <b> Your entire body feels like it is melting! </b>")
+									src.occupant.visible_message("\red The internal thermometer shows 103C.")
+									src.occupant.emote("scream")
+									src.occupant.apply_effect(40, AGONY, 0)
+									src.occupant.apply_damage(20, BURN, "chest", 0)
+									src.occupant.apply_damage(10, BURN, "l_arm", 0)
 									src.occupant.apply_damage(10, BURN, "l_leg", 0)
-									src.occupant.apply_damage(10, BURN, "r_leg", 0)
+									src.occupant.apply_damage(10, BURN, "head", 0)
+									src.occupant2.visible_message("\red <b> Your entire body feels like it is melting! </b>")
+									src.occupant2.visible_message("\red The internal thermometer shows 103C.")
+									src.occupant2.emote("scream")
+									src.occupant2.apply_effect(40, AGONY, 0)
+									src.occupant2.apply_damage(20, BURN, "chest", 0)
+									src.occupant2.apply_damage(10, BURN, "l_arm", 0)
+									src.occupant2.apply_damage(10, BURN, "l_leg", 0)
+									src.occupant2.apply_damage(10, BURN, "head", 0)
+									sleep(20)
+									src.occupant.visible_message("\red You smell a sweet aroma... and realize it is your own cooking flesh!")
+									src.occupant2.visible_message("\red You smell a sweet aroma... and realize it is your own cooking flesh!")
+									sleep(30)
+									visible_message("\red <b>The Oven</b> states, 'Finalizing cook.'")
+									src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Oven</b> states, 'Finalizing cook.'")
+									src.occupant.apply_damage(50, BURN, "chest", 0)
+									src.occupant2.visible_message("\blue You hear a faint voice. \red <b>The Oven</b> states, 'Finalizing cook.'")
+									src.occupant2.apply_damage(50, BURN, "chest", 0)
 									if(src.occupant.stat == 2)
-										sleep(30)
+										visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
 										stage = 0
 										src.operating = 0
 										src.locked = 0
 										icon_state = "oven_off"
 										update_icon()
+										playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+										src.occupant.ChangeToHusk()
+										src.go_out()
+									if(src.occupant2.stat == 2)
+										stage = 0
+										src.operating = 0
+										src.locked = 0
+										icon_state = "oven_off"
+										update_icon()
+										playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+										src.occupant2.ChangeToHusk()
+										src.go_out()
+									else
+										visible_message("\red <b>The Oven</b> states, 'Engaging heating grille.' </br> <b>The Oven</b> states, 'Current temperature is: 130C'")
+										src.occupant.apply_damage(10, BURN, "chest", 0)
+										src.occupant.visible_message("\red <b> You hear a faint buzzing noise, and the grille under you starts searing through your flesh.</b>")
+										src.occupant.visible_message("\red The internal thermometer shows 130C.")
+										sleep(30)
+										src.occupant.apply_damage(10, BURN, "l_leg", 0)
+										src.occupant.apply_damage(10, BURN, "r_leg", 0)
+										if(src.occupant.stat == 2)
+											sleep(30)
+											stage = 0
+											src.operating = 0
+											src.locked = 0
+											icon_state = "oven_off"
+											update_icon()
+											visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
+											playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+											src.occupant.ChangeToHusk()
+											src.go_out()
+										if(src.occupant2.stat == 2)
+											stage = 0
+											src.operating = 0
+											src.locked = 0
+											icon_state = "oven_off"
+											update_icon()
+											playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+											src.occupant2.ChangeToHusk()
+											src.go_out()
+										else
+											visible_message("\red <b>The Oven</b> states, 'Current temperature is: 150C'")
+											src.occupant.visible_message("\red <b> The pain slowly goes away, and your vision starts to fade.")
+											src.occupant.visible_message("\red The internal thermometer shows 150C.")
+											src.occupant2.visible_message("\red <b> The pain slowly goes away, and your vision starts to fade.")
+											src.occupant2.visible_message("\red The internal thermometer shows 150C.")
+											sleep(20)
+											src.occupant.apply_effect(100, AGONY, 0)
+											src.occupant.death(1)
+											src.occupant2.apply_effect(100, AGONY, 0)
+											src.occupant2.death(1)
+											stage = 0
+											src.operating = 0
+											src.locked = 0
+											icon_state = "oven_off"
+											update_icon()
+											playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+											visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
+											src.occupant.ChangeToHusk()
+											src.occupant2.ChangeToHusk()
+											src.go_out()
+
+	else
+		use_power(1000)
+		src.operating = 1
+		src.locked = 1
+		update_icon()
+		src.occupant.attack_log += "\[[time_stamp()]\] Was cooked by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
+		user.attack_log += "\[[time_stamp()]\] cooked <b>[src.occupant]/[src.occupant.ckey]</b>"
+		if(src.occupant.ckey)
+			msg_admin_attack("[user.name] ([user.ckey]) cooked [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+		if(!iscarbon(user))
+			src.occupant.LAssailant = null
+		else
+			src.occupant.LAssailant = user
+		icon_state = "oven_on"
+
+		log_debug("Oven: Doing 1user for [src.occupant.ckey]")
+		sleep(20)
+		visible_message("\red <b>The Oven</b> states, 'Stage 1.' <br> <b>The Oven</b> states, 'Current temperature is: 37C'")
+		stage = 1
+		src.occupant.visible_message("\blue Is it getting warm in here...?")
+		src.occupant.visible_message("\red The internal thermometer shows 37C.")
+		if(!src.operating)
+			icon_state = "oven_off"
+			update_icon()
+			return
+		else
+			sleep(70)
+			visible_message("\red <b>The Oven</b> states, 'Stage 1 heating.'")
+			stage = 1.5
+			visible_message("\blue The Oven is giving off a nice warmth.")
+			src.occupant.visible_message("\red You start sweating.")
+			if(!src.operating)
+				src.icon_state = "oven_off"
+				src.update_icon()
+				return
+			else
+				sleep(60)
+				visible_message("\red <b>The Oven</b> states, 'Stage 2.' </br> <b>The Oven</b> states, 'Current temperature is: 45C'")
+				stage = 2
+				visible_message("\blue The Oven is a bit too hot to touch.")
+				src.occupant.visible_message("\red Your skin starts burning.")
+				src.occupant.visible_message("\red The internal thermometer shows 45C.")
+				if(!src.operating)
+					src.icon_state = "oven_off"
+					src.update_icon()
+					return
+				else
+					sleep(50)
+					visible_message("\red <b>The Oven</b> states, 'Stage 2 heating.'</br> <b>The Oven</b> states, 'Current temperature is: 49C'")
+					stage = 2.5
+					visible_message("\blue The air around the oven is getting unpleasently hot.")
+					src.occupant.visible_message("\red It's getting really fucking hot in here.")
+					src.occupant.visible_message("\red The internal thermometer shows 49C.")
+					src.occupant.apply_damage(5, BURN, "Chest", 0)
+					if(!src.operating)
+						src.icon_state = "oven_off"
+						src.update_icon()
+						return
+					else
+						sleep(50)
+						visible_message("\red <b>The Oven</b> states, 'Stage 3.' </br> <b>The Oven</b> states, 'Current temperature is: 64C'")
+						stage = 3
+						src.occupant.emote("scream")
+						src.occupant.visible_message("\red Your skin is starting to burn badly!")
+						src.occupant.visible_message("\red The internal thermometer shows 64C.")
+						src.occupant.apply_damage(10, BURN, "Chest", 0)
+						if(!src.operating)
+							src.icon_state = "oven_off"
+							src.update_icon()
+							return
+						else
+							sleep(50)
+							visible_message("\red <b>The Oven</b> states, 'Stage 3 heating.'")
+							stage = 3.5
+							src.occupant.emote("scream")
+							src.occupant.visible_message("\red <b> It burns so badly! </b>")
+							src.occupant.visible_message("\red The internal thermometer shows 75C.")
+							src.occupant.apply_damage(10, BURN, "l_leg", 0)
+							src.occupant.apply_damage(10, BURN, "Chest", 0)
+							src.occupant.apply_damage(10, BURN, "r_leg", 0)
+							if(!src.operating)
+								src.icon_state = "oven_off"
+								src.update_icon()
+								return
+							else
+								sleep(50)
+								visible_message("\red <b>The Oven</b> states, 'Stage 4.' </br> <b>The Oven</b> states, 'Current temperature is: 82C'")
+								stage = 4
+								src.occupant.apply_effect(20, AGONY, 0)
+								src.occupant.emote("scream")
+								src.occupant.visible_message("\red <b> Your skin feels like it is searing off. </b>")
+								src.occupant.visible_message("\red The internal thermometer shows 82C.")
+								src.occupant.apply_damage(10, BURN, "l_arm", 0)
+								src.occupant.apply_damage(10, BURN, "l_leg", 0)
+								src.occupant.apply_damage(10, BURN, "head", 0)
+								if(!src.operating)
+									src.icon_state = "oven_off"
+									src.update_icon()
+									return
+								else
+									sleep(50)
+									visible_message("\red <b>The Oven</b> states, 'Stage 4 heating.'")
+									stage = 4.5
+									src.occupant.emote("scream")
+									src.occupant.apply_effect(40, AGONY, 0)
+									src.occupant.visible_message("\red <b> Your skin is burning like hell! </b>")
+									src.occupant.visible_message("\red The internal thermometer shows 86C, and is climbing rapidly..")
+									sleep(50)
+									visible_message("\red <b>The Oven</b> states, 'Stage 5.' </br> <b>The Oven</b> states, 'Current temperature is: 103C'")
+									stage = 5
+									src.occupant.visible_message("\red <b> Your entire body feels like it is melting! </b>")
+									src.occupant.visible_message("\red The internal thermometer shows 103C.")
+									src.occupant.emote("scream")
+									src.occupant.apply_effect(40, AGONY, 0)
+									src.occupant.apply_damage(20, BURN, "chest", 0)
+									src.occupant.apply_damage(10, BURN, "l_arm", 0)
+									src.occupant.apply_damage(10, BURN, "l_leg", 0)
+									src.occupant.apply_damage(10, BURN, "head", 0)
+									sleep(20)
+									src.occupant.visible_message("\red You smell a sweet aroma... and realize it is your own cooking flesh!")
+									sleep(30)
+									visible_message("\red <b>The Oven</b> states, 'Finalizing cook.'")
+									src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Oven</b> states, 'Finalizing cook.'")
+									src.occupant.apply_damage(50, BURN, "chest", 0)
+									if(src.occupant.stat == 2)
 										visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
+										stage = 0
+										src.operating = 0
+										src.locked = 0
+										icon_state = "oven_off"
+										update_icon()
 										playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
 										src.occupant.ChangeToHusk()
 										src.go_out()
 									else
-										visible_message("\red <b>The Oven</b> states, 'Current temperature is: 150C'")
-										src.occupant.visible_message("\red <b> The pain slowly goes away, and your vision starts to fade.")
-										src.occupant.visible_message("\red The internal thermometer shows 150C.")
-										sleep(20)
-										src.occupant.apply_effect(100, AGONY, 0)
-										src.occupant.death(1)
-										stage = 0
-										src.operating = 0
-										src.locked = 0
-										icon_state = "oven_off"
-										update_icon()
-										playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
-										visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
-										src.occupant.ChangeToHusk()
-										src.go_out()
+										visible_message("\red <b>The Oven</b> states, 'Engaging heating grille.' </br> <b>The Oven</b> states, 'Current temperature is: 130C'")
+										src.occupant.apply_damage(10, BURN, "chest", 0)
+										src.occupant.visible_message("\red <b> You hear a faint buzzing noise, and the grille under you starts searing through your flesh.</b>")
+										src.occupant.visible_message("\red The internal thermometer shows 130C.")
+										sleep(30)
+										src.occupant.apply_damage(10, BURN, "l_leg", 0)
+										src.occupant.apply_damage(10, BURN, "r_leg", 0)
+										if(src.occupant.stat == 2)
+											sleep(30)
+											stage = 0
+											src.operating = 0
+											src.locked = 0
+											icon_state = "oven_off"
+											update_icon()
+											visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
+											playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+											src.occupant.ChangeToHusk()
+											src.go_out()
+										else
+											visible_message("\red <b>The Oven</b> states, 'Current temperature is: 150C'")
+											src.occupant.visible_message("\red <b> The pain slowly goes away, and your vision starts to fade.")
+											src.occupant.visible_message("\red The internal thermometer shows 150C.")
+											sleep(20)
+											src.occupant.apply_effect(100, AGONY, 0)
+											src.occupant.death(1)
+											stage = 0
+											src.operating = 0
+											src.locked = 0
+											icon_state = "oven_off"
+											update_icon()
+											playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
+											visible_message("\red <b>The Oven</b> states, 'Cooking complete!'")
+											src.occupant.ChangeToHusk()
+											src.go_out()
