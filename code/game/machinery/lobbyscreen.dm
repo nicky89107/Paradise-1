@@ -10,14 +10,14 @@
 
 /obj/machinery/lobbyimage/New()
 	..()
-	icon_state = pick("rawrcat","poorcat","mazika","jenny","shadow","squishy")
+	icon_state = pick("rawrcat","poorcat","mazika","jenny","shadow","squishy", "tigergirl", "tigerslime")
 	slideshow()
 
 /obj/machinery/lobbyimage/proc/slideshow()
 	sleep(150)
-	icon_state = pick("rawrcat","poorcat","mazika","jenny","shadow","squishy")
+	icon_state = pick("rawrcat","poorcat","mazika","jenny","shadow","squishy", "tigergirl", "tigerslime")
 	slideshow()
 
 /obj/machinery/lobbyimage/proc/forcenext() //mostly for debugging
-	icon_state = pick("rawrcat","poorcat","mazika","jenny","shadow","squishy")
+	icon_state = pick("rawrcat","poorcat","mazika","jenny","shadow","squishy", "tigergirl", "tigerslime")
 	slideshow()

@@ -168,6 +168,12 @@
 		return
 	if(operating)
 		if(user.ckey == src.occupant.ckey)
+			if(src.occupant2)
+				if(src.occupant2.ckey == user.ckey)
+					user << "\red You hopelessly bang against the door."
+					visible_message("\red [src.occupant2.name] bangs against the locked oven door!")
+					user << "\red It's locked and running"
+
 			user << "\red You hopelessly bang against the door."
 			visible_message("\red [src.occupant.name] bangs against the locked oven door!")
 		user << "\red It's locked and running"
@@ -185,16 +191,26 @@
 			visible_message("\red <b> The Oven </b> states, 'That would be a waste of power, deary!'")
 	else
 		if(src.occupant.ckey == user.ckey)
-			src.occupant.visible_message("\red You can't turn that on from inside!")
-			return
+			if(src.occupant2)
+				if(src.occupant2.ckey == user.ckey)
+					src.occupant.visible_message("\red You can't turn that on from inside!")
+					return
+			else
+				src.occupant.visible_message("\red You can't turn that on from inside!")
+				return
 		else
 			if(timer)
 				visible_message("\red You press the start button. The timer displays : 10 seconds.")
 				sleep(100)
 				visible_message("\red The oven door shuts and locks.")
 				src.occupant.visible_message("\red With a whir, the oven door shuts and locks.")
+				if(src.occupant2)
+					src.occupant2.visible_message("\red With a whir, the oven door shuts and locks.")
+
 				sleep(20)
 				src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Oven</b> states, 'Engaging.'")
+				if(src.occupant2)
+					src.occupant2.visible_message("\blue You hear a faint voice. \red <b>The Oven</b> states, 'Engaging.'")
 				src.startcooking(user)
 			else
 				if(!locked)
@@ -203,11 +219,15 @@
 					sleep(20)
 					visible_message("\red You turn the dial up to 150C and hit 'Start'.")
 					src.occupant.visible_message ("\blue You hear a beep, and then a crackling as the oven turns on. This can't be good.")
+					if(src.occupant2)
+						src.occupant2.visible_message ("\blue You hear a beep, and then a crackling as the oven turns on. This can't be good.")
 					src.startcooking(user)
 				else
 					sleep(20)
 					visible_message("\red You turn the dial up to 150C and hit 'Start'.")
 					src.occupant.visible_message ("\blue You hear a beep, and then a crackling as the oven turns on. This can't be good.")
+					if(src.occupant2)
+						src.occupant2.visible_message ("\blue You hear a beep, and then a crackling as the oven turns on. This can't be good.")
 					src.startcooking(user)
 
 
