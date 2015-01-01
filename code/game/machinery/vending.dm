@@ -919,7 +919,11 @@
 					/obj/item/clothing/head/helmet/gladiator = 1,/obj/item/clothing/under/gimmick/rank/captain/suit = 1,/obj/item/clothing/head/flatcap = 1,
 					/obj/item/clothing/suit/storage/labcoat/mad = 1,/obj/item/clothing/glasses/gglasses = 1,/obj/item/clothing/shoes/jackboots = 1,
 					/obj/item/clothing/under/schoolgirl = 1,/obj/item/clothing/head/kitty = 1,/obj/item/clothing/under/blackskirt = 1,/obj/item/clothing/head/beret = 1,
+<<<<<<< HEAD
 					/obj/item/clothing/accessory/waistcoat = 1,/obj/item/clothing/under/suit_jacket = 1,/obj/item/clothing/head/that =1,/obj/item/clothing/under/kilt = 1,/obj/item/clothing/head/beret = 1,/obj/item/clothing/accessory/waistcoat = 1,
+=======
+					/obj/item/clothing/tie/waistcoat = 1,/obj/item/clothing/under/suit_jacket = 1,/obj/item/clothing/head/that =1,/obj/item/clothing/under/kilt = 1,/obj/item/clothing/head/beret = 1,/obj/item/clothing/tie/waistcoat = 1,
+>>>>>>> a929217... Clothing Update
 					/obj/item/clothing/glasses/monocle =1,/obj/item/clothing/head/bowlerhat = 1,/obj/item/weapon/cane = 1,/obj/item/clothing/under/sl_suit = 1,
 					/obj/item/clothing/mask/fakemoustache = 1,/obj/item/clothing/suit/bio_suit/plaguedoctorsuit = 1,/obj/item/clothing/head/plaguedoctorhat = 1,/obj/item/clothing/mask/gas/plaguedoctor = 1,
 					/obj/item/clothing/under/owl = 1,/obj/item/clothing/mask/gas/owl_mask = 1,/obj/item/clothing/suit/apron = 1,/obj/item/clothing/under/waiter = 1,
@@ -930,7 +934,11 @@
 					/obj/item/clothing/suit/wizrobe/fake = 1,/obj/item/clothing/head/wizard/fake = 1,/obj/item/weapon/staff = 3,/obj/item/clothing/mask/gas/sexyclown = 1,
 					/obj/item/clothing/under/sexyclown = 1,/obj/item/clothing/mask/gas/sexymime = 1,/obj/item/clothing/under/sexymime = 1,/obj/item/clothing/suit/apron/overalls = 1,
 					/obj/item/clothing/head/rabbitears =1, /obj/item/clothing/head/sombrero = 1, /obj/item/clothing/suit/poncho = 1,
+<<<<<<< HEAD
 					/obj/item/clothing/suit/poncho/green = 1, /obj/item/clothing/suit/poncho/red = 1, /obj/item/clothing/accessory/blue = 1, /obj/item/clothing/accessory/red = 1, /obj/item/clothing/accessory/black = 1, /obj/item/clothing/accessory/horrible = 1,
+=======
+					/obj/item/clothing/suit/poncho/green = 1, /obj/item/clothing/suit/poncho/red = 1, /obj/item/clothing/tie/blue = 1, /obj/item/clothing/tie/red = 1, /obj/item/clothing/tie/black = 1, /obj/item/clothing/tie/horrible = 1,
+>>>>>>> a929217... Clothing Update
 					/obj/item/clothing/under/maid = 1, /obj/item/clothing/under/janimaid = 1)
 	contraband = list(/obj/item/clothing/suit/judgerobe = 1,/obj/item/clothing/head/powdered_wig = 1,/obj/item/weapon/gun/magic/wand = 1)
 	premium = list(/obj/item/clothing/suit/hgpirate = 1, /obj/item/clothing/head/hgpiratecap = 1, /obj/item/clothing/head/helmet/roman = 1, /obj/item/clothing/head/helmet/roman/legionaire = 1, /obj/item/clothing/under/roman = 1, /obj/item/clothing/shoes/roman = 1)
@@ -1097,6 +1105,7 @@
 	/obj/item/clothing/under/pants/camo = 1,/obj/item/clothing/under/pants/blackjeans=2,/obj/item/clothing/under/pants/khaki=2,
 	/obj/item/clothing/under/pants/white=2,/obj/item/clothing/under/pants/red=1,/obj/item/clothing/under/pants/black=2,
 	/obj/item/clothing/under/pants/tan=2,/obj/item/clothing/under/pants/blue=1,/obj/item/clothing/under/pants/track=1,
+<<<<<<< HEAD
 	/obj/item/clothing/accessory/scarf/red=1,/obj/item/clothing/accessory/scarf/green=1,/obj/item/clothing/accessory/scarf/darkblue=1,
 	/obj/item/clothing/accessory/scarf/purple=1,/obj/item/clothing/accessory/scarf/yellow=1,/obj/item/clothing/accessory/scarf/orange=1,
 	/obj/item/clothing/accessory/scarf/lightblue=1,/obj/item/clothing/accessory/scarf/white=1,/obj/item/clothing/accessory/scarf/black=1,
@@ -1108,6 +1117,18 @@
 	/obj/item/clothing/shoes/sandal=1,
 	/obj/item/weapon/storage/belt/fannypack=1, /obj/item/weapon/storage/belt/fannypack/blue=1, /obj/item/weapon/storage/belt/fannypack/red=1)
 	contraband = list(/obj/item/clothing/under/syndicate/tacticool=1,/obj/item/clothing/mask/balaclava=1,/obj/item/clothing/head/ushanka=1,/obj/item/clothing/under/soviet=1,/obj/item/weapon/storage/belt/fannypack/black=1)
+=======
+	/obj/item/clothing/tie/scarf/red=1,/obj/item/clothing/tie/scarf/green=1,/obj/item/clothing/tie/scarf/darkblue=1,
+	/obj/item/clothing/tie/scarf/purple=1,/obj/item/clothing/tie/scarf/yellow=1,/obj/item/clothing/tie/scarf/orange=1,
+	/obj/item/clothing/tie/scarf/lightblue=1,/obj/item/clothing/tie/scarf/white=1,/obj/item/clothing/tie/scarf/black=1,
+	/obj/item/clothing/tie/scarf/zebra=1,/obj/item/clothing/tie/scarf/christmas=1,/obj/item/clothing/tie/stripedredscarf=1,
+	/obj/item/clothing/tie/stripedbluescarf=1,/obj/item/clothing/tie/stripedgreenscarf=1,/obj/item/clothing/tie/waistcoat=1,
+	/obj/item/clothing/under/sundress=2,/obj/item/clothing/under/stripeddress = 1, /obj/item/clothing/under/sailordress = 1, /obj/item/clothing/under/redeveninggown = 1, /obj/item/clothing/under/blacktango=1,/obj/item/clothing/suit/jacket=3,
+	/obj/item/clothing/glasses/regular=2,/obj/item/clothing/head/sombrero=1,/obj/item/clothing/suit/poncho=1,
+	/obj/item/clothing/suit/ianshirt=1,/obj/item/clothing/shoes/laceup=2,/obj/item/clothing/shoes/black=4,
+	/obj/item/clothing/shoes/sandal=1)
+	contraband = list(/obj/item/clothing/under/syndicate/tacticool=1,/obj/item/clothing/mask/balaclava=1,/obj/item/clothing/head/ushanka=1,/obj/item/clothing/under/soviet=1)
+>>>>>>> a929217... Clothing Update
 	premium = list(/obj/item/clothing/under/suit_jacket/checkered=1,/obj/item/clothing/head/mailman=1,/obj/item/clothing/under/rank/mailman=1,/obj/item/clothing/suit/jacket/leather=1,/obj/item/clothing/under/pants/mustangjeans=1)
 	refill_canister = /obj/item/weapon/vending_refill/clothing
 
