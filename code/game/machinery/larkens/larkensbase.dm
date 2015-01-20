@@ -1,6 +1,6 @@
 /obj/machinery/larkens/
-	name = "Larkens Base-Machine"
-	desc = "You shouldn't be seeing this."
+	name = "CODING OBJECT; Larkens Base-Machine"
+	desc = "You shouldn't be seeing this. ADMINBOOZE"
 	icon = 'icons/obj/Cryogenic2.dmi'
 	icon_state = "scanner"
 
@@ -27,6 +27,10 @@
 	else if(M.real_name == "Haley Larkens")
 		return 1
 	else if(M.real_name == "Squishy Larkens")
+		return 1
+	else if(M.real_name == "Monica Larkens")
+		return 1
+	else if(M.real_name == "Angeline Larkens")
 		return 1
 	else
 		return 0

@@ -47,6 +47,9 @@
 /mob/living/carbon/human/slime/New(var/new_loc)
 	..(new_loc, "Slime People")
 	verbs += /mob/living/carbon/human/slime/proc/slimepeople_ventcrawl
+	verbs += /mob/living/carbon/human/slime/proc/change_gender
+	verbs += /mob/living/carbon/human/slime/proc/set_absorb
+	verbs += /mob/living/carbon/human/slime/proc/release_captive
 
 /mob/living/carbon/human/grey/New(var/new_loc)
 	..(new_loc, "Grey")
@@ -391,7 +394,7 @@
 		var/dam_zone = pick("chest", "l_hand", "r_hand", "l_leg", "r_leg")
 		var/datum/organ/external/affecting = get_organ(ran_zone(dam_zone))
 		var/armor = run_armor_check(affecting, "melee")
-		
+
 		var/datum/organ/external/affected = src.get_organ(dam_zone)
 		affected.add_autopsy_data(M.name, damage) // Add the mob's name to the autopsy data
 		apply_damage(damage, BRUTE, affecting, armor, M.name)
@@ -1095,6 +1098,18 @@
 					adjustToxLoss(-3)
 				spawn(350)	//wait 35 seconds before next volley
 					lastpuke = 0
+
+/mob/living/carbon/human/proc/vomitslime(hairball=0)
+	var/turf/location = loc
+
+	src.visible_message("<span class='warning'>[src] expels someone from their slime!")
+	var/slime_len = src.slime_contents.len
+	if (slime_len)
+		var/content = src.slime_contents[slime_len]
+		if (istype(content, /atom/movable))
+			var/atom/movable/AM = content
+			src.slime_contents.Remove(AM)
+			AM.loc = location
 
 
 /mob/living/carbon/human/proc/get_visible_gender()

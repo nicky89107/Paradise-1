@@ -397,6 +397,67 @@ LOOK FOR SURGERY.DM*/
 		return (BRUTELOSS)
 
 /*
+ * Scalpel
+ */
+/obj/item/weapon/genderchange
+	name = "Automated Scalpel"
+	desc = "This automatic scalpel change's people's gender. It's Bianca's favorite."
+	icon = 'icons/obj/surgery.dmi'
+	icon_state = "scalpel"
+	flags = FPRINT | TABLEPASS | CONDUCT
+	force = 10.0
+	sharp = 1
+	edge = 1
+	w_class = 2.0
+	throwforce = 5.0
+	throw_speed = 3
+	throw_range = 5
+	m_amt = 10000
+	g_amt = 5000
+	origin_tech = "materials=1;biotech=1"
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+
+	suicide_act(mob/user)
+		viewers(user) << pick("\red <b>[user] is slitting \his wrists with the [src.name]! It looks like \he's trying to commit suicide.</b>", \
+							"\red <b>[user] is slitting \his throat with the [src.name]! It looks like \he's trying to commit suicide.</b>", \
+							"\red <b>[user] is slitting \his stomach open with the [src.name]! It looks like \he's trying to commit seppuku.</b>")
+		return (BRUTELOSS)
+
+/obj/item/weapon/genderchange/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	if(!istype(M))
+		return ..()
+
+	if((M_CLUMSY in user.mutations) && prob(50))
+		M = user
+		return eyestab(M,user)
+
+	if(!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
+		return ..()
+
+	if(istype(M, /mob/living/carbon/human))
+		if(M != user)
+			for(var/mob/O in (viewers(M) - user - M))
+				O.show_message("\red [M] is beginning to have \his gender reassigned by [user] with \the [src].", 1)
+			M << "\red You feel an intense pain in your groin as [user] engages \the [src]!"
+			user << "\red You engage \the [src], and it guides your hand to change [M]'s gender!"
+			sleep(30)
+			M << "\red [user] changes your gender!"
+			user << "\red \the [user] changes [M]'s gender with \the [src]."
+			if(M.gender == MALE)
+				for(var/mob/O in (viewers(M) - user - M))
+					O.show_message("\red [M] has been made female by [user] with \the [src]!", 1)
+				M.gender = FEMALE
+				M.update_icons()
+				M << "\red You have been made female!"
+				user << "\red You have made [M] female!"
+			else
+				for(var/mob/O in (viewers(M) - user - M))
+					O.show_message("\red [M] has been made male by [user] with \the [src]!", 1)
+				M.gender = MALE
+				M.update_icons()
+				M << "\red You have been made male!"
+				user << "\red You have made [M] male!"
+/*
 /obj/item/weapon/scalpel/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M))
 		return ..()

@@ -48,7 +48,7 @@
 			src.isopen = 0 //Close the thing after the guy gets inside
 			src.update_icon()
 			sleep(20)
-			src.start_UV()
+			src.start_UV() //Automatically start UV cycle
 
 //The units themselves/////////////////
 

@@ -8,7 +8,7 @@
 	var/operating = 0 //Is it on?
 	var/dirty = 0 // Does it need cleaning?
 	var/gibtime = 40 // Time from starting until meat appears
-	var/mob/living/occupant // Mob who has been put inside
+	var/mob/living/carbon/human/occupant // Mob who has been put inside
 	var/dramatic = 1 //Do we use dramatic code or quick-code?
 	var/locked = 0 // Is the gibber locked shut?
 	use_power = 1
@@ -298,7 +298,17 @@
 	return
 
 /obj/machinery/gibber/proc/starttenderizing(mob/user as mob)
+	var/datum/organ/external/LL = src.occupant.get_organ("l_leg")
+	var/datum/organ/external/RL = src.occupant.get_organ("r_leg")
 	if(src.operating)
+		return
+	if(src.occupant.get_species() == "Slime People")
+		src.occupant.visible_message("\red <b>The Tenderizer</b> scans you, then decides it cannot tenderize your slime.")
+		sleep(10)
+		src.occupant.visible_message("\red <b>The Tenderizer</b> ejects you.")
+		src.operating = 0
+		src.eject()
+		visible_message("\red <b>The Tenderizer</b> states 'Incompatible Meat, ejecting.'")
 		return
 
 	use_power(1000)
@@ -321,21 +331,26 @@
 	src.occupant.apply_effect(15, AGONY, 0)
 	src.occupant.apply_damage(20, BRUTE, "chest", 0)
 	sleep(30)
-	src.occupant.visible_message("\red A number of blows strike against your chest, arms, and legs.")
-	src.occupant.visible_message("\red <b>You feel your bones being smashed with every blow.</b>")
+	src.occupant.visible_message("\red <b>A blow strikes your right leg.</b>")
 	src.occupant.apply_effect(10, AGONY, 0)
-	src.occupant.apply_effect(40, WEAKEN, 0)
-	src.occupant.apply_damage(20, BRUTE, "l_leg", 0)
-	src.occupant.apply_damage(5, BRUTE, "r_leg", 0)
-	src.occupant.apply_damage(5, BRUTE, "l_arm", 0)
-	src.occupant.apply_damage(5, BRUTE, "r_arm", 0)
-	src.occupant.resting = 1
+	RL.fracture()
 	sleep(10)
+	src.occupant.visible_message("\red <b>Another blow strikes your left leg.</b>")
+	src.occupant.apply_effect(10, AGONY, 0)
+	LL.fracture()
+	sleep(10)
+	src.occupant.visible_message("\red <b>A number of blows strike your torso and groin.</b>")
+	src.occupant.apply_damage(15, BRUTE, "groin", 0)
+	src.occupant.apply_damage(15, BRUTE, "chest", 0)
+	sleep(10)
+	src.occupant.resting = 1
 	src.operating = 0
 	src.eject()
 
 
 /obj/machinery/gibber/proc/startgibbingFull(mob/user as mob)
+	var/datum/organ/external/LL = src.occupant.get_organ("l_leg")
+	var/datum/organ/external/RL = src.occupant.get_organ("r_leg")
 	if(src.operating)
 		return
 	if(!src.occupant)
@@ -391,20 +406,23 @@
 	src.occupant.visible_message("\red You feel a panel open underneath you.")
 	sleep(30)
 	src.occupant.visible_message("\red A large blow strikes your back.")
-	src.occupant.visible_message("\red <b> Oh god, the pain! </b>")
-	src.occupant.apply_effect(35, AGONY, 0)
+	src.occupant.visible_message("\red <b>Oh god, the pain! </b>")
+	src.occupant.apply_effect(15, AGONY, 0)
 	src.occupant.apply_damage(20, BRUTE, "chest", 0)
 	sleep(30)
-	src.occupant.visible_message("\red A number of blows strike against your chest, arms, and legs.")
-	src.occupant.visible_message("\red <b>You feel your bones being smashed with every blow.</b>")
+	src.occupant.visible_message("\red <b>A blow strikes your right leg.</b>")
+	src.occupant.apply_effect(10, AGONY, 0)
+	RL.fracture()
+	sleep(10)
+	src.occupant.visible_message("\red <b>Another blow strikes your left leg.</b>")
+	src.occupant.apply_effect(10, AGONY, 0)
+	LL.fracture()
+	sleep(10)
+	src.occupant.visible_message("\red <b>A number of blows strike your torso and groin.</b>")
+	src.occupant.apply_damage(15, BRUTE, "groin", 0)
+	src.occupant.apply_damage(15, BRUTE, "chest", 0)
+	sleep(10)
 	src.occupant.resting = 1
-	src.occupant.can_stand = 0
-	src.occupant.apply_effect(30, AGONY, 0)
-	src.occupant.apply_damage(10, BRUTE, "l_leg", 0)
-	src.occupant.apply_damage(10, BRUTE, "r_leg", 0)
-	src.occupant.apply_damage(10, BRUTE, "l_arm", 0)
-	src.occupant.apply_damage(10, BRUTE, "r_arm", 0)
-	src.occupant.apply_damage(10, BRUTE, "head", 0)
 	sleep(40)
 	visible_message("\red <b>The Gibber</b> states, 'Deploying Grinders.'")
 	src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Deploying Grinders.'")
@@ -422,13 +440,16 @@
 	visible_message("\red You hear a loud squelchy grinding sound.")
 	sleep(20)
 	src.occupant.visible_message("\red <b>You make a loud groan as your knees and elbows are seperated. </b>")
-	visible_message("<b>[src.occupant]</b> groans loudly.")
+	visible_message("<b>[src.occupant]</b>groans loudly.")
 	sleep(40)
-	src.occupant.visible_message("\red <b> As a blade saws your remaining limbs off, you attempt to scream out, but only make a little whimper. </b>")
-	visible_message("<b>[src.occupant]</b> lightly whimpers.")
+	src.occupant.visible_message("\red <b>As a blade saws your remaining limbs off, you attempt to scream out, but only make a little whimper. </b>")
+	visible_message("<b>[src.occupant]</b>lightly whimpers.")
 	sleep(40)
-	src.occupant.visible_message("\red <b> A saw slowly descends towards your neck.</b> </br> \blue Your last thoughts are 'Finally, the pain will be over'")
-	visible_message("\red <b> The Gibber </b> states, 'Gibbing Complete!'")
+	src.occupant.visible_message("\red <b>You feel a serrated blade splitting your torso open! </b>")
+	src.occupant.apply_effect(20, AGONY, 0)
+	sleep(30)
+	src.occupant.visible_message("\red <b>You feel your intense agony coming to an end as your internal organs are ripped out by a claw. </b>")
+	visible_message("\red <b>The Gibber </b> states, 'Gibbing Complete!'")
 	sleep(20)
 	playsound(src.loc, 'sound/effects/gib.ogg', 50, 1)
 	src.occupant.death(1)

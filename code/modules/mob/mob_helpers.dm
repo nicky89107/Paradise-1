@@ -5,6 +5,11 @@
 		return 1
 	return 0
 
+/proc/ishumanslime(A)
+	if(istype(A, /mob/living/carbon/human/slime))
+		return 1
+	return 0
+
 /proc/ismonkey(A)
 	if(A && istype(A, /mob/living/carbon/monkey))
 		return 1

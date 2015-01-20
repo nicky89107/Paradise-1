@@ -226,6 +226,7 @@
 	var/cremating = 0
 	var/id = 1
 	var/locked = 0
+	var/bagtype
 
 /obj/structure/crematorium/proc/update()
 	if (src.connected)
@@ -394,7 +395,21 @@
 			del(M)
 
 		for(var/obj/O in contents) //obj instead of obj/item so that bodybags and ashes get destroyed. We dont want tons and tons of ash piling up
+			if(istype(O, /obj/structure/closet))
+				if(istype(O, /obj/structure/closet/coffin))
+					bagtype = "coffin"
+				else if(istype(O, /obj/structure/closet/body_bag))
+					bagtype = "bag"
+				else
+					bagtype = "locker"
+
+				del(O)
+				cremate2("autocoffinkill")
+				cremating = 0
+				update()
+				return
 			del(O)
+
 
 		new /obj/effect/decal/cleanable/ash(src)
 		sleep(30)
@@ -406,6 +421,83 @@
 		visible_message("The cremator tray slides out.")
 		src.attack_hand(src)
 	return
+
+/obj/structure/crematorium/proc/cremate2(atom/A, mob/user as mob)
+//	for(var/obj/machinery/crema_switch/O in src) //trying to figure a way to call the switch, too drunk to sort it out atm
+//		if(var/on == 1)
+//		return
+	cremating = 1
+	locked = 1
+	icon_state = "crema_active"
+
+	for(var/mob/living/M in contents)
+		if (M.stat!=2)
+			M.visible_message("\red You hear a click.")
+			sleep(10)
+			if(bagtype == "coffin")
+				M.visible_message("\red The coffin lid presses firmly shut.")
+				sleep(20)
+				M.visible_message("\red You hear a roar outside. Fuck.")
+				sleep(10)
+				M.visible_message("\red It is getting quite hot in here...")
+				sleep(10)
+				M.visible_message("\red The heat makes your whole body sweat, and you smell burning wood.")
+				sleep(20)
+				M.visible_message("\red Flames erupt from under the coffin and start burning the wood to ashes!")
+				sleep(10)
+				M.visible_message("\red You are set ablaze!")
+				M.apply_effect(20, AGONY, 0)
+				sleep(10)
+				M.visible_message("\red The flames are surrounding you! FUCK!")
+				M.apply_effect(30, AGONY, 0)
+				sleep(20)
+				M.visible_message("\red Your skin is melting!")
+				M.apply_effect(20, AGONY, 0)
+				sleep(20)
+				M.visible_message("\red You pass out from the pain.")
+				M.apply_effect(300, AGONY, 0)
+
+			else if(bagtype == "bag")
+				M.visible_message("\red You hear a roar outside. Fuck.")
+				sleep(20)
+				M.visible_message("\red The bag starts getting hot against your skin.")
+				sleep(10)
+				M.visible_message("\red You start sweating in the heat.")
+				sleep(20)
+				M.visible_message("\red The bag is getting hot...")
+				M.apply_effect(10, AGONY, 0)
+				sleep(20)
+				M.visible_message("\red The bag is burning against your skin!")
+				M.apply_effect(10, AGONY, 0)
+				sleep(20)
+				M.visible_message("\red The bag starts getting noticably softer and incredibly hot.")
+				M.apply_effect(10, AGONY, 0)
+				sleep(20)
+				M.visible_message("\red <b>The bag starts melting onto your skin! </b>")
+				M.apply_effect(20, AGONY, 0)
+				sleep(20)
+				M.visible_message("\red The incredible heat causes the bag to start painfully fusing with your skin!")
+				M.apply_effect(20, AGONY, 0)
+
+
+		//Logging for this causes runtimes resulting in the cremator locking up. Commenting it out until that's figured out.
+		//M.attack_log += "\[[time_stamp()]\] Has been cremated by <b>[user]/[user.ckey]</b>" //No point in this when the mob's about to be deleted
+		//user.attack_log +="\[[time_stamp()]\] Cremated <b>[M]/[M.ckey]</b>"
+		//log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> cremated <b>[M]/[M.ckey]</b>")
+		M.death(1)
+		M.ghostize()
+		del(M)
+
+
+	new /obj/effect/decal/cleanable/ash(src)
+	sleep(30)
+	cremating = 0
+	locked = 0
+	update()
+	playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
+	sleep(20)
+	visible_message("The cremator tray slides out.")
+	src.attack_hand(src)
 
 
 /*

@@ -6,7 +6,7 @@
 	layer = MOB_LAYER+1 // Overhead
 	anchored = 1
 	density = 1
-	var/safety_mode = 0 // Temporality stops the machine if it detects a mob
+	var/safety_mode = 0 // Temporarily stops the machine if it detects a mob
 	var/eatmob = 1 //Basically an admin emag var
 	var/grinding = 0 //Is it currently busy?
 	var/mob/living/occupant //Person inside.

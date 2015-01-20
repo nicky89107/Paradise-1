@@ -22,6 +22,10 @@
 	..()
 	update_icon()
 
+/obj/machinery/larkens/fryer/proc/messageviewers(T)
+	for (var/mob/M in viewers(src))
+		M.show_message("[T]")
+
 /obj/machinery/larkens/fryer/attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
 	if(src.occupant)
 		user << "\red The Fryer is full, empty it first!"
@@ -128,7 +132,7 @@
 	if (!src.occupant)
 		return
 	if(operating)
-		src.occupant.visible_message("\red The fryer is locked!")
+		src.occupant.visible_message("\red The fryer is currently operating!")
 		return
 	for(var/obj/O in src)
 		O.loc = src.loc
@@ -160,22 +164,22 @@
 	else
 		src.occupant.LAssailant = user
 	sleep(30)
-	visible_message("\red <b>The Fryer</b> moves <b>[src.occupant.name]</b> limbs to be spread-eagle.")
+	messageviewers("\red <b>The Fryer</b> moves <b>[src.occupant.name]</b> limbs to be spread-eagle.")
 	src.occupant.visible_message("\red <b>The Fryer</b> forces your limbs spread-eagle.")
 	sleep(30)
-	visible_message("\blue <b>The Fryer</b> scans <b>[src.occupant.name]</b>")
+	messageviewers("\blue <b>The Fryer</b> scans <b>[src.occupant.name]</b>")
 	src.occupant.visible_message("\blue <b>The Fryer</b> scans you.")
 	sleep(30)
-	visible_message("\red <b>The Fryer</b> states, 'Detected [src.occupant.get_species()], gender [src.occupant.get_gender()].' </br>")
+	messageviewers("\red <b>The Fryer</b> states, 'Detected [src.occupant.get_species()], gender [src.occupant.get_gender()].' </br>")
 	src.occupant.visible_message("\red <b>The Fryer</b> states, 'Detected [src.occupant.get_species()], gender [src.occupant.get_gender()].' </br>")
 	sleep(20)
-	visible_message("\red <b>The Fryer</b> states, 'Engaging Frying.'")
+	messageviewers("\red <b>The Fryer</b> states, 'Engaging Frying.'")
 	src.occupant.visible_message("\red <b>The Fryer</b> states, 'Engaging Frying.'")
 	sleep(30)
-	visible_message("\red <b>[src.occupant.name]</b> is slowly immersed in the deepfryer!")
+	messageviewers("\red <b>[src.occupant.name]</b> is slowly immersed in the deepfryer!")
 	src.occupant.visible_message("\red <b>The Fryer</b> shoves you down slowly into the scalding oil.")
 	icon_state = "human_fryer_on"
-	visible_message("<b>[src.occupant]</b> groans loudly.")
+	messageviewers("<b>[src.occupant]</b> groans loudly.")
 	sleep(10)
 	src.occupant.visible_message("\red <b>Your skin is burning off!</b>")
 	src.occupant.apply_effect(40, AGONY, 0)
@@ -194,7 +198,7 @@
 	src.occupant.apply_damage(40, BURN, "head", 0)
 	sleep(30)
 	if(src.occupant.stat == 2)
-		visible_message("\red <b>The Fryer</b> states, 'Frying complete!'</br> <b>The Fryer</b> tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.")
+		messageviewers("\red <b>The Fryer</b> states, 'Frying complete!'</br> <b>The Fryer</b> tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.")
 		src.operating = 0
 		icon_state = "human_fryer_off"
 		update_icon()
@@ -207,7 +211,7 @@
 		sleep(10)
 		src.occupant.apply_damage(100, BURN, "head", 0)
 		src.occupant.apply_damage(100, BURN, "chest", 0)
-		visible_message("\red <b>The Fryer</b> states, 'Frying complete!</br> <b>The Fryer</b> tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.")
+		messageviewers("\red <b>The Fryer</b> states, 'Frying complete!</br> <b>The Fryer</b> tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.")
 		src.operating = 0
 		icon_state = "human_fryer_off"
 		update_icon()

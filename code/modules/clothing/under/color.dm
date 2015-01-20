@@ -98,8 +98,8 @@
 	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
 
 /obj/item/clothing/under/larkens
-	name = "larkens"
-	desc = "Larkens Standard Jumpsuit"
+	name = "Larkens Jumpsuit"
+	desc = "Larkens Standard Jumpsuit."
 	icon_state = "larkens"
 	_color = "larkens"
 	flags = FPRINT | TABLEPASS | ONESIZEFITSALL

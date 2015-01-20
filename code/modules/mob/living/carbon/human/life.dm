@@ -130,6 +130,8 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 		handle_medical_side_effects()
 
+		handle_slime()
+
 	if(stat == DEAD)
 		handle_decay()
 
@@ -1577,6 +1579,34 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 							M.adjustBruteLoss(5)
 						nutrition += 10
 
+	proc/handle_slime()
+		spawn(0)
+			if(shouldabsorb)
+				for(var/mob/living/M in slime_contents)
+					if(M.loc != src)
+						slime_contents.Remove(M)
+						continue
+					if(isliving(M) && stat != 2)
+						if(M.stat == 2)
+							M.death(1)
+							slime_contents.Remove(M)
+							del(M)
+							continue
+						if(air_master.current_cycle%3==1)
+							if(!(M.status_flags & GODMODE))
+								M.adjustBruteLoss(5)
+							nutrition += 10
+
+			else
+				for(var/mob/living/M in slime_contents)
+					if(M.loc != src)
+						slime_contents.Remove(M)
+						continue
+					if(isliving(M) && stat !=2)
+						if(air_master.current_cycle%3==1)
+							M.adjustOxyLoss(-20)
+				return
+
 	proc/handle_changeling()
 		if(mind && mind.changeling)
 			mind.changeling.regenerate()
@@ -1684,7 +1714,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 		if(decaytime > 18000 && decaytime <= 27000)//45 minutes for decaylevel4 -- skeleton
 			decaylevel = 3
-			
+
 		if(decaytime > 27000)
 			decaylevel = 4
 			makeSkeleton()
@@ -1694,7 +1724,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		for(var/mob/living/carbon/human/H in range(decaylevel, src))
 			if(prob(5))
 				if(airborne_can_reach(get_turf(src), get_turf(H)))
-					if(istype(loc,/obj/item/bodybag)) 
+					if(istype(loc,/obj/item/bodybag))
 						return
 					var/obj/item/clothing/mask/M = H.wear_mask
 					if(M && (M.flags & MASKCOVERSMOUTH))
@@ -1880,7 +1910,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	var/client/C = client
 	for(var/mob/living/carbon/human/H in view(src, 14))
 		C.images += H.hud_list[NATIONS_HUD]
-
 
 // Need this in species.
 //#undef HUMAN_MAX_OXYLOSS

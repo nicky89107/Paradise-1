@@ -190,16 +190,25 @@
 		s_click(hud)
 		return
 	if(M == assailant && state >= GRAB_AGGRESSIVE)
-		if( (ishuman(user) && (M_FAT in user.mutations) && iscarbon(affecting) ) || ( isalien(user) && iscarbon(affecting) ) || ( istype(user,/mob/living/carbon/human/kidan) && istype(affecting,/mob/living/carbon/monkey/diona) ) )
+		if(!ishumanslime(user))
+			if( (ishuman(user) && (M_FAT in user.mutations) && iscarbon(affecting) ) || ( isalien(user) && iscarbon(affecting) ) || ( istype(user,/mob/living/carbon/human/kidan) && istype(affecting,/mob/living/carbon/monkey/diona) ) )
+				var/mob/living/carbon/attacker = user
+				user.visible_message("<span class='danger'>[user] is attempting to devour [affecting]!</span>")
+				if(istype(user, /mob/living/carbon/alien/humanoid/hunter))
+					if(!do_mob(user, affecting)||!do_after(user, 30)) return
+				else
+					if(!do_mob(user, affecting)||!do_after(user, 100)) return
+				user.visible_message("<span class='danger'>[user] devours [affecting]!</span>")
+				affecting.loc = user
+				attacker.stomach_contents.Add(affecting)
+				del(src)
+		else
 			var/mob/living/carbon/attacker = user
-			user.visible_message("<span class='danger'>[user] is attempting to devour [affecting]!</span>")
-			if(istype(user, /mob/living/carbon/alien/humanoid/hunter))
-				if(!do_mob(user, affecting)||!do_after(user, 30)) return
-			else
-				if(!do_mob(user, affecting)||!do_after(user, 100)) return
-			user.visible_message("<span class='danger'>[user] devours [affecting]!</span>")
+			user.visible_message("<span class='danger'>[user] is attempting to cover [affecting] in their slime!</span>")
+			if(!do_mob(user, affecting)||!do_after(user, 30)) return
+			user.visible_message("<span class='danger'>[user] coats their slime over [affecting]!</span>")
 			affecting.loc = user
-			attacker.stomach_contents.Add(affecting)
+			attacker.slime_contents.Add(affecting)
 			del(src)
 
 

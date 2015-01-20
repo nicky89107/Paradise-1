@@ -48,6 +48,7 @@
 		M << "You can't move against the flow of [src]!"
 		return 0
 	return 1
+
 /obj/machinery/atmospherics/binary/pump/Entered(mob/living/M as mob)
 	if(on)
 		M << "[src] spits you violently out the other side!"

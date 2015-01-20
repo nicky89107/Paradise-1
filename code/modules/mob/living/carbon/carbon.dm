@@ -53,6 +53,10 @@
 						A.loc = loc
 						stomach_contents.Remove(A)
 					src.gib()
+	if(user in src.slime_contents)
+		for(var/mob/M in hearers(4, src))
+			if(M.client)
+				M.show_message(text("\red [user.name] struggles desperately in [src]'s slime."), 2)
 
 /mob/living/carbon/gib()
 	for(var/mob/M in src)
@@ -236,7 +240,7 @@
 // ++++ROCKDTBEN++++ MOB PROCS //END
 
 
-
+/*
 /mob/living/carbon/proc/handle_ventcrawl(var/obj/machinery/atmospherics/unary/vent_pump/vent_found = null) // -- TLE -- Merged by Carn
 	if(stat)
 		src << "You must be conscious to do this!"
@@ -326,7 +330,7 @@
 		var/area/new_area = get_area(loc)
 		if(new_area)
 			new_area.Entered(src)
-
+*/
 
 
 /mob/living/carbon/clean_blood()

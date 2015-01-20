@@ -378,11 +378,11 @@
 			i++
 			newname += pick(vox_name_syllables)
 		return capitalize(newname)
-/*
+
 /datum/species/vox/handle_post_spawn(var/mob/living/carbon/human/H)
 
 	H.verbs += /mob/living/carbon/human/proc/leap
-	..() */
+	..()
 
 /datum/species/vox/armalis/handle_post_spawn(var/mob/living/carbon/human/H)
 
@@ -469,10 +469,11 @@
 	language = "Bubblish"
 	path = /mob/living/carbon/human/slime
 	primitive = /mob/living/carbon/slime
-	unarmed_type = /datum/unarmed_attack/punch
+	unarmed_type = /datum/unarmed_attack/squish
 
 	flags = IS_WHITELISTED | NO_BREATHE | HAS_LIPS | NO_INTORGANS | NO_SCAN
 	bloodflags = BLOOD_SLIME
+	bodyflags = FEET_NOSLIP
 
 /datum/species/slime/handle_post_spawn(var/mob/living/carbon/human/H)
 	H.dna = new /datum/dna(null)
@@ -649,3 +650,9 @@
 /datum/unarmed_attack/claws/armalis
 	attack_verb = list("slash", "claw")
 	damage = 10	//they're huge! they should do a little more damage, i'd even go for 15-20 maybe...
+
+/datum/unarmed_attack/squish
+	attack_sound = 'sound/weapons/slice.ogg'
+	miss_sound = 'sound/weapons/slashmiss.ogg'
+	attack_verb = list("squished", "shocked")
+	damage = 5
