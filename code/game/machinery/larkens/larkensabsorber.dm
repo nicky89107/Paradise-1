@@ -322,29 +322,29 @@
 		else if (src.occupant.get_species() == "Human")
 			if(src.occupant.gender == FEMALE) //I am going to hell. And so is adr. -Tigercat2000
 				src.occupant.visible_message("\blue The goo playfully carresses your crotch.") //Yep.
-				sleep(20)
-				src.occupant.visible_message("\blue The slime delicately opens the lips on your crotch. The goo gets warmer") //My eyes are on fire.
-				sleep(20)
+				sleep(50)
+				src.occupant.visible_message("\blue The slime delicately opens the lips on your crotch. The goo gets warmer.") //My eyes are on fire.
+				sleep(50)
 				src.occupant.visible_message("\blue The slime gently oozes inside of you.") //I am going to have to burn my computer after this.
-				sleep(20)
+				sleep(50)
 				src.occupant.visible_message("\blue The soft slime slowly but surely massages your crotch, both outside and inside of you, causing an intense pleasure. You feel the soft slime slowly slithering deeper.") //Nevermind, going to have to burn the house down.
-				sleep(20)
+				sleep(50)
 				src.occupant.visible_message("\blue The slime grows pleasently warmer, pushing in and out.") //Please kill me.
-				sleep(20)
+				sleep(50)
 				src.occupant.visible_message("\blue The warm slime inside you gradually thickens as it thrusts, pushing against the walls of your uterus. The slime grabs your ankles to keep your legs open.") //Jesus christ, why
-				sleep(20)
+				sleep(50)
 				src.occupant.visible_message("\blue The slime around your body tightens, gently hugging you. The slime continues slowly increasing in speed.") //this is definately worse than blue
-				sleep(20)
-				src.occupant.visible_message("\blue You gasp as the hardened slime slips a bit deeper with every thrust, increasing the blissful pleasure and the hot feeling all over your body") //I just want to set the world on fire, world on fire!
-				sleep(20)
+				sleep(50)
+				src.occupant.visible_message("\blue You gasp as the hardened slime slips a bit deeper with every thrust, increasing the blissful pleasure and the hot feeling all over your body.") //I just want to set the world on fire, world on fire!
+				sleep(50)
 				src.occupant.visible_message("\blue The goo welcomingly hugs tighter around you and continues to make it's way deeper inside you.") //Where did I put my fucking flamethrower?
-				sleep(20)
+				sleep(50)
 				src.occupant.visible_message("\blue The intense feeling makes you try to close your legs, but the slime keeps them tightly in place. You squirm as you feel the massaging slime drive you close to your climax.") //Oh, it's in the corner... now just fuel...
-				sleep(20)
+				sleep(50)
 				src.occupant.visible_message("\blue The slime tightens more around your body as it pushes in and out, making you closer and closer to the end.") //Ahah, found a gas tank, wonderful
-				sleep(20)
+				sleep(50)
 				src.occupant.visible_message("\blue You emit a bubbly moan and your muscles tighten as you reach the pleasure peak. The hot sensation almost makes you pass out. Your body goes limp as you relax and the slime slowly slips out, giving a last massage to your oversensitive skin.")
-				sleep(20)//It still lights, wonderful
+				sleep(50)//It still lights, wonderful
 				src.occupant.visible_message("\blue The slime releases the tight grip around you and the door unlatches.") //Yep, going to go set myself on fire.
 				src.operating = 0
 				src.locked = 0

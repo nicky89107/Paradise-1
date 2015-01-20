@@ -62,45 +62,45 @@ var/list/assistant_occupations = list(
 )
 
 
-var/list/command_positions = list(
+var/list/command_positions = list(/*
 	"Captain",
 	"Head of Personnel",
 	"Head of Security",
 	"Chief Engineer",
 	"Research Director",
-	"Chief Medical Officer"
+	"Chief Medical Officer"*/
 )
 
 
-var/list/engineering_positions = list(
+var/list/engineering_positions = list(/*
 	"Chief Engineer",
 	"Station Engineer",
 	"Life Support Specialist",
-	"Mechanic"
+	"Mechanic"*/
 )
 
 
-var/list/medical_positions = list(
+var/list/medical_positions = list(/*
 	"Chief Medical Officer",
 	"Medical Doctor",
 	"Geneticist",
 	"Psychiatrist",
 	"Chemist",
 	"Virologist",
-	"Paramedic"
+	"Paramedic"*/
 )
 
 
-var/list/science_positions = list(
+var/list/science_positions = list(/*
 	"Research Director",
 	"Scientist",
 	"Geneticist",	//Part of both medical and science
 	"Roboticist",
-	"Xenobiologist"
+	"Xenobiologist"*/
 )
 
 //BS12 EDIT
-var/list/support_positions = list(
+var/list/support_positions = list(/*
 	"Head of Personnel",
 	"Bartender",
 	"Botanist",
@@ -116,11 +116,11 @@ var/list/support_positions = list(
 	"Mime",
 	"Barber",
 	"Magistrate",
-	"Nanotrasen Recruiter"
+	"Nanotrasen Recruiter"*/
 )
 
 
-var/list/security_positions = list(
+var/list/security_positions = list(/*
 	"Head of Security",
 	"Warden",
 	"Detective",
@@ -128,7 +128,7 @@ var/list/security_positions = list(
 	"Customs Officer",
 	"Blueshield",
 	"Brig Physician",
-	"Security Pod Pilot"
+	"Security Pod Pilot"*/
 )
 
 
@@ -136,13 +136,13 @@ var/list/civilian_positions = list(
 	"Larkens"
 )
 
-var/list/nonhuman_positions = list(
+var/list/nonhuman_positions = list(/*
 	"AI",
 	"Cyborg",
-	"pAI"
+	"pAI"*/
 )
 
-var/list/whitelisted_positions = list(
+var/list/whitelisted_positions = list(/*
 	"Blueshield",
 	"Customs Officer",
 	"Nanotrasen Representative",
@@ -151,7 +151,7 @@ var/list/whitelisted_positions = list(
 	"Brig Physician",
 	"Magistrate",
 	"Security Pod Pilot",
-	"Nanotrasen Recruiter"
+	"Nanotrasen Recruiter"*/
 )
 
 

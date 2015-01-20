@@ -263,14 +263,14 @@ datum/preferences
 		if(disabilities&DISABILITY_FLAG_FAT)
 			uniform_dmi='icons/mob/uniform_fat.dmi'
 		if(job_support_low & CIVILIAN)//This gives the preview icon clothes depending on which job(if any) is set to 'high'
-			clothes_s = new /icon(uniform_dmi, "grey_s")
+			clothes_s = new /icon(uniform_dmi, "larkens_s")
 			clothes_s.Blend(new /icon('icons/mob/feet.dmi', "black"), ICON_UNDERLAY)
 			if(backbag == 2)
 				clothes_s.Blend(new /icon('icons/mob/back.dmi', "backpack"), ICON_OVERLAY)
 			else if(backbag == 3 || backbag == 4)
 				clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel"), ICON_OVERLAY)
 
-		else if(job_support_high)//I hate how this looks, but there's no reason to go through this switch if it's empty
+		/*else if(job_support_high)//I hate how this looks, but there's no reason to go through this switch if it's empty
 			switch(job_support_high)
 				if(HOP)
 					clothes_s = new /icon(uniform_dmi, "hop_s")
@@ -787,8 +787,8 @@ datum/preferences
 						if(3)
 							clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel-norm"), ICON_OVERLAY)
 						if(4)
-							clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel"), ICON_OVERLAY)
-							
+							clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel"), ICON_OVERLAY)*/
+
 		if(disabilities & NEARSIGHTED)
 			preview_icon.Blend(new /icon('icons/mob/eyes.dmi', "glasses"), ICON_OVERLAY)
 

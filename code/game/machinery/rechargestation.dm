@@ -12,6 +12,10 @@
 	var/recharge_speed
 	var/repairs
 
+/obj/machinery/recharge_station
+	Bumped(var/atom/A)
+		move_inside()
+
 /obj/machinery/recharge_station/New()
 	..()
 	component_parts = list()
@@ -31,8 +35,8 @@
 	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
 		repairs += M.rating - 1
 	for(var/obj/item/weapon/cell/C in component_parts)
-		recharge_speed *= C.maxcharge / 10000		
-		
+		recharge_speed *= C.maxcharge / 10000
+
 /obj/machinery/recharge_station/process()
 	if(!(NOPOWER|BROKEN))
 		return
@@ -57,8 +61,8 @@
 	if(occupant)
 		occupant.emp_act(severity)
 		go_out()
-	..(severity)	
-	
+	..(severity)
+
 /obj/machinery/recharge_station/proc/build_icon()
 	if(NOPOWER|BROKEN)
 		if(src.occupant)
@@ -72,15 +76,15 @@
 	if (istype(P, /obj/item/weapon/screwdriver))
 		if(src.occupant)
 			user << "<span class='notice'>The maintenance panel is locked.</span>"
-			return	
+			return
 		default_deconstruction_screwdriver(user, "borgdecon2", "borgcharger0", P)
-		return		
+		return
 
 	if(exchange_parts(user, P))
-		return		
-		
-	default_deconstruction_crowbar(P)				
-		
+		return
+
+	default_deconstruction_crowbar(P)
+
 /obj/machinery/recharge_station/proc/process_occupant()
 	if(src.occupant)
 		if (istype(occupant, /mob/living/silicon/robot))
@@ -95,6 +99,16 @@
 					R.cell.charge = R.cell.maxcharge
 				else
 					R.cell.charge = min(R.cell.charge + recharge_speed, R.cell.maxcharge)
+		else
+			var/mob/living/carbon/human/machine/M = occupant
+			if(M.nutrition < 450)
+				M.nutrition += 50
+
+				src.occupant.visible_message("\blue The recharger trickles energy to your internal cell.")
+				if(M.nutrition > 500) M.nutrition = 500
+
+			else
+				src.occupant.visible_message("\blue You are already fully charged.")
 
 /obj/machinery/recharge_station/proc/go_out()
 	if(!( src.occupant ))
@@ -180,6 +194,7 @@
 							S.reagents.add_reagent("sacid", 2 * coeff)
 
 /obj/machinery/recharge_station/verb/move_eject()
+	set name = "Eject Charger"
 	set category = "Object"
 	set src in oview(1)
 	if (usr.stat != 0)
@@ -189,24 +204,28 @@
 	return
 
 /obj/machinery/recharge_station/verb/move_inside()
+	set name = "Enter Charger"
 	set category = "Object"
 	set src in oview(1)
 	if (usr.stat == 2)
 		//Whoever had it so that a borg with a dead cell can't enter this thing should be shot. --NEO
 		return
-	if (!(istype(usr, /mob/living/silicon/)))
+	if (istype(usr, /mob/living/carbon/) && !istype(usr, /mob/living/carbon/human/machine)) //Borgs and machine people only! Go away silly humans.
 		usr << "\blue <b>Only non-organics may enter the recharger!</b>"
 		return
+
 	if (src.occupant)
 		usr << "\blue <b>The cell is already occupied!</b>"
 		return
-	if (!usr:cell)
-		usr << "\blue <b>Without a powercell, you can't be recharged.</b>"
-		//Make sure they actually HAVE a cell, now that they can get in while powerless. --NEO
-		return
-	if (panel_open)
-		usr << "\blue <b>Close the maintenance panel first.</b>"
-		return
+	if(!istype(usr, /mob/living/carbon/human/machine)) //don't break the procs with machine people
+		if (!usr:cell)
+			usr << "\blue <b>Without a powercell, you can't be recharged.</b>"
+			//Make sure they actually HAVE a cell, now that they can get in while powerless. --NEO
+			return
+		if (panel_open)
+			usr << "\blue <b>Close the maintenance panel first.</b>"
+			return
+
 	usr.stop_pulling()
 	if(usr && usr.client)
 		usr.client.perspective = EYE_PERSPECTIVE

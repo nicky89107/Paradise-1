@@ -12,8 +12,7 @@
 	if(user.stat || !isturf(src.loc))
 		return
 	if(!(mdir&initialize_directions))
-		visible_message(pick("clang","CLANG","Clang","clong","CLONG","Clong","tink","tak","tok","DOK","DAK"))
-		user << "donk" // find the user and put a donk on it
+		user << "That's a wall, ow." // find the user and put a donk on it
 		user.Stun(1)
 		return
 	var/turf/T = get_step(loc,mdir)

@@ -46,8 +46,8 @@
 		sleep(100)
 		src.attack_hand(user)
 		timed = 0
-		sleep(6000)
-		src.attack_hand(user)
+		spawn(6000)
+			src.attack_hand(user)
 	else
 		return
 /obj/structure/morgue/proc/update()
@@ -476,8 +476,12 @@
 				M.visible_message("\red <b>The bag starts melting onto your skin! </b>")
 				M.apply_effect(20, AGONY, 0)
 				sleep(20)
-				M.visible_message("\red The incredible heat causes the bag to start painfully fusing with your skin!")
+				M.visible_message("\red <b>The incredible heat causes the bag to start painfully fusing with your skin!</b>")
 				M.apply_effect(20, AGONY, 0)
+				sleep(20)
+				M.emote("scream")
+				M.apply_effect(30, AGONY, 0)
+				M.visible_message("\red <b>The bag is searing your skin!</b>")
 
 
 		//Logging for this causes runtimes resulting in the cremator locking up. Commenting it out until that's figured out.

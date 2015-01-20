@@ -56,7 +56,7 @@
 
 	New()
 		..()
-		var/color = pick("red","yellow","green","blue","pink","orange","cyan","white")
+		var/color = pick("cyan")
 		new /obj/item/weapon/screwdriver(src)
 		new /obj/item/weapon/wirecutters(src)
 		new /obj/item/device/t_scanner(src)
@@ -78,7 +78,7 @@
 
 	New()
 		..()
-		var/color = pick("red","yellow","green","blue","pink","orange","cyan","white")
+		var/color = pick("cyan")
 		new /obj/item/weapon/screwdriver(src)
 		new /obj/item/weapon/wrench(src)
 		new /obj/item/weapon/weldingtool(src)
