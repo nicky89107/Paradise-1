@@ -4,7 +4,7 @@
 	department_flag = SUPPORT
 	total_positions = -1
 	spawn_positions = -1
-	supervisors = "No one"
+	supervisors = "No one."
 	selection_color = "#dddddd"
 	idtype = /obj/item/weapon/card/id/larkens
 	access = list()			//See /datum/job/assistant/get_access()

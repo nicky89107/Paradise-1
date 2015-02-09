@@ -208,6 +208,8 @@
 			if(!do_mob(user, affecting)||!do_after(user, 30)) return
 			user.visible_message("<span class='danger'>[user] coats their slime over [affecting]!</span>")
 			affecting.loc = user
+			var/mob/living/carbon/C = affecting
+			C.insidemob = 1
 			attacker.slime_contents.Add(affecting)
 			del(src)
 

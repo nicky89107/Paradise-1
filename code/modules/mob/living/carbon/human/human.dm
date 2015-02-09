@@ -1110,6 +1110,8 @@
 			var/atom/movable/AM = content
 			src.slime_contents.Remove(AM)
 			AM.loc = location
+			var/mob/living/carbon/C = AM
+			C.insidemob = 0
 
 
 /mob/living/carbon/human/proc/get_visible_gender()

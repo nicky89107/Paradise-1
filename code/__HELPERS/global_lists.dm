@@ -46,6 +46,7 @@ var/global/list/underwear_m = list("White", "Grey", "Green", "Blue", "Black", "M
 var/global/list/underwear_f = list("Red", "White", "Yellow", "Blue", "Black", "Thong", "None")
 	//undershirt
 var/global/list/undershirt_t = list("Black Tank top", "White Tank top", "Black shirt", "White shirt", "None")
+var/global/list/undershirt_list = undershirt_t
 	//Backpacks
 var/global/list/backbaglist = list("Nothing", "Backpack", "Satchel", "Satchel Alt")
 

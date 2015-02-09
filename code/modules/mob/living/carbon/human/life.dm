@@ -87,13 +87,16 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	//No need to update all of these procs if the guy is dead.
 	if(stat != DEAD && !in_stasis)
-		if(air_master.current_cycle%4==2 || failed_last_breath) 	//First, resolve location and get a breath
-			breathe() 				//Only try to take a breath every 4 ticks, unless suffocating
+		if(!insidemob) //if inside a mob, don't worry about breathing
+			if(air_master.current_cycle%4==2 || failed_last_breath) 	//First, resolve location and get a breath
+				breathe() 				//Only try to take a breath every 4 ticks, unless suffocating
 
-		else //Still give containing object the chance to interact
-			if(istype(loc, /obj/))
-				var/obj/location_as_object = loc
-				location_as_object.handle_internal_lifeform(src, 0)
+			else //Still give containing object the chance to interact
+				if(istype(loc, /obj/))
+					var/obj/location_as_object = loc
+					location_as_object.handle_internal_lifeform(src, 0)
+		else
+			return
 
 		if(check_mutations)
 //			testing("Updating [src.real_name]'s mutations: "+english_list(mutations))

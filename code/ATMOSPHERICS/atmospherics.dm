@@ -22,6 +22,7 @@ obj/machinery/atmospherics
 obj/machinery/atmospherics/var/initialize_directions = 0
 obj/machinery/atmospherics/var/_color
 
+
 obj/machinery/atmospherics/process()
 	build_network()
 

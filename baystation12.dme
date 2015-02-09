@@ -733,6 +733,7 @@
 #include "code\game\objects\structures\coathanger.dm"
 #include "code\game\objects\structures\displaycase.dm"
 #include "code\game\objects\structures\door_assembly.dm"
+#include "code\game\objects\structures\dresser.dm"
 #include "code\game\objects\structures\electricchair.dm"
 #include "code\game\objects\structures\engicart.dm"
 #include "code\game\objects\structures\extinguisher.dm"
@@ -1637,6 +1638,5 @@
 #include "code\ZAS\Zone.dm"
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
-#include "maps\TestingArea.dmm"
-#include "maps\RandomZLevels\clown3.dmm"
+#include "maps\LarkensMeteorHideout.dmm"
 // END_INCLUDE
