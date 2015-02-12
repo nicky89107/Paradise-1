@@ -958,6 +958,14 @@
 	products = list(/obj/item/clothing/mask/muzzle = 100)
 	contraband = list(/obj/item/clothing/mask/muzzle/gag = 100)
 
+/obj/machinery/vending/scarves
+	name = "Scarves"
+	desc = "A vending machine for scarves."
+	product_ads = ""
+	products = list(/obj/item/clothing/accessory/scarf/red=10,/obj/item/clothing/accessory/scarf/green=10,/obj/item/clothing/accessory/scarf/darkblue=10,
+ 	/obj/item/clothing/accessory/scarf/purple=10,/obj/item/clothing/accessory/scarf/yellow=10,/obj/item/clothing/accessory/scarf/orange=10,
+ 	/obj/item/clothing/accessory/scarf/lightblue=10,/obj/item/clothing/accessory/scarf/white=10,/obj/item/clothing/accessory/scarf/black=10)
+
 /obj/machinery/vending/sovietsoda
 	name = "BODA"
 	desc = "Old sweet water vending machine"

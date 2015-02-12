@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /obj/item/clothing/tie
 	name = "tie"
 	desc = "A neosilk clip-on tie."
@@ -370,3 +371,83 @@
 	..()
 	new /obj/item/weapon/hatchet/unathiknife(hold)
 	new /obj/item/weapon/hatchet/unathiknife(hold)
+
+///////////
+//SCARVES//
+///////////
+
+/obj/item/clothing/tie/scarf
+	name = "scarf"
+	desc = "A stylish scarf. The perfect winter accessory for those with a keen fashion sense, and those who just can't handle a cold breeze on their necks."
+
+/obj/item/clothing/tie/scarf/red
+	name = "red scarf"
+	icon_state = "redscarf"
+	_color = "redscarf"
+
+/obj/item/clothing/tie/scarf/green
+	name = "green scarf"
+	icon_state = "greenscarf"
+	_color = "greenscarf"
+
+/obj/item/clothing/tie/scarf/darkblue
+	name = "dark blue scarf"
+	icon_state = "darkbluescarf"
+	_color = "darkbluescarf"
+
+/obj/item/clothing/tie/scarf/purple
+	name = "purple scarf"
+	icon_state = "purplescarf"
+	_color = "purplescarf"
+
+/obj/item/clothing/tie/scarf/yellow
+	name = "yellow scarf"
+	icon_state = "yellowscarf"
+	_color = "yellowscarf"
+
+/obj/item/clothing/tie/scarf/orange
+	name = "orange scarf"
+	icon_state = "orangescarf"
+	_color = "orangescarf"
+
+/obj/item/clothing/tie/scarf/lightblue
+	name = "light blue scarf"
+	icon_state = "lightbluescarf"
+	_color = "lightbluescarf"
+
+/obj/item/clothing/tie/scarf/white
+	name = "white scarf"
+	icon_state = "whitescarf"
+	_color = "whitescarf"
+
+/obj/item/clothing/tie/scarf/black
+	name = "black scarf"
+	icon_state = "blackscarf"
+	_color = "blackscarf"
+
+/obj/item/clothing/tie/scarf/zebra
+	name = "zebra scarf"
+	icon_state = "zebrascarf"
+	_color = "zebrascarf"
+
+/obj/item/clothing/tie/scarf/christmas
+	name = "christmas scarf"
+	icon_state = "christmasscarf"
+	_color = "christmasscarf"
+
+//The three following scarves don't have the scarf subtype
+//This is because Ian can equip anything from that subtype
+//However, these 3 don't have corgi versions of their sprites
+/obj/item/clothing/tie/stripedredscarf
+	name = "striped red scarf"
+	icon_state = "stripedredscarf"
+	_color = "stripedredscarf"
+
+/obj/item/clothing/tie/stripedgreenscarf
+	name = "striped green scarf"
+	icon_state = "stripedgreenscarf"
+	_color = "stripedgreenscarf"
+
+/obj/item/clothing/tie/stripedbluescarf
+	name = "striped blue scarf"
+	icon_state = "stripedbluescarf"
