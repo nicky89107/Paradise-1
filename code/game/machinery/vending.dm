@@ -962,9 +962,9 @@
 	name = "Scarves"
 	desc = "A vending machine for scarves."
 	product_ads = ""
-	products = list(/obj/item/clothing/accessory/scarf/red=10,/obj/item/clothing/accessory/scarf/green=10,/obj/item/clothing/accessory/scarf/darkblue=10,
- 	/obj/item/clothing/accessory/scarf/purple=10,/obj/item/clothing/accessory/scarf/yellow=10,/obj/item/clothing/accessory/scarf/orange=10,
- 	/obj/item/clothing/accessory/scarf/lightblue=10,/obj/item/clothing/accessory/scarf/white=10,/obj/item/clothing/accessory/scarf/black=10)
+	products = list(/obj/item/clothing/tie/scarf/red=10,/obj/item/clothing/tie/scarf/green=10,/obj/item/clothing/tie/scarf/darkblue=10,
+ 	/obj/item/clothing/tie/scarf/purple=10,/obj/item/clothing/tie/scarf/yellow=10,/obj/item/clothing/tie/scarf/orange=10,
+ 	/obj/item/clothing/tie/scarf/lightblue=10,/obj/item/clothing/tie/scarf/white=10,/obj/item/clothing/tie/scarf/black=10)
 
 /obj/machinery/vending/sovietsoda
 	name = "BODA"
@@ -1057,7 +1057,7 @@
 	desc = "You wonder for a moment why all of your shirts and pants come conjoined. This hurts your head and you stop thinking about it."
 	icon_state = "suits"
 	product_ads = "Pre-Ironed, Pre-Washed, Pre-Wor-*BZZT*;Blood of your enemys washes right out!;Who are YOU wearing?;Look dapper! Look like an idiot!;Dont carry your size? How about you shave off some pounds you fat lazy- *BZZT*"
-	products = list(/obj/item/clothing/under/color/black = 10,/obj/item/clothing/under/color/blue = 10,/obj/item/clothing/under/color/green = 10,/obj/item/clothing/under/color/grey = 10,/obj/item/clothing/under/color/pink = 10,/obj/item/clothing/under/color/red = 10,
+	products = list(/obj/item/clothing/under/syndicate = 10, /obj/item/clothing/under/color/black = 10,/obj/item/clothing/under/color/blue = 10,/obj/item/clothing/under/color/green = 10,/obj/item/clothing/under/color/grey = 10,/obj/item/clothing/under/color/pink = 10,/obj/item/clothing/under/color/red = 10,
 					/obj/item/clothing/under/color/white = 10, /obj/item/clothing/under/color/yellow = 10,/obj/item/clothing/under/lightblue = 10,/obj/item/clothing/under/aqua = 10,/obj/item/clothing/under/purple = 10,/obj/item/clothing/under/lightgreen = 10,
 					/obj/item/clothing/under/lightblue = 10,/obj/item/clothing/under/lightbrown = 10,/obj/item/clothing/under/brown = 10,/obj/item/clothing/under/yellowgreen = 10,/obj/item/clothing/under/darkblue = 10,/obj/item/clothing/under/lightred = 10, /obj/item/clothing/under/darkred = 10)
 	contraband = list(/obj/item/clothing/under/syndicate/tacticool = 5,/obj/item/clothing/under/color/orange = 5,/obj/item/clothing/under/psyche = 5)

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /obj/item/clothing/tie
 	name = "tie"
 	desc = "A neosilk clip-on tie."

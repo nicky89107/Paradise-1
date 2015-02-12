@@ -516,7 +516,8 @@
 			set desc = "Fire the weapons."
 			set category = "Spacepod"
 			set src = usr.loc
-			equipment_system.weapon_system.fire_weapons()
+			if(equipment_system.weapon_system)
+				equipment_system.weapon_system.fire_weapons()
 		else
 			return
 	else
@@ -524,7 +525,8 @@
 		set desc = "Fire the weapons."
 		set category = "Spacepod"
 		set src = usr.loc
-		equipment_system.weapon_system.fire_weapons()
+		if(equipment_system.weapon_system)
+			equipment_system.weapon_system.fire_weapons()
 
 obj/spacepod/verb/toggleLights()
 	if(src.occupant2)
