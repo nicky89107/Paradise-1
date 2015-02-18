@@ -50,6 +50,7 @@
 	verbs += /mob/living/carbon/human/slime/proc/change_gender
 	verbs += /mob/living/carbon/human/slime/proc/set_absorb
 	verbs += /mob/living/carbon/human/slime/proc/release_captive
+	verbs += /mob/living/carbon/human/slime/proc/become_slime
 
 /mob/living/carbon/human/grey/New(var/new_loc)
 	..(new_loc, "Grey")

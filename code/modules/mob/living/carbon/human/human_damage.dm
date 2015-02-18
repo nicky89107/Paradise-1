@@ -16,11 +16,20 @@
 	if (species.flags & IS_SYNTHETIC)
 		var/datum/organ/external/H = organs_by_name["head"]
 		if (!H.amputated)
-			if ((health >= (config.health_threshold_dead/100*75)) && stat == DEAD)  //need to get them 25% away from death point before reviving them
-				dead_mob_list -= src
-				living_mob_list += src
-				stat = CONSCIOUS
+			if ((health >= (config.health_threshold_dead/100*75)) && stat == DEAD)  //need to get them 25% away from death point before reviving synthetics
+				update_revive()
+	if (stat == CONSCIOUS && (src in dead_mob_list)) //Defib fix
+		update_revive()
 	return
+
+/mob/living/carbon/human/proc/update_revive() // handles revival through other means than cloning or adminbus (defib, IPC repair)
+	stat = CONSCIOUS
+	dead_mob_list -= src
+	living_mob_list |= src
+	mob_list |= src
+	ear_deaf = 0
+	tod = 0
+	timeofdeath = 0
 
 /mob/living/carbon/human/getBrainLoss()
 	if(species && species.flags & NO_INTORGANS) return

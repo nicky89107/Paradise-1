@@ -559,11 +559,11 @@
 	deform = 'icons/mob/human_races/r_machine.dmi'
 	path = /mob/living/carbon/human/machine
 	language = "Trinary"
-	unarmed_type = /datum/unarmed_attack/punch
+	unarmed_type = /datum/unarmed_attack/machine
 
 	eyes = "blank_eyes"
-	brute_mod = 1.5
-	burn_mod = 1.5
+	brute_mod = 0.5
+	burn_mod = 0.5
 
 	cold_level_1 = 50
 	cold_level_2 = -1
@@ -656,3 +656,9 @@
 	miss_sound = 'sound/weapons/slashmiss.ogg'
 	attack_verb = list("squished", "shocked")
 	damage = 5
+
+/datum/unarmed_attack/machine
+	attack_sound = 'sound/weapons/tablehit1.ogg'
+	miss_sound = 'sound/weapons/punchmiss.ogg'
+	attack_verb = list("smashed", "battered")
+	damage = 10 //IPC's punch hard with their powerful hydraulic systems.

@@ -101,3 +101,23 @@ Creature-level abilities.
 
 		if(M.slime_contents)
 			M.vomitslime()
+
+/mob/living/carbon/human/slime/proc/become_slime()
+
+	set category = "Abilities"
+	set name = "Become puddle"
+	set desc = "Become a puddle of slime!"
+
+	if(istype(usr,/mob/living/carbon/human/slime))
+		var/mob/living/carbon/human/slime/M = usr
+
+		if(M.stat==2)
+			M << "\red You must be corporeal and alive to do that."
+			return 0
+
+		var/mob/living/simple_animal/slime_puddle/puddle
+
+		puddle = new /mob/living/simple_animal/slime_puddle(M.loc)
+
+		M.loc = puddle
+		puddle.key = M.key
