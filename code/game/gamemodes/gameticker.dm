@@ -37,6 +37,8 @@ var/global/datum/controller/gameticker/ticker
 	var/triai = 0//Global holder for Triumvirate
 	var/initialtpass = 0 //holder for inital autotransfer vote timer
 
+	var/round_end_announced = 0 // Spam Prevention. Announce round end only once.	
+
 /datum/controller/gameticker/proc/pregame()
 	do
 		pregame_timeleft = 180
@@ -207,10 +209,13 @@ var/global/datum/controller/gameticker/ticker
 	if(admins_number == 0)
 		send2adminirc("Round has started with no admins online.")
 
+	/* DONE THROUGH PROCESS SCHEDULER
 	supply_controller.process() 		//Start the supply shuttle regenerating points -- TLE
 	master_controller.process()		//Start master_controller.process()
 	lighting_controller.process()	//Start processing DynamicAreaLighting updates
+	*/
 
+	processScheduler.start()
 
 	if(config.sql_enabled)
 		spawn(3000)
@@ -252,9 +257,8 @@ var/global/datum/controller/gameticker/ticker
 				switch(M.z)
 					if(0)	//inside a crate or something
 						var/turf/T = get_turf(M)
-						if(T && T.z==1)				//we don't use M.death(0) because it calls a for(/mob) loop and
-							M.health = 0
-							M.stat = DEAD
+						if(T && (T.z in config.station_levels))
+							M.death(0)
 					if(1)	//on a z-level 1 turf.
 						M.health = 0
 						M.stat = DEAD
@@ -365,7 +369,7 @@ var/global/datum/controller/gameticker/ticker
 		mode.process()
 		mode.process_job_tasks()
 
-		emergency_shuttle.process()
+		//emergency_shuttle.process() DONE THROUGH PROCESS SCHEDULER
 
 		var/game_finished = 0
 		var/mode_finished = 0
@@ -477,6 +481,9 @@ var/global/datum/controller/gameticker/ticker
 
 	scoreboard()
 	karmareminder()
+	
+	//Ask the event manager to print round end information
+	event_manager.RoundEnd()
 
 	return 1
 
