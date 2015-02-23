@@ -51,8 +51,8 @@ obj/machinery/atmospherics/pipe
 		return parent.return_network(reference)
 
 	Destroy()
-		del(parent)
-		if(air_temporary)
+		qdel(parent)
+		if(air_temporary && loc)
 			loc.assume_air(air_temporary)
 
 		..()
@@ -239,12 +239,12 @@ obj/machinery/atmospherics/pipe
 		disconnect(obj/machinery/atmospherics/reference)
 			if(reference == node1)
 				if(istype(node1, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node1 = null
 
 			if(reference == node2)
 				if(istype(node2, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node2 = null
 
 			update_icon()
@@ -493,7 +493,7 @@ obj/machinery/atmospherics/pipe
 		disconnect(obj/machinery/atmospherics/reference)
 			if(reference == node1)
 				if(istype(node1, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node1 = null
 
 			update_icon()
@@ -601,7 +601,7 @@ obj/machinery/atmospherics/pipe
 		disconnect(obj/machinery/atmospherics/reference)
 			if(reference == node1)
 				if(istype(node1, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node1 = null
 
 			update_icon()
@@ -694,17 +694,17 @@ obj/machinery/atmospherics/pipe
 		disconnect(obj/machinery/atmospherics/reference)
 			if(reference == node1)
 				if(istype(node1, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node1 = null
 
 			if(reference == node2)
 				if(istype(node2, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node2 = null
 
 			if(reference == node3)
 				if(istype(node3, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node3 = null
 
 			update_icon()
@@ -949,22 +949,22 @@ obj/machinery/atmospherics/pipe
 		disconnect(obj/machinery/atmospherics/reference)
 			if(reference == node1)
 				if(istype(node1, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node1 = null
 
 			if(reference == node2)
 				if(istype(node2, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node2 = null
 
 			if(reference == node3)
 				if(istype(node3, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node3 = null
 
 			if(reference == node4)
 				if(istype(node4, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node4 = null
 
 			update_icon()
@@ -1143,7 +1143,7 @@ obj/machinery/atmospherics/pipe
 		disconnect(obj/machinery/atmospherics/reference)
 			if(reference == node)
 				if(istype(node, /obj/machinery/atmospherics/pipe))
-					del(parent)
+					qdel(parent)
 				node = null
 
 			update_icon()
@@ -1250,7 +1250,7 @@ obj/machinery/atmospherics/pipe/attackby(var/obj/item/weapon/W as obj, var/mob/u
 				for (var/obj/machinery/meter/meter in T)
 					if (meter.target == src)
 						new /obj/item/pipe_meter(T)
-						del(meter)
+						qdel(meter)
 				qdel(src)
 			return 1
 
@@ -1265,5 +1265,5 @@ obj/machinery/atmospherics/pipe/attackby(var/obj/item/weapon/W as obj, var/mob/u
 		for (var/obj/machinery/meter/meter in T)
 			if (meter.target == src)
 				new /obj/item/pipe_meter(T)
-				del(meter)
+				qdel(meter)
 		qdel(src)

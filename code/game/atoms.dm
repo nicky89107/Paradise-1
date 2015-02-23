@@ -1,3 +1,6 @@
+var/global/list/del_profiling = list()
+var/global/list/gdel_profiling = list()
+var/global/list/ghdel_profiling = list()
 /atom
 	layer = 2
 	var/level = 2
@@ -25,15 +28,17 @@
 	// Garbage collection
 	var/gc_destroyed=null
 
-/atom/Del()
-	// Pass to Destroy().
-	if(!gc_destroyed)
-		Destroy()
-	..()
 
-/atom/proc/Destroy()
-	gc_destroyed=world.time
+/atom/Destroy()
+	SetOpacity(0)
 
+
+	if(reagents)
+		reagents.Destroy()
+		reagents = null
+
+	// Idea by ChuckTheSheep to make the object even more unreferencable.
+	invisibility = 101
 
 /atom/proc/CheckParts()
 	return
@@ -241,6 +246,8 @@ its easier to just keep the beam vertical.
 /atom/proc/blob_act()
 	return
 
+/atom/proc/emag_act()
+	return
 
 /atom/proc/hitby(atom/movable/AM as mob|obj)
 	if (density)
