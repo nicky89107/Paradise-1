@@ -16,6 +16,7 @@
 	pass_flags = PASSTABLE
 	can_hide = 1
 	layer = TURF_LAYER+0.2
+	wander = 0
 	var/mob/living/carbon/trappedh = null
 
 /mob/living/simple_animal/slime_puddle/Life()
@@ -70,12 +71,32 @@
 	if(stupid)
 		src.visible_message("\red [src] suddenly rises up and latches onto the legs of [stupid]!","\red You quickly slime over the legs of [stupid]!","\red You hear a strange squishing noise.")
 		stupid << "\red You legs are coated with a strange goo!"
+		src << "\red You realize that you cannot move while around [stupid]'s legs."
 
 		stupid.apply_effect(200, STUN, 0)
 		src.trappedh = stupid
+		src.canmove = 0
 
 	else
 		src << "\red There is no fool standing in your slime!"
+
+/mob/living/simple_animal/slime_puddle/verb/untrap()
+	set name = "Release Trapped Person"
+	set desc = "Let go of anyone you have trapped."
+	set category = "Puddle"
+
+	if(src.stat != CONSCIOUS)	return
+
+	if(src.trappedh)
+		trappedh.SetStunned(0)
+		src.visible_message("\red [src] retracts it's slime from [trappedh]'s legs, freeing them.","\red You release the legs of [trappedh]","\red You hear a slurping noise.")
+		trappedh << "\red You can move again!"
+		src << "You can move away from [trappedh] now."
+		trappedh = null
+		src.canmove = 1
+
+	else
+		src << "\red You have not trapped anyone yet!"
 
 /mob/living/simple_animal/slime_puddle/verb/reform()
 	set name = "Reform"
@@ -99,6 +120,7 @@
 				S.slime_contents.Add(trappedh)
 				trappedh.insidemob = 1
 				trappedh.loc = S
+				trappedh.SetStunned(0)
 
 			S.loc = src.loc
 			S.key = src.key

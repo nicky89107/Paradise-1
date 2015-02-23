@@ -190,7 +190,7 @@
 			//Foreach goto(26)
 		src.connected.connected = null
 		src.connected.update()
-		add_fingerprint(user)
+		src.add_fingerprint(user)
 		//SN src = null
 		del(src)
 		return
