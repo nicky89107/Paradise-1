@@ -81,10 +81,10 @@ Creature-level abilities.
 
 		if(M.shouldabsorb == 0)
 			M.shouldabsorb = 1
-			M.visible_message("You will now digest people in your slime.")
+			M.visible_message("You will now absorb people in your slime.")
 		else
 			M.shouldabsorb = 0
-			M.visible_message("You will no longer digest people in your slime.")
+			M.visible_message("You will no longer absorb people in your slime.")
 
 /mob/living/carbon/human/slime/proc/release_captive()
 
