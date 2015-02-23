@@ -15,7 +15,8 @@
 	harm_intent_damage = 0
 	pass_flags = PASSTABLE
 	can_hide = 1
-	var/trappedh = null
+	layer = TURF_LAYER+0.2
+	var/mob/living/carbon/trappedh = null
 
 /mob/living/simple_animal/slime_puddle/Life()
 	..()
@@ -56,22 +57,22 @@
 
 	var/mob/living/carbon/human/stupid
 
-	for(var/mob/living/carbon/human/H in range(0,src))
+	for(var/mob/living/carbon/human/H in src.loc)
 		if(H.loc == src)
 			break
 		else
-			stupid = H
-			break
+			if(H.loc == src.loc)
+				stupid = H
+				break
+			else
+				break
 
 	if(stupid)
-		src << "\red You quickly slime over the legs of [stupid]!"
-		stupid << "\red The puddle of goo under you rises up and grabs ahold of your legs!"
-		for(var/mob/O in oviewers())
-			if ((O.client && !( O.blinded )))
-				O << "\red [src] suddenly rises up and latches onto the legs of [stupid]!"
+		src.visible_message("\red [src] suddenly rises up and latches onto the legs of [stupid]!","\red You quickly slime over the legs of [stupid]!","\red You hear a strange squishing noise.")
+		stupid << "\red You legs are coated with a strange goo!"
 
 		stupid.apply_effect(200, STUN, 0)
-		trappedh = stupid
+		src.trappedh = stupid
 
 	else
 		src << "\red There is no fool standing in your slime!"
@@ -80,11 +81,30 @@
 	set name = "Reform"
 	set desc = "Reform into your humanoid form."
 	set category = "Puddle"
+	var/didcontents = 0
 
 	if(src.stat != CONSCIOUS)	return
 
+
 	for(var/mob/living/carbon/human/slime/S in contents)
-		S.loc = src.loc
-		S.key = src.key
-		del(src)
-		break
+		if(trappedh)
+			didcontents = 1
+
+		if(didcontents)
+			src.visible_message("\red [src] starts to reform into a slime person around [trappedh]!","\blue You start to reform into a slime person around [trappedh]! (This will take about 10 seconds)")
+		else
+			src.visible_message("\red [src] starts to reform into a slime person!","\blue You start to reform into a slime person! (This will take about 10 seconds)")
+		spawn(100)
+			if(trappedh)
+				S.slime_contents.Add(trappedh)
+				trappedh.insidemob = 1
+				trappedh.loc = S
+
+			S.loc = src.loc
+			S.key = src.key
+			if(didcontents)
+				src.visible_message("\red [src] reforms into a slime person around [trappedh], trapping them!")
+			else
+				src.visible_message("\red [src] reforms into a slime person!")
+			del(src)
+			break

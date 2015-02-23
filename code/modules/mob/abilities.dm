@@ -69,7 +69,7 @@ Creature-level abilities.
 /mob/living/carbon/human/slime/proc/set_absorb()
 
 	set category = "Abilities"
-	set name = "Toggle Slime Digestion"
+	set name = "Toggle Absorption"
 	set desc = "Toggle absorbing people you coat over."
 
 	if(istype(usr,/mob/living/carbon/human/slime))
@@ -114,6 +114,9 @@ Creature-level abilities.
 		if(M.stat==2)
 			M << "\red You must be corporeal and alive to do that."
 			return 0
+
+		if(M.slime_contents)
+			M.vomitslime() //no flat puddle humans, damnit!
 
 		var/mob/living/simple_animal/slime_puddle/puddle
 
