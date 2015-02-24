@@ -37,7 +37,7 @@ var/global/datum/controller/gameticker/ticker
 	var/triai = 0//Global holder for Triumvirate
 	var/initialtpass = 0 //holder for inital autotransfer vote timer
 
-	var/round_end_announced = 0 // Spam Prevention. Announce round end only once.	
+	var/round_end_announced = 0 // Spam Prevention. Announce round end only once.
 
 /datum/controller/gameticker/proc/pregame()
 	do
@@ -257,7 +257,7 @@ var/global/datum/controller/gameticker/ticker
 				switch(M.z)
 					if(0)	//inside a crate or something
 						var/turf/T = get_turf(M)
-						if(T && (T.z in config.station_levels))
+						if(T && (T.z == 1))
 							M.death(0)
 					if(1)	//on a z-level 1 turf.
 						M.health = 0
@@ -481,9 +481,7 @@ var/global/datum/controller/gameticker/ticker
 
 	scoreboard()
 	karmareminder()
-	
-	//Ask the event manager to print round end information
-	event_manager.RoundEnd()
+
 
 	return 1
 

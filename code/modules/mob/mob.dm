@@ -877,7 +877,6 @@ var/list/slot_equipment_priority = list( \
 				stat(null, "NanoUI-[master_controller.nano_cost]\t#[nanomanager.processing_uis.len]")
 //				stat(null, "GC-[master_controller.gc_cost]\t#[garbage.queue.len]")
 				stat(null, "Tick-[master_controller.ticker_cost]")*/
-				stat(null,"Events-[master_controller.events_cost]\t#[event_manager.active_events.len]")
 				stat(null, "ALL-[master_controller.total_cost]")
 			else
 				stat(null, "MasterController-ERROR")
