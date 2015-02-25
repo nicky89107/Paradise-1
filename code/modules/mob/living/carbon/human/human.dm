@@ -614,6 +614,8 @@
 //Now checks siemens_coefficient of the affected area by default
 /mob/living/carbon/human/electrocute_act(var/shock_damage, var/obj/source, var/base_siemens_coeff = 1.0, var/def_zone = null)
 	if(status_flags & GODMODE)	return 0	//godmode
+	if(M_NO_SHOCK in mutations)
+		return 0
 
 	if (!def_zone)
 		def_zone = pick("l_hand", "r_hand")
