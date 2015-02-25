@@ -230,7 +230,7 @@
 		if(H)
 			user << "<span class='notice'>You use [src] to destroy [H].</span>"
 			signs -= H
-			qdel(H)
+			del(H)
 		else
 			if(signs.len < max_signs)
 				H = new(get_turf(target))
@@ -246,7 +246,7 @@
 	if(signs.len)
 		var/list/L = signs.Copy()
 		for(var/sign in L)
-			qdel(sign)
+			del(sign)
 			signs -= sign
 		user << "<span class='notice'>You clear all active holograms.</span>"
 
@@ -310,7 +310,7 @@
 						if(ishuman(C))
 							dead_legs(C)
 						if(src)
-							qdel(src)
+							del(src)
 
 		proc/dead_legs(mob/living/carbon/human/H as mob)
 			var/datum/organ/external/l = H.get_organ("l_leg")
@@ -559,8 +559,8 @@
 	if(istype(A, /obj/effect/plantsegment))
 		for(var/obj/effect/plantsegment/B in orange(A,1))
 			if(prob(80))
-				qdel(B)
-		qdel(A)
+				del B
+		del A
 
 /*
 /obj/item/weapon/cigarpacket

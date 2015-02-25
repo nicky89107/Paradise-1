@@ -231,7 +231,7 @@
 		user.visible_message(fixText(state["vis_msg"],user),fixText(state["self_msg"],user))
 
 		if("delete" in state)
-			qdel(used_atom)
+			del(used_atom)
 		else if("spawn" in state)
 			var/spawntype=state["spawn"]
 			var/atom/A = new spawntype(holder.loc)

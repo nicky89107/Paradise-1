@@ -222,8 +222,8 @@ var/list/mechtoys = list(
 						plat_count += P.amount
 
 					// If you send something in a crate, centcom's keeping it! - fixes secure crates being sent to centom to open them
-					qdel(A)
-			qdel(MA)
+					del(A)
+			del(MA)
 
 		if(plasma_count)
 			points += plasma_count * points_per_plasma

@@ -220,7 +220,7 @@
 		return
 	put_in(G.affecting)
 	src.add_fingerprint(user)
-	qdel(G)
+	del(G)
 	return
 
 /obj/machinery/dna_scannernew/proc/put_in(var/mob/M)
@@ -297,7 +297,7 @@
 	if(prob(75))
 		for(var/atom/movable/A as mob|obj in src)
 			A.loc = src.loc
-		qdel(src)
+		del(src)
 
 /obj/machinery/computer/scan_consolenew
 	name = "DNA Modifier Access Console"
@@ -355,7 +355,7 @@
 
 /obj/machinery/computer/scan_consolenew/blob_act()
 	if(prob(75))
-		qdel(src)
+		del(src)
 
 /obj/machinery/computer/scan_consolenew/power_change()
 	if(stat & BROKEN)

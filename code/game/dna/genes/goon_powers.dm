@@ -311,7 +311,7 @@
 	else
 		usr.visible_message("\red [usr] eats \the [the_item].")
 		playsound(usr.loc, 'sound/items/eatfood.ogg', 50, 0)
-		qdel(the_item)
+		del(the_item)
 		doHeal(usr)
 
 	return

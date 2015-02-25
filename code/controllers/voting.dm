@@ -17,7 +17,7 @@ datum/controller/vote
 	New()
 		if(vote != src)
 			if(istype(vote))
-				qdel(vote)
+				del(vote)
 			vote = src
 
 	proc/process()	//called by master_controller
