@@ -154,7 +154,8 @@ var/list/admin_verbs_debug = list(
 	/client/proc/enable_debug_verbs,
 	/client/proc/callproc,
 	/client/proc/toggledebuglogs,
-	/client/proc/qdel_toggle // /vg/
+	/client/proc/qdel_toggle, // /vg/
+	/client/proc/gc_dump_hdl
 	)
 var/list/admin_verbs_possess = list(
 	/proc/possess,
