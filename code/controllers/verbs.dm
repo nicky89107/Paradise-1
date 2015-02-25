@@ -49,7 +49,7 @@
 	return
 
 
-/client/proc/debug_controller(controller in list("Master","failsafe","Ticker","Lighting","Air","Jobs","Sun","Radio","Supply","Shuttles","Emergency Shuttle","Configuration","pAI", "Cameras","Garbage", "Transfer Controller","Event","Scheduler"))
+/client/proc/debug_controller(controller in list("Master","failsafe","Ticker","Lighting","Air","Jobs","Sun","Radio","Supply","Shuttles","Emergency Shuttle","Configuration","pAI", "Cameras","Garbage", "Transfer Controller","Scheduler"))
 	set category = "Debug"
 	set name = "Debug Controller"
 	set desc = "Debug the various periodic loop controllers for the game (be careful!)"
@@ -98,9 +98,6 @@
 		if("Cameras")
 			debug_variables(cameranet)
 			feedback_add_details("admin_verb","DCameras")
-		if("Event")
-			debug_variables(event_manager)
-			feedback_add_details("admin_verb","DEvent")
 		if("Garbage")
 			debug_variables(garbageCollector)
 			feedback_add_details("admin_verb","DGarbage")

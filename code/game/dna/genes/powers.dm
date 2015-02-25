@@ -45,8 +45,8 @@
 			return !(/datum/dna/gene/basic/cold_resist in M.active_genes)
 		// Probability check
 		var/_prob = 15
-		if(M_RESIST_COLD in M.mutations)
-			_prob=5
+		/*if(M_RESIST_COLD in M.mutations)
+			_prob=5*///Fuck it, Let them have both!
 		if(probinj(_prob,(flags&MUTCHK_FORCED)))
 			return 1
 
@@ -67,8 +67,8 @@
 			return !(/datum/dna/gene/basic/heat_resist in M.active_genes)
 		// Probability check
 		var/_prob=30
-		if(M_RESIST_HEAT in M.mutations)
-			_prob=5
+		/*if(M_RESIST_HEAT in M.mutations)
+			_prob=5*///Fuck it, Let them have both!
 		if(probinj(_prob,(flags&MUTCHK_FORCED)))
 			return 1
 

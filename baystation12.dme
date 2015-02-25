@@ -182,6 +182,7 @@
 #include "code\controllers\Processes\bot.dm"
 #include "code\controllers\Processes\disease.dm"
 #include "code\controllers\Processes\emergencyShuttle.dm"
+#include "code\controllers\Processes\garbage.dm"
 #include "code\controllers\Processes\inactivity.dm"
 #include "code\controllers\Processes\lighting.dm"
 #include "code\controllers\Processes\machinery.dm"
@@ -1665,5 +1666,5 @@
 #include "code\ZAS\Zone.dm"
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
-#include "maps\cyberiad.dmm"
+#include "maps\LarkensMeteorHideout.dmm"
 // END_INCLUDE
