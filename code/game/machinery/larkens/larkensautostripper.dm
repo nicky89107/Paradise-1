@@ -8,6 +8,11 @@
 	use_power = 1
 	idle_power_usage = 20
 	active_power_usage = 250
+	layer = TURF_LAYER+0.3
+	var/asoid
+	var/obj/structure/closet/linkedOUT
+	var/shouldout = 1
+
 
 /obj/machinery/larkens/autostrip/Crossed(AM as mob|obj)
 	if (istype(AM, /mob/living/carbon/human))
@@ -27,15 +32,49 @@
 /obj/machinery/larkens/autostrip/proc/strip(M as mob|obj)
 	var/mob/living/carbon/human/H = M
 	H.visible_message("\blue The machine removes your clothing.")
-	for(var/obj/item/clothing/C in H)
-		H.drop_from_inventory(C)
-		sleep(3)
+	for(var/obj/item/I in H)
+		if(!istype(I,/obj/item/clothing))
+			H.drop_from_inventory(I)
+			if(shouldout)
+				movetooutput(I)
+			sleep(3)
+
+		else if(istype(I,/obj/item/clothing))
+			spawn(1)
+				H.drop_from_inventory(I)
+				if(shouldout)
+					movetooutput(I)
+				sleep(3)
+		else
+			spawn(2)
+				H.drop_from_inventory(I)
+				if(shouldout)
+					movetooutput(I)
+				sleep(3)
 
 	if(H.abiotic(1))
 		H.visible_message("\blue The machine removes your leftover items.")
 		for(var/obj/item/W in H)
 			H.drop_from_inventory(W)
+			movetooutput(W)
 			sleep(3)
+
+
+/obj/machinery/larkens/autostrip/proc/movetooutput(I)
+	if(!src.linkedOUT)
+		for(var/obj/structure/closet/autostripperem/OUT in autostripperoutputs)
+			if(OUT.asoid == asoid)
+				linkedOUT = OUT
+				break
+
+	var/obj/item/OI = I
+
+	if(src.linkedOUT)
+		OI.loc = src.linkedOUT
+		return
+
+	else
+		return
 
 /obj/machinery/larkens/autostrip_restrain
 	name = "Advanced Stripping Machine"
@@ -47,6 +86,10 @@
 	use_power = 1
 	idle_power_usage = 20
 	active_power_usage = 250
+	layer = TURF_LAYER+0.3
+	var/asoid
+	var/obj/structure/closet/linkedOUT
+	var/shouldout = 0
 
 /obj/machinery/larkens/autostrip_restrain/Crossed(AM as mob|obj)
 	if (istype(AM, /mob/living/carbon/human))
@@ -92,15 +135,48 @@
 /obj/machinery/larkens/autostrip_restrain/proc/strip(M as mob|obj)
 	var/mob/living/carbon/human/H = M
 	H.visible_message("\blue The machine removes your clothing.")
-	for(var/obj/item/clothing/C in H)
-		H.drop_from_inventory(C)
-		sleep(3)
+	for(var/obj/item/I in H)
+		if(!istype(I,/obj/item/clothing))
+			H.drop_from_inventory(I)
+			if(shouldout)
+				movetooutput(I)
+			sleep(3)
+
+		else if(istype(I,/obj/item/clothing))
+			spawn(1)
+				H.drop_from_inventory(I)
+				if(shouldout)
+					movetooutput(I)
+				sleep(3)
+		else
+			spawn(2)
+				H.drop_from_inventory(I)
+				if(shouldout)
+					movetooutput(I)
+				sleep(3)
 
 	if(H.abiotic(1))
 		H.visible_message("\blue The machine removes your leftover items.")
 		for(var/obj/item/W in H)
 			H.drop_from_inventory(W)
+			movetooutput(W)
 			sleep(3)
+
+/obj/machinery/larkens/autostrip_restrain/proc/movetooutput(I)
+	if(!src.linkedOUT)
+		for(var/obj/structure/closet/autostripperem/OUT in autostripperoutputs)
+			if(OUT.asoid == asoid)
+				linkedOUT = OUT
+				break
+
+	var/obj/item/OI = I
+
+	if(src.linkedOUT)
+		OI.loc = src.linkedOUT
+		return
+
+	else
+		return
 
 
 /obj/machinery/larkens/disposaltran
@@ -285,3 +361,16 @@
 				H.z = src.z
 			else
 				return
+
+/obj/structure/closet/autostripperem
+	name = "Auto-Stripper Output Closet"
+	desc = "An output for the auto-stripper."
+	var/asoid = 0
+
+/obj/structure/closet/autostripperem/New()
+	..()
+	autostripperoutputs += src
+
+/obj/structure/closet/autostripperem/Destroy()
+	..()
+	autostripperoutputs -= src
