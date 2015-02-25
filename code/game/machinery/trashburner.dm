@@ -76,7 +76,7 @@
 	I.loc = src.loc
 	if(!istype(I, /obj/item/weapon/disk/nuclear) && !istype(I,/obj/item/flag/nation))
 		visible_message("\red <B> The Burner</b> states, 'Engaging burning.'")
-		del(I)
+		qdel(I)
 		sleep(60)
 		visible_message("\red <b>The Burner</b> states, 'Burning Complete!'")
 		if(sound)
@@ -116,5 +116,5 @@
 	src.occupant.emote("scream")
 	src.occupant.death(1)
 	src.occupant.ghostize()
-	del(src.occupant)
+	qdel(src.occupant)
 	visible_message("\red <b>The Burner</b> states, 'Burning Complete!'")
