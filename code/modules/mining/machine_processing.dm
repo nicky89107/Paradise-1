@@ -14,9 +14,13 @@
 /obj/machinery/mineral/processing_unit_console/New()
 	..()
 	spawn(7)
-		src.machine = locate(/obj/machinery/mineral/processing_unit, get_step(src, machinedir))
+		for (var/dir in cardinal)
+			src.machine = locate(/obj/machinery/mineral/processing_unit, get_step(src, dir))
+			if (machine)	break
+
 		if (machine)
 			machine.console = src
+
 		else
 			del(src)
 

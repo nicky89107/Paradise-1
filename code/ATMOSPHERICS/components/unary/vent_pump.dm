@@ -6,6 +6,8 @@
 	desc = "Has a valve and pump attached to it"
 	use_power = 1
 
+	var/nameoverride = ""
+
 	var/area/initial_loc
 	level = 1
 	var/area_uid
@@ -168,9 +170,14 @@
 			)
 
 			if(!initial_loc.air_vent_names[id_tag])
-				var/new_name = "[initial_loc.name] Vent Pump #[initial_loc.air_vent_names.len+1]"
-				initial_loc.air_vent_names[id_tag] = new_name
-				src.name = new_name
+				if(nameoverride)
+					var/new_name = nameoverride
+					initial_loc.air_vent_names[id_tag] = new_name
+					src.name = new_name
+				else
+					var/new_name = "[initial_loc.name] Vent Pump #[initial_loc.air_vent_names.len+1]"
+					initial_loc.air_vent_names[id_tag] = new_name
+					src.name = new_name
 			initial_loc.air_vent_info[id_tag] = signal.data
 
 			radio_connection.post_signal(src, signal, radio_filter_out)

@@ -14,7 +14,10 @@
 	..()
 
 	spawn(7)
-		src.machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, machinedir))
+		for (var/dir in cardinal)
+			src.machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, dir))
+			if (machine)	break
+
 		if (machine)
 			machine.console = src
 		else

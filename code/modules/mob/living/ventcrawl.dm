@@ -1,3 +1,4 @@
+//Disabling this due to.. really fucking weird bugs. :(
 /mob/living/proc/handle_ventcrawl()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/V in range(src,1))
 		if(V.welded) continue
