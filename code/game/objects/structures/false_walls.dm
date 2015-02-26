@@ -112,6 +112,8 @@
 	var/junction=findSmoothingNeighbors()
 	icon_state = "[mineral][junction]"
 
+/obj/structure/falsewall/attack_alien(mob/user as mob)
+	return	attack_hand(user)
 
 /obj/structure/falsewall/attack_hand(mob/user as mob)
 	if(opening)
@@ -240,7 +242,8 @@
 	relativewall_neighbours()
 	..()
 
-
+/obj/structure/falserwall/attack_alien(mob/user as mob)
+	return	attack_hand(user)
 
 /obj/structure/falserwall/attack_hand(mob/user as mob)
 	if(opening)

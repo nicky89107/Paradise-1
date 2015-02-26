@@ -9,6 +9,7 @@
 	var/caste = ""
 	var/next_attack = 0
 	update_icon = 1
+	var/leap_on_click = 0
 
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/humanoid/New()
@@ -59,6 +60,8 @@
 		tally = -1 // hunters go supersuperfast
 	return (tally + move_delay_add + config.alien_delay)
 
+/mob/living/carbon/alien/humanoid/Process_Spacemove(var/check_drift = 0)
+	return 1
 ///mob/living/carbon/alien/humanoid/bullet_act(var/obj/item/projectile/Proj) taken care of in living
 
 /mob/living/carbon/alien/humanoid/emp_act(severity)
@@ -241,6 +244,10 @@
 
 	if (istype(loc, /turf) && istype(loc.loc, /area/start))
 		M << "No attacking people at spawn, you jackass."
+		return
+
+	if (M.insidemob)
+		M << "\red You seem to be having trouble with the whole 'punching' thing."
 		return
 
 	..()

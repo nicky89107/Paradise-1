@@ -15,6 +15,8 @@
 
 	alien_talk_understand = 1
 
+	nightvision = 1
+
 	var/obj/item/weapon/card/id/wear_id = null // Fix for station bounced radios -- Skie
 	var/has_fine_manipulation = 0
 
@@ -29,6 +31,7 @@
 	var/fire_alert = 0
 	var/large = 0
 	var/heat_protection = 0.5
+	var/leaping = 0
 
 /mob/living/carbon/alien/adjustToxLoss(amount)
 	storedPlasma = min(max(storedPlasma + amount,0),max_plasma) //upper limit of max_plasma, lower limit of 0
@@ -184,6 +187,23 @@
 
 /mob/living/carbon/alien/setDNA()
 	return
+
+
+/mob/living/carbon/alien/verb/nightvisiontoggle()
+	set name = "Toggle Night Vision"
+	set category = "Alien"
+
+	if(!nightvision)
+		see_in_dark = 8
+		see_invisible = SEE_INVISIBLE_MINIMUM
+		nightvision = 1
+		usr.hud_used.nightvisionicon.icon_state = "nightvision1"
+	else if(nightvision == 1)
+		see_in_dark = 4
+		see_invisible = 45
+		nightvision = 0
+		usr.hud_used.nightvisionicon.icon_state = "nightvision0"
+
 
 /*----------------------------------------
 Proc: AddInfectionImages()

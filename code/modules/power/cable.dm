@@ -620,13 +620,6 @@ obj/structure/cable/proc/cableColor(var/colorC)
 		if(!(S.status & ORGAN_ROBOT) || user.a_intent != "help")
 			return ..()
 
-		if(istype(M,/mob/living/carbon/human))
-			var/mob/living/carbon/human/H = M
-			if(H.species.flags & IS_SYNTHETIC)
-				if(M == user)
-					user << "\red You can't repair damage to your own body - it's against OH&S."
-					return
-
 		if(S.burn_dam > 0 && use(1))
 			S.heal_damage(0,15,0,1)
 			user.visible_message("\red \The [user] repairs some burn damage on \the [M]'s [S.display_name] with \the [src].")
