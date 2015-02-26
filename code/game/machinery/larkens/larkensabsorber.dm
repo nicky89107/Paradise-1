@@ -218,6 +218,9 @@
 		set name = "Set Cycles"
 		set src in oview(1)
 
+		if(!src.occupant)
+			return
+
 		if (usr.ckey != src.occupant.ckey)
 			return
 		else

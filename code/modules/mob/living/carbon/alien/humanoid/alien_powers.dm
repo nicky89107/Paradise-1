@@ -147,6 +147,8 @@ Doesn't work on other aliens/AI.*/
 				if(M in stomach_contents)
 					stomach_contents.Remove(M)
 					M.loc = loc
+					var/mob/living/carbon/C = M
+					C.insidemob = 0
 					//Paralyse(10)
 			src.visible_message("\green <B>[src] hurls out the contents of their stomach!</B>")
 	return

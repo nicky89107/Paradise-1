@@ -95,8 +95,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 				if(istype(loc, /obj/))
 					var/obj/location_as_object = loc
 					location_as_object.handle_internal_lifeform(src, 0)
-		else
-			return
 
 		if(check_mutations)
 //			testing("Updating [src.real_name]'s mutations: "+english_list(mutations))

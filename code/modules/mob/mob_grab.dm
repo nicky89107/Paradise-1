@@ -200,6 +200,8 @@
 					if(!do_mob(user, affecting)||!do_after(user, 100)) return
 				user.visible_message("<span class='danger'>[user] devours [affecting]!</span>")
 				affecting.loc = user
+				var/mob/living/carbon/C = affecting
+				C.insidemob = 1
 				attacker.stomach_contents.Add(affecting)
 				del(src)
 		else

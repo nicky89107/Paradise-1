@@ -438,6 +438,8 @@
 				if(M.loc != src)
 					stomach_contents.Remove(M)
 					continue
+				if(src.name == "Slimey")
+					break
 				if(istype(M, /mob/living/carbon) && stat != 2)
 					if(M.stat == 2)
 						M.death(1)

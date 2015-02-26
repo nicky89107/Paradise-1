@@ -3,6 +3,10 @@
 		M << "No attacking people at spawn, you jackass."
 		return
 
+	if (M.insidemob)
+		M << "\red You seem to be having trouble with the whole 'moving' thing."
+		return //bitch please.
+
 	var/datum/organ/external/temp = M:organs_by_name["r_hand"]
 	if (M.hand)
 		temp = M:organs_by_name["l_hand"]
