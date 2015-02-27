@@ -1006,6 +1006,14 @@ var/list/ghostteleportlocs = list()
 	name = "\improper Dormitory Toilets"
 	icon_state = "toilet"
 
+/area/crew_quarters/toiletr
+	name = "\improper Right Bathroom"
+	icon_state = "toilet"
+
+/area/crew_quarters/toiletl
+	name = "\improper Left Bathroom"
+	icon_state = "toilet"
+
 /area/crew_quarters/sleep
 	name = "\improper Dormitories"
 	icon_state = "Sleep"

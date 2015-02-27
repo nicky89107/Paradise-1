@@ -328,6 +328,18 @@ obj/machinery/atmospherics/pipe
 		level = 1
 		icon_state = "intact-g-f"
 
+	simple/airdistro
+		name="Pipe"
+		_color="cyan"
+		icon_state = ""
+
+	simple/airdistro/visible
+		level = 2
+		icon_state = "intact-c"
+
+	simple/airdistro/hidden
+		level = 1
+		icon_state = "intact-c-f"
 
 
 	simple/insulated
@@ -814,6 +826,11 @@ obj/machinery/atmospherics/pipe
 		_color="green"
 		icon_state = ""
 
+	manifold/airdistro
+		name="Pure pipe"
+		_color="cyan"
+		icon_state = ""
+
 	manifold/insulated
 		//thermal_conductivity = 0
 		name="Insulated pipe"
@@ -880,6 +897,14 @@ obj/machinery/atmospherics/pipe
 	manifold/filtering/hidden
 		level = 1
 		icon_state = "manifold-g-f"
+
+	manifold/airdistro/visible
+		level = 2
+		icon_state = "manifold-c"
+
+	manifold/airdistro/hidden
+		level = 1
+		icon_state = "manifold-c-f"
 
 
 	manifold4w

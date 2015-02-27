@@ -46,3 +46,26 @@
 /obj/structure/shuttle/engine/router
 	name = "router"
 	icon_state = "router"
+
+/obj/structure/shuttle/xl/engine
+	icon = 'icons/turf/shuttle96.dmi'
+	name = "engine"
+	density = 1
+	anchored = 1.0
+
+/obj/structure/shuttle/xl/engine/propulsion
+	name = "propulsion"
+	icon_state = "propulsion"
+	opacity = 1
+
+/obj/structure/shuttle/xl/engine/propulsion/burst/left
+	name = "left"
+	icon_state = "burst_l"
+
+/obj/structure/shuttle/xl/engine/propulsion/burst/right
+	name = "right"
+	icon_state = "burst_r"
+
+/obj/structure/shuttle/xl/engine/heater
+	name = "heater"
+	icon_state = "heater"

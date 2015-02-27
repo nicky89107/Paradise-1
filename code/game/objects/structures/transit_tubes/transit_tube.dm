@@ -22,7 +22,6 @@
 /obj/structure/transit_tube/Bumped(mob/AM as mob|obj)
 	if(istype(AM,/obj/structure/transit_tube_pod))
 		var/obj/structure/transit_tube_pod/P = AM
-		show_message("\red SICK JUMP!")
 		P.loc = src.loc
 		P.jumped = 1
 		P.moving = 0
