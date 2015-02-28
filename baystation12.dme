@@ -1665,5 +1665,5 @@
 #include "code\ZAS\Zone.dm"
 #include "interface\interface.dm"
 #include "interface\skin.dmf"
-#include "maps\LarkensMeteorHideout.dmm"
+#include "maps\NTDestroyer-WIP.dmm"
 // END_INCLUDE
