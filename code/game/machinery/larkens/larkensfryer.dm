@@ -12,19 +12,15 @@
 	var/operating = 0 //Is it on?
 	var/mob/living/carbon/human/occupant // Mob who has been put inside
 	var/timer = 0
-	var/grabbed = 0 //Used for dialog changes.
+	var/throw_dir = SOUTH
 
 /obj/machinery/larkens/fryer/New()
 	..()
-	update_icon()
+
 
 /obj/machinery/larkens/fryer/power_change()
 	..()
-	update_icon()
 
-/obj/machinery/larkens/fryer/proc/messageviewers(T)
-	for (var/mob/M in viewers(src))
-		M.show_message("[T]")
 
 /obj/machinery/larkens/fryer/attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
 	if(src.occupant)
@@ -48,7 +44,7 @@
 		M.loc = src
 		src.occupant = M
 		del(G)
-		update_icon()
+
 		src.startfrying(user)
 
 
@@ -59,9 +55,7 @@
 		return
 	if(O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src)) // is the mob anchored, too far away from you, or are you too far away from the source
 		return
-	if(!ismob(O)) //humans only
-		return
-	if(istype(O, /mob/living/simple_animal) || istype(O, /mob/living/silicon)) //animals and robots dont fit
+	if(!ishuman(O)) //humans only
 		return
 	if(user.loc==null) // just in case someone manages to get a closet into the blue light dimension, as unlikely as that seems
 		return
@@ -70,55 +64,57 @@
 	if(src.occupant)
 		user << "The Fryer is full! You can't fit in there!"
 		visible_message ("\blue The Fryer rejects [user.name].")
+
 	var/mob/living/carbon/human/H = O
-	if(H.ckey != user.ckey)
+	if(!H)
+		return
+	if(H != user)
 		return
 	if(!istype(H) || H.buckled)
 		return
+	var/didstrip = 0
+
 	if(H.abiotic(1))
+		didstrip =1
 		H.apply_effect(40, STUN, 0)
-		visible_message ("\blue <b>The Fryer</b> states 'Clothes simply won't do!'</B>")
+		src.visible_message("<span class='warning'>\The [src] states, 'Clothes simply won't do!'")
 		sleep(10)
-		H.visible_message ("\red <b>The Fryer</b>'s arms clamp down on your arms and legs.")
-		grabbed = 1
+		H.visible_message("<span class='warning'>\The [src]'s robotic arms clamp down on [H.name]'s arms and legs!</span>", \
+							"<span class='warning'>\The [src]'s robotic arms clamp down on your arms and legs!</span>")
 		sleep(30)
-		visible_message ("\red <b>The Fryer</b> states, 'Engaging quiet mode.'")
+		src.visible_message("<span class='warning'>\The [src] states, 'Engaging quiet mode.'")
+		sleep(20)
+		src.visible_message("<span class='danger'>A 5th arm extends from \the [src], holding a muzzle!</span>")
 		sleep(30)
-		visible_message ("\red A 5th arm extends from the Fryer, holding a muzzle.")
-		sleep(30)
-		H.visible_message ("\red <b>The Fryer</b> clamps a muzzle onto your face.")
+		H.visible_message("<span class='danger'>\The [src] clamps a muzzle onto [H.name]'s face!</span>", \
+							"<span class='danger'>\The [src] clamps a muzzle onto your face!</span>")
 		H.sdisabilities |= MUTE
-		visible_message ("\red <b>The Fryer</b> clamps a muzzle onto [H.name]'s face.")
 		sleep(30)
-		visible_message ("\blue <b>The Fryer</b> starts removing [H.name]'s clothing.")
-		H.visible_message ("\blue You have no choice but to let <b>The Fryer</b> to take your clothing.")
+		H.visible_message("<span class='danger'>\The [src] starts removing [H.name]'s clothing!</span>", \
+							"<span class='danger'>\The [src]'s arms hold you firmly as it starts removing your clothing!</span>")
 		sleep(30)
 		for(var/obj/item/W in H)
 			H.drop_from_inventory(W)
 		sleep(20)
-		visible_message("\blue <b>The Fryer</b> starts removing [H.name]'s underclothing.")
-		H.visible_message("\blue <b>The Fryer</b> takes off your underclothes.")
+		H.visible_message("<span class='danger'>\The [src] removes [H.name]'s underclothing.</span>", \
+							"<span class='danger'>\The [src] removes your underclothes!</span>")
 		H.underwear = 7
 		H.undershirt = 5
 		H.update_body(1)
 		sleep(10)
-	if(!H)
-		return
-	if(!grabbed)
-		if(H.get_gender() == "female")
-			visible_message("\red <b>[H.name]</b> gives herself to the Fryer's arms.")
-		else
-			visible_message("\red <b>[H.name]</b> gives himself to the Fryer's arms.")
-		H.visible_message("\red You let the fryer's arms take ahold of you.")
+
+	if(!didstrip)
+		H.visible_message("<span class='warning'>[H.name] gives \himself to the Fryer's arms.</span>", \
+							"<span class='warning'>You let \the [src]'s arms take ahold of you.</span>")
 		H.apply_effect(40, STUN, 0)
 		sleep(10)
-		visible_message("\red <b>The Fryer</b>'s 4 arms grab ahold of <b>[H.name]'s</b> arms and legs!")
-		H.visible_message("\red <b>The Fryer</b>'s 4 arms grab ahold of your arms and legs.")
-
+		H.visible_message("<span class='warning'>\The [src]'s 4 arms grab ahold of <b>[H.name]'s</b> arms and legs!</span>", \
+							"<span class='warning'>\The [src]'s 4 arms grab ahold of your arms and legs.")
 	sleep(40)
 	H.apply_effect(-80, STUN, 0)
-	visible_message("\red <b>The Fryer</b> lifts <b>[H.name]</b> over the top of it's self.")
-	H.visible_message("\red <b>The Fryer</b> easily lifts you into the air over the top of it.")
+	H.visible_message("<span class='danger'>\The [src] lifts <b>[H.name]</b> into the air over the top of it!</span>", \
+						"<span class='danger'>\The [src] easily lifts you into the air over the top of it!</span>")
+	H.visible_message()
 	if(H.client)
 		H.client.perspective = EYE_PERSPECTIVE
 		H.client.eye = src
@@ -126,7 +122,6 @@
 	src.occupant = H
 	src.add_fingerprint(user)
 	src.startfrying(H)
-	update_icon()
 
 /obj/machinery/larkens/fryer/proc/go_out()
 	if (!src.occupant)
@@ -139,23 +134,21 @@
 	if (src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
-	src.occupant.x = src.x - 1
-	src.occupant.y = src.y
-	src.occupant.z = src.z
+	src.occupant.loc = src.loc
+	src.occupant.throw_at(get_edge_target_turf(src,throw_dir),1,2)
 	src.occupant = null
-	update_icon()
 	return
 
 /obj/machinery/larkens/fryer/proc/startfrying(mob/user as mob)
 	if(src.operating)
 		return
 	if(!src.occupant)
-		visible_message("\red <b>The Fryer</b>states, 'That would be a waste of energy.'")
+		visible_message("<span class='warning'>\The [src] states, 'That would be a waste of energy.'</span>")
 		return
 	use_power(1000)
 	src.operating = 1
-	update_icon()
-	src.occupant.attack_log += "\[[time_stamp()]\] Was fried by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
+
+	src.occupant.attack_log += "\[[time_stamp()]\] Was fried by <b>[user]/[user.ckey]</b>"
 	user.attack_log += "\[[time_stamp()]\] fried <b>[src.occupant]/[src.occupant.ckey]</b>"
 	if(src.occupant.ckey)
 		msg_admin_attack("[user.name] ([user.ckey]) fried [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
@@ -164,24 +157,24 @@
 	else
 		src.occupant.LAssailant = user
 	sleep(30)
-	messageviewers("\red <b>The Fryer</b> moves <b>[src.occupant.name]</b> limbs to be spread-eagle.")
-	src.occupant.visible_message("\red <b>The Fryer</b> forces your limbs spread-eagle.")
+	src.visible_message("<span class='warning'>\The [src] moves <b>[src.occupant.name]</b> limbs to be spread-eagle.</span>")
+	src.occupant.show_message("<span class='warning'>\The [src] forces your limbs spread-eagle.</span>")
 	sleep(30)
-	messageviewers("\blue <b>The Fryer</b> scans <b>[src.occupant.name]</b>")
-	src.occupant.visible_message("\blue <b>The Fryer</b> scans you.")
+	visible_message("<span class='notice'>\The [src] scans <b>[src.occupant.name]</b></span>")
+	src.occupant.show_message("<span class='notice'>\The [src] scans you.</span>")
 	sleep(30)
-	messageviewers("\red <b>The Fryer</b> states, 'Detected [src.occupant.get_species()], gender [src.occupant.get_gender()].' </br>")
-	src.occupant.visible_message("\red <b>The Fryer</b> states, 'Detected [src.occupant.get_species()], gender [src.occupant.get_gender()].' </br>")
+	visible_message("<span class='warning'>\The [src] states, 'Detected [src.occupant.get_species()], gender [src.occupant.get_gender()].'</span> </br>")
+	src.occupant.show_message("<span class='warning'>\The [src] states, 'Detected [src.occupant.get_species()], gender [src.occupant.get_gender()].'</span> </br>")
 	sleep(20)
-	messageviewers("\red <b>The Fryer</b> states, 'Engaging Frying.'")
-	src.occupant.visible_message("\red <b>The Fryer</b> states, 'Engaging Frying.'")
+	visible_message("<span class='warning'>\The [src] states, 'Engaging Frying.'</span>")
+	src.occupant.show_message("<span class='warning'>\The [src] states, 'Engaging Frying.'</span>")
 	sleep(30)
-	messageviewers("\red <b>[src.occupant.name]</b> is slowly immersed in the deepfryer!")
-	src.occupant.visible_message("\red <b>The Fryer</b> shoves you down slowly into the scalding oil.")
+	visible_message("<span class='warning'><b>[src.occupant.name]</b> is slowly immersed in the deepfryer!</span>")
+	src.occupant.show_message("<span class='warning'>\The [src] shoves you down slowly into the scalding oil.</span>")
 	icon_state = "human_fryer_on"
-	messageviewers("<b>[src.occupant]</b> groans loudly.")
+	visible_message("<span class='danger'><b>[src.occupant]</b> screams!</span>")
 	sleep(10)
-	src.occupant.visible_message("\red <b>Your skin is burning off!</b>")
+	src.occupant.show_message("<span class='danger'>Your skin is cooking!</span>")
 	src.occupant.apply_effect(40, AGONY, 0)
 	src.occupant.apply_damage(10, BURN, "l_leg", 0)
 	src.occupant.apply_damage(10, BURN, "chest", 0)
@@ -197,24 +190,24 @@
 	src.occupant.apply_damage(40, BURN, "groin", 0)
 	src.occupant.apply_damage(40, BURN, "head", 0)
 	sleep(30)
-	if(src.occupant.stat == 2)
-		messageviewers("\red <b>The Fryer</b> states, 'Frying complete!'</br> <b>The Fryer</b> tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.")
+	if(src.occupant.stat == DEAD)
+		src.visible_message("<span class='danger'>\The [src] states, 'Frying complete!'</br> \The [src] tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.</span>")
 		src.operating = 0
 		icon_state = "human_fryer_off"
-		update_icon()
+
 		playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
 		src.occupant.ChangeToHusk()
 		src.go_out()
 	else
-		src.occupant.visible_message("\red <b> Make the pain stop! </b>")
+		src.occupant.show_message("<span class='danger'>Make the pain stop!</span>")
 		src.occupant.apply_effect(40, AGONY, 0)
 		sleep(10)
 		src.occupant.apply_damage(100, BURN, "head", 0)
 		src.occupant.apply_damage(100, BURN, "chest", 0)
-		messageviewers("\red <b>The Fryer</b> states, 'Frying complete!</br> <b>The Fryer</b> tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.")
+		src.visible_message("<span class='danger'>\The [src] states, 'Frying complete!'</br> \The [src] tosses the lifeless body of <b>[src.occupant.name]</b> onto the ground.</span>")
 		src.operating = 0
 		icon_state = "human_fryer_off"
-		update_icon()
+
 		playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
 		src.occupant.ChangeToHusk()
 		src.go_out()
