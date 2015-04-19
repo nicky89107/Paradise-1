@@ -7,130 +7,107 @@
 	anchored = 1
 	var/operating = 0 //Is it on?
 	var/dirty = 0 // Does it need cleaning?
+
+	var/gib_throw_dir = WEST // Direction to spit meat and gibs in. Defaults to west.
 	var/gibtime = 40 // Time from starting until meat appears
+
 	var/mob/living/carbon/human/occupant // Mob who has been put inside
-	var/dramatic = 1 //Do we use dramatic code or quick-code?
+
 	var/locked = 0 // Is the gibber locked shut?
 	use_power = 1
 	idle_power_usage = 2
 	active_power_usage = 500
 
-//auto-gibs anything that bumps into it
-/obj/machinery/gibber/autogibber
-	var/turf/input_plate
-
-	New()
-		..()
-		spawn(5)
-			for(var/i in cardinal)
-				var/obj/machinery/mineral/input/input_obj = locate( /obj/machinery/mineral/input, get_step(src.loc, i) )
-				if(input_obj)
-					if(isturf(input_obj.loc))
-						input_plate = input_obj.loc
-						del(input_obj)
-						break
-
-			if(!input_plate)
-				diary << "a [src] didn't find an input plate."
-				return
-
-	Bumped(var/atom/A)
-		if(!input_plate) return
-
-		if(ismob(A))
-			var/mob/M = A
-
-			if(M.loc == input_plate
-			)
-				M.loc = src
-				M.gib()
-
 /obj/machinery/gibber/bumpgibber
-	name = "Autogibber- No tenderness."
-	Bumped(var/atom/A)
-		if(ismob(A))
-			var/mob/M = A
-			if(M.abiotic(1))
-				M.visible_message("\red Subject may not have abiotic items on.")
-				if(M.resting)
-					M.visible_message("\red Larkens.Override(Disposals) Detected.")
-					sleep(10)
-					M.visible_message("\red Stripping Subject.")
-					for(var/obj/item/W in M)
-						M.drop_from_inventory(W)
-				else
-					return
+	name = "autogibber-NT"
+
+/obj/machinery/gibber/bumpgibber/Bumped(var/atom/A)
+	if(ishuman(A))
+		var/mob/living/carbon/human/H = A
+		if(H.abiotic(1))
+			src.visible_message("<span class='warning'>\The [src] states, 'Subject may not have abiotic items on.'</span>")
+			if(H.resting)
+				src.visible_message("<span class='warning'>\The [src] states, 'Larkens.Override(Disposals) Detected.'</span>")
+				sleep(10)
+				H.show_message("<span class='warning'>\The [src] states, 'Stripping Subject.'</span>")
+				for(var/obj/item/W in H)
+					H.drop_from_inventory(W)
+				H.underwear = 7
+				H.undershirt = 5
+				H.update_body(1)
 			else
-				if(M.client)
-					M.client.perspective = EYE_PERSPECTIVE
-					M.client.eye = src
-				M.loc = src
-				src.occupant = M
-				update_icon()
-				visible_message ("\red The gibber drags [M.name] in.")
-				M.visible_message ("\red The gibber grabs ahold of your feet and drags you in.")
-				src.startgibbing(M)
+				return
+		else
+			if(H.client)
+				H.client.perspective = EYE_PERSPECTIVE
+				H.client.eye = src
+			H.loc = src
+			src.occupant = H
+			update_icon()
+			visible_message("<span class='warning'>\The [src] grabs ahold of [H.name] and drags them in!</span>")
+			H.show_message("<span class='warning'>\The [src] grabs ahold of your feet and drags you into it!</span>")
+			src.startgibbing(H)
 
 /obj/machinery/gibber/bumpgibberFull
-	name = "Autogibber-All in One"
-	Bumped(var/atom/A)
-		if(ismob(A))
-			var/mob/living/carbon/human/H = A
-			if(H.abiotic(1))
-				H.visible_message("\red Subject may not have abiotic items on.")
-				if(H.resting)
-					H.visible_message("\red Larkens.Override(Disposals) Detected.")
-					sleep(10)
-					H.visible_message("\red Stripping Subject.")
-					for(var/obj/item/W in H)
-						H.drop_from_inventory(W)
-					H.underwear = 7
-					H.undershirt = 5
-					H.update_body(1)
-					sleep(5)
-				else
-					return
+	name = "autogibber-AI1"
+
+/obj/machinery/gibber/bumpgibberFull/Bumped(var/atom/A)
+	if(ishuman(A))
+		var/mob/living/carbon/human/H = A
+		if(H.abiotic(1))
+			src.visible_message("<span class='warning'>\The [src] states, 'Subject may not have abiotic items on.'</span>")
+			if(H.resting)
+				src.visible_message("<span class='warning'>\The [src] states, 'Larkens.Override(Disposals) Detected.'</span>")
+				sleep(10)
+				H.show_message("<span class='warning'>\The [src] states, 'Stripping Subject.'</span>")
+				for(var/obj/item/W in H)
+					H.drop_from_inventory(W)
+				H.underwear = 7
+				H.undershirt = 5
+				H.update_body(1)
+				sleep(5)
 			else
-				if(H.client)
-					H.client.perspective = EYE_PERSPECTIVE
-					H.client.eye = src
-				H.loc = src
-				src.occupant = H
-				update_icon()
-				visible_message ("\red The gibber drags [H.name] in.")
-				H.visible_message ("\red The gibber grabs ahold of your feet and drags you in.")
-				src.startgibbingFull(H)
+				return
+		else
+			if(H.client)
+				H.client.perspective = EYE_PERSPECTIVE
+				H.client.eye = src
+			H.loc = src
+			src.occupant = H
+			update_icon()
+			visible_message("<span class='warning'>\The [src] grabs ahold of [H.name] and drags them in!</span>")
+			H.show_message("<span class='warning'>\The [src] grabs ahold of your feet and drags you into it!</span>")
+			src.startgibbing(H, "full")
 
 /obj/machinery/gibber/tenderizer
-	name = "Tenderizer"
-	Bumped(var/atom/A)
-		if(ismob(A))
-			var/mob/living/carbon/human/H = A
-			if(H.abiotic(1))
-				H.visible_message("\red Subject may not have abiotic items on.")
-				if(H.resting)
-					H.visible_message("\red Larkens.Override(Disposals) Detected.")
-					sleep(10)
-					H.visible_message("\red Stripping Subject.")
-					for(var/obj/item/W in H)
-						H.drop_from_inventory(W)
-					H.underwear = 7
-					H.undershirt = 5
-					H.update_body(1)
-					sleep(10)
-				else
-					return
-			else
-				if(H.client)
-					H.client.perspective = EYE_PERSPECTIVE
-					H.client.eye = src
-				H.loc = src
-				src.occupant = H
-				update_icon()
-				visible_message ("\red The Tenderizer drags [H.name] into it.")
-				H.visible_message ("\red The Tenderizer locks onto your legs and drags you in.")
-				src.starttenderizing(H)
+	name = "tenderizer"
 
+/obj/machinery/gibber/tenderizer/Bumped(var/atom/A)
+	if(ishuman(A))
+		var/mob/living/carbon/human/H = A
+		if(H.abiotic(1))
+			src.visible_message("<span class='warning'>\The [src] states, 'Subject may not have abiotic items on.'</span>")
+			if(H.resting)
+				src.visible_message("<span class='warning'>\The [src] states, 'Larkens.Override(Disposals) Detected.'</span>")
+				sleep(10)
+				H.show_message("<span class='warning'>\The [src] states, 'Stripping Subject.'</span>")
+				for(var/obj/item/W in H)
+					H.drop_from_inventory(W)
+				H.underwear = 7
+				H.undershirt = 5
+				H.update_body(1)
+			else
+				return
+		else
+			if(H.client)
+				H.client.perspective = EYE_PERSPECTIVE
+				H.client.eye = src
+			H.loc = src
+			src.occupant = H
+			update_icon()
+			visible_message("<span class='warning'>\The [src] grabs ahold of [H.name] and drags them in!</span>")
+			H.show_message("<span class='warning'>\The [src] grabs ahold of your feet and drags you into it!</span>")
+			src.starttenderizing(H)
 
 /obj/machinery/gibber/New()
 	..()
@@ -160,45 +137,53 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(operating)
-		user << "\red It's locked and running"
+		user << "<span class='warning'>\The [src] is locked and running.</span>"
 		return
 	if(src.occupant.ckey == user.ckey)
-		src.occupant.visible_message ("\red You hit the internal 'Sweet Relief' button.")
-		src.startgibbingFull(user)
+		src.occupant.show_message ("<span class='warning'>You hit the internal 'Sweet Relief' button.</span>")
+		src.startgibbing(user, "full")
+
 	else
-		visible_message("\red You hit the big red flashing 'Gib' button.")
-		src.occupant.visible_message ("\blue You hear a beep, and then a hum as the gibber springs to life. This can't be good.")
-		src.startgibbingFull(user)
+		visible_message("<span class='warning>[user.name] hits the red flashing 'Gib' button on \the [src].</span>", \
+						 "<span class='warning'>You hit the big red flashing 'Gib' button.</span>")
+		src.occupant.show_message ("<span class='danger'>You hear a beep, and then a hum as \the [src] springs to life around you. This can't be good.</span>")
+		src.startgibbing(user, "full")
 
 /obj/machinery/gibber/tenderizer/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN))
 		return
+
 	if(operating)
-		user << "\red It's locked and running."
+		user << "<span class='warning'>\The [src] is locked and running.</span>"
 		return
+
 	if(src.occupant.ckey == user.ckey)
-		src.occupant.visible_message ("\red You hit the internal start button.")
+		src.occupant.show_message ("<span class='danger'>You hit the internal start button.</span>")
 		src.starttenderizing(user)
+
 	else
-		visible_message("\red You hit the big red flashing 'Start Tenderization' button.")
-		src.occupant.visible_message ("\blue You hear a beep, and then a hum as the tenderizer springs to life. This can't be good.")
+		visible_message("<span class='warning>[user.name] hits the big red flashing 'Start Tenderization' button on \the [src].</span>", \
+						 "<span class='warning'>You hit the big red flashing 'Start Tenderization' button.</span>")
+		src.occupant.show_message("<span class='danger'>You hear a beep, and then a hum as \the [src] springs to life around you. This can't be good.</span>")
 		src.starttenderizing(user)
 
 /obj/machinery/gibber/attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
 	if(src.occupant)
-		user << "\red The gibber is full, empty it first!"
+		user << "<span class='warning'>\The [src] is full, empty it first!</span>"
 		return
 	if (!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
-		user << "\red This item is not suitable for the gibber!"
+		user << "<span class='warning'>This item is not suitable for the gibber!</span>"
 		return
 	if(G.affecting.abiotic(1))
-		user << "\red Subject may not have abiotic items on."
+		user << "<spawn class='warning'>Subject may not have abiotic items on.</span>"
 		return
 
-	user.visible_message("\red [user] starts to put [G.affecting] into the gibber!")
+	user.visible_message("<span class='danger'>[user.name] starts to put [G.affecting] into \the [src]!</span>", \
+						  "<span class='warning'>You start to put [G.affecting] into \the [src].</span")
 	src.add_fingerprint(user)
 	if(do_after(user, 30) && G && G.affecting && !occupant)
-		user.visible_message("\red [user] stuffs [G.affecting] into the gibber!")
+		user.visible_message("<span class='danger'>[user] stuffs [G.affecting] into \the [src]!</span>", \
+							  "<span class='warning'>You stuff [G.affecting] into \the [src].</span>")
 		var/mob/M = G.affecting
 		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
@@ -216,24 +201,26 @@
 		return
 	if(O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src)) // is the mob anchored, too far away from you, or are you too far away from the source
 		return
-	if(!ismob(O)) //humans only
-		return
-	if(istype(O, /mob/living/simple_animal) || istype(O, /mob/living/silicon)) //animals and robots dont fit
+	if(!ishuman(O)) //humans only
 		return
 	if(user.loc==null) // just in case someone manages to get a closet into the blue light dimension, as unlikely as that seems
 		return
 	if(!istype(user.loc, /turf) || !istype(O.loc, /turf)) // are you in a container/closet/pod/etc?
 		return
-	if(src.occupant)
-		user << "The gibber is full! You can't fit in there!"
-		visible_message ("\blue The Gibber rejects [user.name].")
+
 	var/mob/living/L = O
-	if(L.ckey != user.ckey)
+	if(L != user)
 		return
+
+	if(src.occupant)
+		user << "<span class='warning'>\The [src] is full! You can't fit in there!</span>"
+		visible_message ("<span class='notice'>\The [src] rejects [user.name].</span>")
+
 	if(!istype(L) || L.buckled)
 		return
+
 	if(L.abiotic(1))
-		visible_message ("\blue <B>The Gibber states, 'Subject cannot have abiotic items on.'</B>")
+		visible_message("<span class='notice'><B>\The [src] states, 'Subject cannot have abiotic items on.'</B></span>")
 		return
 	if(!L)
 		return
@@ -248,14 +235,16 @@
 
 /obj/machinery/gibber/verb/eject()
 	set category = "Object"
-	set name = "Empty Gibber"
+	set name = "Empty [src]"
 	set src in oview(1)
 
 	if (usr.stat != 0)
 		return
+
 	if(operating||locked)
-		usr.visible_message("\red The hatch is locked.")
+		usr.show_message("<span class='warning'>The hatch is locked.</span>")
 		return
+
 	else
 		src.go_out()
 		add_fingerprint(usr)
@@ -264,34 +253,32 @@
 
 /obj/machinery/gibber/verb/lock()
 	set category = "Object"
-	set name = "Lock Gibber"
+	set name = "Lock [src]"
 	set src in oview(1)
 
-	if (usr.ckey != src.occupant.ckey)
-		if (!locked)
-			locked = 1
-			usr.visible_message("\red You close the hatch and lock it.")
-		else
-			locked = 0
-			usr.visible_message("\red You unlock the hatch and open it.")
+	if (usr != src.occupant)
+		usr.show_message("<span class='warning'>You [locked ? "unlock" : "close"] the hatch and [locked ? "open" : "lock"] it.</span>")
+		locked = !locked
+
 	else
-		if (!locked)
-			usr.visible_message("You can't lock the hatch from inside!")
-		else
-			usr.visible_message("You can't unlock the hatch from inside!")
+		usr.show_message("<span class='warning'>You can't [locked ? "unlock" : "lock"] the hatch from inside!</span>")
 		return
 
 /obj/machinery/gibber/proc/go_out()
 	if (!src.occupant)
 		return
-	if(locked||operating)
-		src.occupant.visible_message("\red The hatch is locked!")
+
+	if(locked || operating)
+		src.occupant.show_message("<span class='warning>The hatch is locked!</span>")
 		return
+
 	for(var/obj/O in src)
 		O.loc = src.loc
+
 	if (src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
+
 	src.occupant.loc = src.loc
 	src.occupant = null
 	update_icon()
@@ -303,43 +290,46 @@
 	if(src.operating)
 		return
 	if(src.occupant.get_species() == "Slime People")
-		src.occupant.visible_message("\red <b>The Tenderizer</b> scans you, then decides it cannot tenderize your slime.")
+		src.occupant.show_message("<span class='warning><b>\The [src]</b> scans you, then decides it cannot tenderize your slime.</span>")
 		sleep(10)
-		src.occupant.visible_message("\red <b>The Tenderizer</b> ejects you.")
+		src.occupant.show_message("<span class='warning><b>\The [src]</b> ejects you.</span>")
 		src.operating = 0
 		src.eject()
-		visible_message("\red <b>The Tenderizer</b> states 'Incompatible Meat, ejecting.'")
+		visible_message("<span class='warning><b>The Tenderizer</b> states 'Incompatible Meat, ejecting.'</span>")
 		return
 
 	use_power(1000)
 	src.operating = 1
 	update_icon()
+
 	src.occupant.attack_log += "\[[time_stamp()]\] Was tenderized by <b>auto-tender</b>" //One shall not simply gib a mob unnoticed!
 	user.attack_log += "\[[time_stamp()]\] Was Tenderized <b>via auto-tender</b>"
+
 	if(src.occupant.ckey)
 		msg_admin_attack("[user.name] ([user.ckey]) was tenderized.(<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+
 	sleep(10)
-	visible_message("\red The panel slides shut and locks.")
-	src.occupant.visible_message("\red The panel slides shut and locks behind you.")
+	visible_message("<span class='warning>The [src]'s panel slides shut and locks.</span>")
+	src.occupant.show_message("<span class='warning>The panel slides shut and locks behind you.</span>")
 	sleep(20)
-	visible_message("\red <b> The Tenderizer </b> states, 'Preparing Subject.'")
-	src.occupant.visible_message("\blue You hear a faint voice. \red <b> The Tenderizer </b> states, 'Preparing Subject.'")
-	src.occupant.visible_message("\red You feel a panel open underneath you.")
+	visible_message("<span class='warning'><b>\The [src]</b> states, 'Preparing Subject.'</span>")
+	src.occupant.show_message("<span class='notice>You hear a faint voice.</span><span class='warning><b>\The [src]</b> states, 'Preparing Subject.'</span>")
+	src.occupant.show_message("<span class='warning'>You feel a panel open underneath you.</span>")
 	sleep(30)
-	src.occupant.visible_message("\red A large blow strikes your back.")
-	src.occupant.visible_message("\red <b> Oh god, the pain! </b>")
+	src.occupant.show_message("<span class='danger'>A large blow strikes your back.</span>")
+	src.occupant.show_message("<span class='danger'>Oh god, the pain!</span>")
 	src.occupant.apply_effect(15, AGONY, 0)
 	src.occupant.apply_damage(20, BRUTE, "chest", 0)
 	sleep(30)
-	src.occupant.visible_message("\red <b>A blow strikes your right leg.</b>")
+	src.occupant.show_message("<span class='danger'>A blow strikes your right leg.</span>")
 	src.occupant.apply_effect(10, AGONY, 0)
 	RL.fracture()
 	sleep(10)
-	src.occupant.visible_message("\red <b>Another blow strikes your left leg.</b>")
+	src.occupant.show_message("<span class='danger'>Another blow strikes your left leg.</span>")
 	src.occupant.apply_effect(10, AGONY, 0)
 	LL.fracture()
 	sleep(10)
-	src.occupant.visible_message("\red <b>A number of blows strike your torso and groin.</b>")
+	src.occupant.show_message("<span class='danger'>A number of blows strike your torso and groin.</span>")
 	src.occupant.apply_damage(15, BRUTE, "groin", 0)
 	src.occupant.apply_damage(15, BRUTE, "chest", 0)
 	sleep(10)
@@ -347,215 +337,179 @@
 	src.operating = 0
 	src.eject()
 
-
-/obj/machinery/gibber/proc/startgibbingFull(mob/user as mob)
+/obj/machinery/gibber/proc/startgibbing(mob/user as mob, var/type="default")
 	var/datum/organ/external/LL = src.occupant.get_organ("l_leg")
 	var/datum/organ/external/RL = src.occupant.get_organ("r_leg")
 	if(src.operating)
 		return
+
 	if(!src.occupant)
-		visible_message("\red You hear a loud metallic grinding sound.")
+		visible_message("<span class='warning'>You hear a loud metallic grinding sound.</span>")
 		return
+
 	use_power(1000)
 	src.operating = 1
 	update_icon()
-	var/sourcename = src.occupant.real_name
-	var/sourcejob = src.occupant.job
-	var/sourcenutriment = src.occupant.nutrition / 15
-	var/sourcetotalreagents = src.occupant.reagents.total_volume
-	var/totalslabs = 3
 
-	var/obj/item/weapon/reagent_containers/food/snacks/meat/human/allmeat[totalslabs]
-	for (var/i=1 to totalslabs)
-		var/obj/item/weapon/reagent_containers/food/snacks/meat/human/newmeat = new
-		newmeat.name = sourcename + newmeat.name
-		newmeat.subjectname = sourcename
-		newmeat.subjectjob = sourcejob
-		newmeat.reagents.add_reagent ("nutriment", sourcenutriment / totalslabs) // Thehehe. Fat guys go first
-		src.occupant.reagents.trans_to (newmeat, round (sourcetotalreagents / totalslabs, 1)) // Transfer all the reagents from the
-		allmeat[i] = newmeat
+	var/slab_name = occupant.name
+	var/slab_count = 3
+	var/slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human //gibber can only gib humans on paracode, no need to check meat type
+	var/slab_nutrition = src.occupant.nutrition / 15
 
-	src.occupant.attack_log += "\[[time_stamp()]\] Was gibbed by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
-	user.attack_log += "\[[time_stamp()]\] Gibbed <b>[src.occupant]/[src.occupant.ckey]</b>"
-	if(src.occupant.ckey)
-		msg_admin_attack("[user.name] ([user.ckey]) gibbed [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-	if(!iscarbon(user))
-		src.occupant.LAssailant = null
-	else
-		src.occupant.LAssailant = user
+	slab_nutrition /= slab_count
 
-	sleep(10)
-	visible_message("\red The hatch closes and locks.")
-	src.occupant.visible_message("\red The hatch closes and locks behind you.")
-	sleep(20)
-	visible_message("\red <b>The Gibber</b> states, 'Readying subject.'")
-	src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Readying Subject.'")
-	src.occupant.visible_message("\red A pair of rollers rolls you onto your back.")
-	sleep(20)
-	src.occupant.visible_message("\red Padded cuffs extend from the sides of <b>The Gibber</b> and take ahold of your arms and legs.")
-	sleep(40)
-	visible_message("\red <b>The Gibber</b> states, 'Subject Ready. Engaging Muzzle.'")
-	src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Subject Ready. Engaging Muzzle.'")
-	sleep(30)
-	src.occupant.visible_message("\red A muzzle extends from above and clamps onto your mouth.")
-	src.occupant.sdisabilities |= MUTE
-	sleep(30)
-	visible_message("\red <b>The Gibber</b> states 'Deploying Tenderizers.'")
-	src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Deploying Tenderizers..'")
-	sleep(20)
-	src.occupant.visible_message("\red You feel a panel open underneath you.")
-	sleep(30)
-	src.occupant.visible_message("\red A large blow strikes your back.")
-	src.occupant.visible_message("\red <b>Oh god, the pain! </b>")
-	src.occupant.apply_effect(15, AGONY, 0)
-	src.occupant.apply_damage(20, BRUTE, "chest", 0)
-	sleep(30)
-	src.occupant.visible_message("\red <b>A blow strikes your right leg.</b>")
-	src.occupant.apply_effect(10, AGONY, 0)
-	RL.fracture()
-	sleep(10)
-	src.occupant.visible_message("\red <b>Another blow strikes your left leg.</b>")
-	src.occupant.apply_effect(10, AGONY, 0)
-	LL.fracture()
-	sleep(10)
-	src.occupant.visible_message("\red <b>A number of blows strike your torso and groin.</b>")
-	src.occupant.apply_damage(15, BRUTE, "groin", 0)
-	src.occupant.apply_damage(15, BRUTE, "chest", 0)
-	sleep(10)
-	src.occupant.resting = 1
-	sleep(40)
-	visible_message("\red <b>The Gibber</b> states, 'Deploying Grinders.'")
-	src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Deploying Grinders.'")
-	sleep(30)
-	src.occupant.visible_message("\red A number of sharp points dig into your arms, and legs.")
-	sleep(10)
-	src.occupant.visible_message("\red A large clamp seals around your waist. This can't bode well.")
-	sleep(30)
-	visible_message("\red <b>The Gibber</b> states 'Engaging Grinders.'")
-	visible_message("\red The Gibber starts rumbling!")
-	src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Engaging Grinders.'")
-	sleep(30)
-	src.occupant.visible_message("\red <b> You feel an extreme amount of pain as your hands and feet are seperated from your body. </b>")
-	src.occupant.apply_effect(40, AGONY, 0)
-	visible_message("\red You hear a loud squelchy grinding sound.")
-	sleep(20)
-	src.occupant.visible_message("\red <b>You make a loud groan as your knees and elbows are seperated. </b>")
-	visible_message("<b>[src.occupant]</b>groans loudly.")
-	sleep(40)
-	src.occupant.visible_message("\red <b>As a blade saws your remaining limbs off, you attempt to scream out, but only make a little whimper. </b>")
-	visible_message("<b>[src.occupant]</b>lightly whimpers.")
-	sleep(40)
-	src.occupant.visible_message("\red <b>You feel a serrated blade splitting your torso open! </b>")
-	src.occupant.apply_effect(20, AGONY, 0)
-	sleep(30)
-	src.occupant.visible_message("\red <b>You feel your intense agony coming to an end as your internal organs are ripped out by a claw. </b>")
-	visible_message("\red <b>The Gibber </b> states, 'Gibbing Complete!'")
-	sleep(20)
-	playsound(src.loc, 'sound/effects/gib.ogg', 50, 1)
-	src.occupant.death(1)
-	src.occupant.ghostize()
-	del(src.occupant)
-	spawn(src.gibtime)
-		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
-		operating = 0
-		for (var/i=1 to totalslabs)
-			var/obj/item/meatslab = allmeat[i]
-			var/turf/Tx = locate(src.x + i, src.y, src.z)
-			meatslab.loc = src.loc
-			meatslab.throw_at(Tx,i,3,src)
-			if (!Tx.density)
-				new /obj/effect/decal/cleanable/blood/gibs(Tx,i)
-		src.operating = 0
-		update_icon()
+	for(var/i=1 to slab_count)
+		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src)
+		new_meat.name = "[slab_name] [new_meat.name]"
+		new_meat.reagents.add_reagent("nutriment",slab_nutrition)
 
+		if(src.occupant.reagents)
+			src.occupant.reagents.trans_to(new_meat, round(occupant.reagents.total_volume/slab_count,1))
 
-/obj/machinery/gibber/proc/startgibbing(mob/user as mob)
-	if(src.operating)
-		return
-	if(!src.occupant)
-		visible_message("\red You hear a loud metallic grinding sound.")
-		return
-	use_power(1000)
-	src.operating = 1
-	update_icon()
-	var/sourcename = src.occupant.real_name
-	var/sourcejob = src.occupant.job
-	var/sourcenutriment = src.occupant.nutrition / 15
-	var/sourcetotalreagents = src.occupant.reagents.total_volume
-	var/totalslabs = 3
-
-	var/obj/item/weapon/reagent_containers/food/snacks/meat/human/allmeat[totalslabs]
-	for (var/i=1 to totalslabs)
-		var/obj/item/weapon/reagent_containers/food/snacks/meat/human/newmeat = new
-		newmeat.name = sourcename + newmeat.name
-		newmeat.subjectname = sourcename
-		newmeat.subjectjob = sourcejob
-		newmeat.reagents.add_reagent ("nutriment", sourcenutriment / totalslabs) // Thehehe. Fat guys go first
-		src.occupant.reagents.trans_to (newmeat, round (sourcetotalreagents / totalslabs, 1)) // Transfer all the reagents from the
-		allmeat[i] = newmeat
+	new /obj/effect/decal/cleanable/blood/gibs(src)
 
 	src.occupant.attack_log += "\[[time_stamp()]\] Was gibbed by <b>Conveyer Line</b>" //One shall not simply gib a mob unnoticed!
 	user.attack_log += "\[[time_stamp()]\] Gibbed <b>[src.occupant]/[src.occupant.ckey]</b>"
+
 	if(src.occupant.ckey)
-		msg_admin_attack("(Conveyer Line) gibbed [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+		msg_admin_attack("[user] ([user.ckey]) gibbed [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+
 	if(!iscarbon(user))
 		src.occupant.LAssailant = null
 	else
 		src.occupant.LAssailant = user
-	if(src.dramatic)
-		sleep(10)
-		visible_message("\red The hatch closes and locks.")
-		src.occupant.visible_message("\red The hatch closes and locks behind you.")
-		sleep(20)
-		visible_message("\red <b>The Gibber</b> states, 'Readying subject.'")
-		src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Readying Subject.'")
-		src.occupant.visible_message("\red A pair of rollers rolls you onto your back.")
-		sleep(20)
-		src.occupant.visible_message("\red Padded cuffs extend from the sides of <b>The Gibber</b> and take ahold of your arms and legs.")
-		sleep(40)
-		visible_message("\red <b>The Gibber</b> states, 'Subject Ready. Engaging Muzzle.'")
-		src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Subject Ready. Engaging Muzzle.'")
-		sleep(30)
-		src.occupant.visible_message("\red A muzzle extends from above and clamps onto your mouth.")
-		src.occupant.sdisabilities |= MUTE
-		sleep(30)
-		visible_message("\red <b>The Gibber</b> states, 'Deploying Grinders.'")
-		src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Deploying Grinders.'")
-		sleep(30)
-		src.occupant.visible_message("\red A number of sharp points dig into your arms, and legs.")
-		sleep(20)
-		src.occupant.visible_message("\red A large clamp seals around your waist. This can't bode well.")
-		sleep(30)
-		visible_message("\red <b>The Gibber</b> states 'Engaging Grinders.'")
-		visible_message("\red The Gibber starts rumbling!")
-		src.occupant.visible_message("\blue You hear a faint voice. \red <b>The Gibber</b> states 'Engaging Grinders.'")
-		sleep(30)
-		src.occupant.visible_message("\red <b>You feel an extreme amount of pain as your hands and feet are seperated from your body. </b>")
-		src.occupant.apply_effect(40, AGONY, 0)
-		visible_message("\red You hear a loud squelchy grinding sound.")
-		sleep(20)
-		src.occupant.visible_message("\red <b>You make a loud groan as your knees and elbows are seperated. </b>")
-		visible_message("<b>[src.occupant]</b> groans loudly.")
-		sleep(40)
-		src.occupant.visible_message("\red <b>As a blade saws your remaining limbs off, you attempt to scream out, but only make a little whimper. </b>")
-		visible_message("<b>[src.occupant]</b> lightly whimpers.")
-		sleep(40)
-		src.occupant.visible_message("\red <b>A saw slowly descends towards your neck.</b> </br> \blue Your last thoughts are 'Finally, the pain will be over'")
-		visible_message("\red <b> The Gibber </b> states, 'Gibbing Complete!'")
-		sleep(20)
-		playsound(src.loc, 'sound/effects/gib.ogg', 50, 1)
-		src.occupant.death(1)
-		src.occupant.ghostize()
-		del(src.occupant)
-		spawn(src.gibtime)
-			playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
-			operating = 0
-			for (var/i=1 to totalslabs)
-				var/obj/item/meatslab = allmeat[i]
-				var/turf/Tx = locate(src.x + i, src.y, src.z)
-				meatslab.loc = src.loc
-				meatslab.throw_at(Tx,i,3,src)
-				if (!Tx.density)
-					new /obj/effect/decal/cleanable/blood/gibs(Tx,i)
-			src.operating = 0
-			update_icon()
+
+	switch(type)
+		if("default")
+			sleep(10)
+			visible_message("<span class='warning'>The hatch closes and locks.</span>")
+			src.occupant.show_message("<span class='warning'>The hatch closes and locks behind you.</span>")
+			sleep(20)
+			visible_message("<span class='warning'><b>The Gibber</b> states, 'Readying subject.'</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Readying Subject.'</span>")
+			src.occupant.show_message("<span class='warning'>A pair of rollers rolls you onto your back.</span>")
+			sleep(20)
+			src.occupant.show_message("<span class='warning'>Padded cuffs extend from the sides of <b>The Gibber</b> and take ahold of your arms and legs.</span>")
+			sleep(40)
+			visible_message("<span class='warning'><b>The Gibber</b> states, 'Subject Ready. Engaging Muzzle.'</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Subject Ready. Engaging Muzzle.'</span>")
+			sleep(30)
+			src.occupant.show_message("<span class='warning'>A muzzle extends from above and clamps onto your mouth.</span>")
+			src.occupant.sdisabilities |= MUTE
+			sleep(30)
+			visible_message("<span class='warning'><b>The Gibber</b> states, 'Deploying Grinders.'</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Deploying Grinders.'</span>")
+			sleep(30)
+			src.occupant.show_message("<span class='warning'>A number of sharp points dig into your arms, and legs.</span>")
+			sleep(20)
+			src.occupant.show_message("<span class='warning'>A large clamp seals around your waist. This can't bode well.</span>")
+			sleep(30)
+			visible_message("<span class='warning'><b>The Gibber</b> states 'Engaging Grinders.'</span>")
+			visible_message("<span class='warning'>The Gibber starts rumbling!</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Engaging Grinders.'</span>")
+			sleep(30)
+			src.occupant.show_message("<span class='warning'><b>You feel an extreme amount of pain as your hands and feet are seperated from your body. </b></span>")
+			src.occupant.apply_effect(40, AGONY, 0)
+			visible_message("<span class='warning'>You hear a loud squelchy grinding sound.</span>")
+			sleep(20)
+			src.occupant.show_message("<span class='warning'><b>You make a loud groan as your knees and elbows are seperated. </b></span>")
+			visible_message("<b>[src.occupant]</b> groans loudly.</span>")
+			sleep(40)
+			src.occupant.show_message("<span class='warning'><b>As a blade saws your remaining limbs off, you attempt to scream out, but only make a little whimper. </b></span>")
+			visible_message("<b>[src.occupant]</b> lightly whimpers.</span>")
+			sleep(40)
+			src.occupant.show_message("<span class='warning'><b>A saw slowly descends towards your neck.</b> </br> <span class='notice'>Your last thoughts are 'Finally, the pain will be over'</span>")
+			visible_message("<span class='warning'><b> The Gibber </b> states, 'Gibbing Complete!'</span>")
+			sleep(20)
+
+		if("full")
+			sleep(10)
+			visible_message("<span class='warning'>The hatch closes and locks.</span>")
+			src.occupant.show_message("<span class='warning'>The hatch closes and locks behind you.</span>")
+			sleep(20)
+			visible_message("<span class='warning'><b>The Gibber</b> states, 'Readying subject.'</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Readying Subject.'</span>")
+			src.occupant.show_message("<span class='warning'>A pair of rollers rolls you onto your back.</span>")
+			sleep(20)
+			src.occupant.show_message("<span class='warning'>Padded cuffs extend from the sides of <b>The Gibber</b> and take ahold of your arms and legs.</span>")
+			sleep(40)
+			visible_message("<span class='warning'><b>The Gibber</b> states, 'Subject Ready. Engaging Muzzle.'</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Subject Ready. Engaging Muzzle.'</span>")
+			sleep(30)
+			src.occupant.show_message("<span class='warning'>A muzzle extends from above and clamps onto your mouth.</span>")
+			src.occupant.sdisabilities |= MUTE
+			sleep(30)
+			visible_message("<span class='warning'><b>The Gibber</b> states 'Deploying Tenderizers.'</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Deploying Tenderizers..'</span>")
+			sleep(20)
+			src.occupant.show_message("<span class='warning'>You feel a panel open underneath you.</span>")
+			sleep(30)
+			src.occupant.show_message("<span class='warning'>A large blow strikes your back.</span>")
+			src.occupant.show_message("<span class='warning'><b>Oh god, the pain! </b></span>")
+			src.occupant.apply_effect(15, AGONY, 0)
+			src.occupant.apply_damage(20, BRUTE, "chest", 0)
+			sleep(30)
+			src.occupant.show_message("<span class='warning'><b>A blow strikes your right leg.</b></span>")
+			src.occupant.apply_effect(10, AGONY, 0)
+			RL.fracture()
+			sleep(10)
+			src.occupant.show_message("<span class='warning'><b>Another blow strikes your left leg.</b></span>")
+			src.occupant.apply_effect(10, AGONY, 0)
+			LL.fracture()
+			sleep(10)
+			src.occupant.show_message("<span class='warning'><b>A number of blows strike your torso and groin.</b></span>")
+			src.occupant.apply_damage(15, BRUTE, "groin", 0)
+			src.occupant.apply_damage(15, BRUTE, "chest", 0)
+			sleep(10)
+			src.occupant.resting = 1
+			sleep(40)
+			visible_message("<span class='warning'><b>The Gibber</b> states, 'Deploying Grinders.'</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Deploying Grinders.'</span>")
+			sleep(30)
+			src.occupant.show_message("<span class='warning'>A number of sharp points dig into your arms, and legs.</span>")
+			sleep(10)
+			src.occupant.show_message("<span class='warning'>A large clamp seals around your waist. This can't bode well.</span>")
+			sleep(30)
+			visible_message("<span class='warning'><b>The Gibber</b> states 'Engaging Grinders.'</span>")
+			visible_message("<span class='warning'>The Gibber starts rumbling!</span>")
+			src.occupant.show_message("<span class='notice'>You hear a faint voice. <span class='warning'><b>The Gibber</b> states 'Engaging Grinders.'</span>")
+			sleep(30)
+			src.occupant.show_message("<span class='warning'><b> You feel an extreme amount of pain as your hands and feet are seperated from your body. </b></span>")
+			src.occupant.apply_effect(40, AGONY, 0)
+			visible_message("<span class='warning'>You hear a loud squelchy grinding sound.</span>")
+			sleep(20)
+			src.occupant.show_message("<span class='warning'><b>You make a loud groan as your knees and elbows are seperated. </b></span>")
+			visible_message("<b>[src.occupant]</b>groans loudly.</span>")
+			sleep(40)
+			src.occupant.show_message("<span class='warning'><b>As a blade saws your remaining limbs off, you attempt to scream out, but only make a little whimper. </b></span>")
+			visible_message("<b>[src.occupant]</b>lightly whimpers.</span>")
+			sleep(40)
+			src.occupant.show_message("<span class='warning'><b>You feel a serrated blade splitting your torso open! </b></span>")
+			src.occupant.apply_effect(20, AGONY, 0)
+			sleep(30)
+			src.occupant.show_message("<span class='warning'><b>You feel your intense agony coming to an end as your internal organs are ripped out by a claw. </b></span>")
+			visible_message("<span class='warning'><b>The Gibber </b> states, 'Gibbing Complete!'</span>")
+			sleep(20)
+
+	playsound(src.loc, 'sound/effects/gib.ogg', 50, 1)
+
+	src.occupant.death(1)
+	src.occupant.ghostize()
+
+	del(src.occupant)
+
+	spawn(src.gibtime)
+
+		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
+		operating = 0
+
+		for (var/obj/item/thing in contents) //Meat is spawned inside the gibber and thrown out afterwards.
+			thing.loc = get_turf(thing) // Drop it onto the turf for throwing.
+			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(1,5),15) // Being pelted with bits of meat and bone would hurt.
+
+		for (var/obj/effect/gibs in contents) //throw out the gibs too
+			gibs.loc = get_turf(gibs) //drop onto turf for throwing
+			gibs.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(1,5),15)
+
+		src.operating = 0
+		update_icon()
